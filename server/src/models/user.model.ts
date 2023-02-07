@@ -48,6 +48,11 @@ const UserSchema = new mongoose.Schema({
     required: true,
     default: false,
   },
+  department: {
+    type: String,
+    required: false,
+    default: false
+  }
 });
 
 interface IUser extends mongoose.Document {
@@ -61,8 +66,9 @@ interface IUser extends mongoose.Document {
   resetPasswordToken: string | null | undefined;
   resetPasswordTokenExpiryDate: Date | null | undefined;
   admin: boolean;
+  department: string;
 }
 
 const User = mongoose.model<IUser>('User', UserSchema);
 
-export { IUser, User };
+export { IUser, User, UserSchema};
