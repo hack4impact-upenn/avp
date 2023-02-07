@@ -5,36 +5,35 @@
 import mongoose, { Mongoose, StringSchemaDefinition } from 'mongoose';
 import { IUser, UserSchema } from './user.model';
 
-
 interface communicationItem {
-    dateOfCommunication: Date,
-    method: string,
-    user: IUser,
-    notes?: string,
-    didEstablishedContact: boolean,
+  dateOfCommunication: Date;
+  method: string;
+  user: IUser;
+  notes?: string;
+  didEstablishedContact: boolean;
 }
 
 const communicationItemSchema = new mongoose.Schema({
-    dateOfCommunication: {
-        type: Date,
-        required: true,
-    },
-    method: {
-        type: String,
-        required: true,
-    },
-    user: {
-        type: UserSchema,
-        required: true,
-    },
-    notes: {
-        type: String,
-        required: false, 
-    },
-    didEstablishedContact: {
-        type: Boolean,
-        required: true,
-    }
+  dateOfCommunication: {
+    type: Date,
+    required: true,
+  },
+  method: {
+    type: String,
+    required: true,
+  },
+  user: {
+    type: UserSchema,
+    required: true,
+  },
+  notes: {
+    type: String,
+    required: false,
+  },
+  didEstablishedContact: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 const ReferralSchema = new mongoose.Schema({
@@ -235,57 +234,57 @@ const ReferralSchema = new mongoose.Schema({
   historyOfCommunication: {
     type: [communicationItemSchema],
     required: false,
-  }
+  },
 });
 
 interface IReferral extends mongoose.Document {
   _id: string;
-  departmentInCharge: string,
-  program: string,
-  staffAssigned: IUser,
-  therapistAssigned: string,
-  isReferral: boolean,
-  survivorName: string,
-  serviceRequested: string,
-  agencyThatReferred: string,
-  agencyRepName: string,
-  agencyRepEmail: string,
-  agencyRepPhone: string,
-  survivorGender: string,
-  survivorRace: string,
-  survivorDOB: Date,
-  survivorAge: Number,
-  survivorSchoolOrCommunitySite: string,
-  survivorGrade: Number,
-  isGuardianResponsible: boolean,
-  guardianName: string,
-  guardianRelationship: string,
-  guardianAddress: string,
-  guardianPhone: string,
-  guardianEmail: string,
-  guardianPreferredContactMethod: string,
-  survivorAddress: string,
-  survivorPhoneNumber: string,
-  notesFromOrg: string,
-  relationshipToVictim: string,
-  crimeDCNum: string,
-  crimeDistrict: string,
-  crimeDate: Date,
-  crimeType: string,
-  isGunViolence: boolean,
-  homDecedent: string,
-  homDateOfDeath: Date,
-  homType: string,
-  homLocation: string,
-  homAddress: string,
-  homZipCode: string,
-  homDecedentAge: Number,
-  homDecendentSex: string,
-  homDecedentRace: string,
-  homDecedentEthnicity: string,
-  homFMVNum: string,
-  homMEONum: string,
-  homeMNum: string,
+  departmentInCharge: string;
+  program: string;
+  staffAssigned: IUser;
+  therapistAssigned: string;
+  isReferral: boolean;
+  survivorName: string;
+  serviceRequested: string;
+  agencyThatReferred: string;
+  agencyRepName: string;
+  agencyRepEmail: string;
+  agencyRepPhone: string;
+  survivorGender: string;
+  survivorRace: string;
+  survivorDOB: Date;
+  survivorAge: Number;
+  survivorSchoolOrCommunitySite: string;
+  survivorGrade: Number;
+  isGuardianResponsible: boolean;
+  guardianName: string;
+  guardianRelationship: string;
+  guardianAddress: string;
+  guardianPhone: string;
+  guardianEmail: string;
+  guardianPreferredContactMethod: string;
+  survivorAddress: string;
+  survivorPhoneNumber: string;
+  notesFromOrg: string;
+  relationshipToVictim: string;
+  crimeDCNum: string;
+  crimeDistrict: string;
+  crimeDate: Date;
+  crimeType: string;
+  isGunViolence: boolean;
+  homDecedent: string;
+  homDateOfDeath: Date;
+  homType: string;
+  homLocation: string;
+  homAddress: string;
+  homZipCode: string;
+  homDecedentAge: Number;
+  homDecendentSex: string;
+  homDecedentRace: string;
+  homDecedentEthnicity: string;
+  homFMVNum: string;
+  homMEONum: string;
+  homeMNum: string;
   historyOfCommunication: Array<communicationItem>;
 }
 

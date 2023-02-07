@@ -51,8 +51,8 @@ const UserSchema = new mongoose.Schema({
   department: {
     type: String,
     required: false,
-    default: false
-  }
+    default: false,
+  },
 });
 
 interface IUser extends mongoose.Document {
@@ -71,4 +71,4 @@ interface IUser extends mongoose.Document {
 
 const User = mongoose.model<IUser>('User', UserSchema);
 
-export { IUser, User, UserSchema};
+export { IUser, User, UserSchema };
