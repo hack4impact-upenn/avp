@@ -1,8 +1,8 @@
 /**
- * Defines the User model for the database and also the interface to
+ * Defines the Referral model for the database and also the interface to
  * access the model in TypeScript.
  */
-import mongoose, { Mongoose, StringSchemaDefinition } from 'mongoose';
+import mongoose from 'mongoose';
 import { IUser, UserSchema } from './user.model';
 
 interface communicationItem {
@@ -253,9 +253,9 @@ interface IReferral extends mongoose.Document {
   survivorGender: string;
   survivorRace: string;
   survivorDOB: Date;
-  survivorAge: Number;
+  survivorAge: number;
   survivorSchoolOrCommunitySite: string;
-  survivorGrade: Number;
+  survivorGrade: number;
   isGuardianResponsible: boolean;
   guardianName: string;
   guardianRelationship: string;
@@ -278,7 +278,7 @@ interface IReferral extends mongoose.Document {
   homLocation: string;
   homAddress: string;
   homZipCode: string;
-  homDecedentAge: Number;
+  homDecedentAge: number;
   homDecendentSex: string;
   homDecedentRace: string;
   homDecedentEthnicity: string;
