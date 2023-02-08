@@ -51,7 +51,7 @@ const UserSchema = new mongoose.Schema({
   department: {
     type: String,
     required: false,
-    default: false,
+    default: 'None',
   },
 });
 

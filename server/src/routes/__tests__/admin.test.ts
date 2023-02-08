@@ -37,6 +37,7 @@ const user1 = {
   lastName: testLastName,
   admin: true,
   verified: true,
+  department: 'None',
 };
 
 const testEmail2 = 'testemail2@gmail.com';
@@ -49,6 +50,7 @@ const user2 = {
   lastName: testLastName2,
   admin: false,
   verified: true,
+  department: 'None',
 };
 
 const testEmail3 = 'testemail3@gmail.com';
@@ -61,6 +63,7 @@ const user3 = {
   lastName: testLastName3,
   admin: true,
   verified: true,
+  department: 'None',
 };
 
 const testEmail4 = 'testemail4@gmail.com';
@@ -73,6 +76,7 @@ const user4 = {
   lastName: testLastName4,
   admin: false,
   verified: true,
+  department: 'None',
 };
 
 beforeAll(async () => {
