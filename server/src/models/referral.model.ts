@@ -290,4 +290,4 @@ interface IReferral extends mongoose.Document {
 
 const Referral = mongoose.model<IReferral>('Referral', ReferralSchema);
 
-export { IReferral, Referral };
+export { IReferral, Referral, communicationItem };
