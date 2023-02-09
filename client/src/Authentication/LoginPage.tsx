@@ -11,6 +11,7 @@ import { loginUser } from './api';
 import AlertDialog from '../components/AlertDialog';
 import PrimaryButton from '../components/buttons/PrimaryButton';
 import ScreenGrid from '../components/ScreenGrid';
+import DataGrid from '../components/DataGrid';
 
 /**
  * A page allowing users to input their email and password to login. The default
