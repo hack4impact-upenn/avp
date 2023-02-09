@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import Box from '@mui/material/Box';
 import { DataGridPremium } from '@mui/x-data-grid-premium';
 
+/* Wrapper Around DataGridPremium */
 export default function DataGrid() {
   const columns = [
     { field: 'id', headerName: 'ID', width: 90 },
