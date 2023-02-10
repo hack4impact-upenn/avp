@@ -231,6 +231,10 @@ const ReferralSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  homCaseInformation: {
+    type: String,
+    required: false,
+  },
   historyOfCommunication: {
     type: [communicationItemSchema],
     required: false,
@@ -285,6 +289,7 @@ interface IReferral extends mongoose.Document {
   homFMVNum: string;
   homMEONum: string;
   homeMNum: string;
+  homCaseInformation: string;
   historyOfCommunication: Array<communicationItem>;
 }
 
