@@ -24,6 +24,7 @@ import AlertPopup from './components/AlertPopup';
 import InviteRegisterPage from './Authentication/InviteRegisterPage';
 import DataGrid from './components/DataGrid';
 import DatabasePage from './Database/DatabasePage';
+import './index.css';
 
 function App() {
   return (

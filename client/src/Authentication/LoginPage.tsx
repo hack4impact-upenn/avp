@@ -12,6 +12,7 @@ import AlertDialog from '../components/AlertDialog';
 import PrimaryButton from '../components/buttons/PrimaryButton';
 import ScreenGrid from '../components/ScreenGrid';
 import DataGrid from '../components/DataGrid';
+import avpLogo from '../assets/avpLogo.svg';
 
 /**
  * A page allowing users to input their email and password to login. The default
@@ -130,12 +131,42 @@ function LoginPage() {
   }
 
   return (
-    <ScreenGrid>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+      }}
+    >
+      <div
+        style={{
+          height: '100vh',
+          minHeight: '100vh',
+          width: '60vh',
+          backgroundColor: '#4EA0B3',
+          marginRight: '100px',
+        }}
+      >
+        <img
+          src={avpLogo}
+          alt="logo"
+          style={{ marginTop: '200px', marginLeft: '50px' }}
+        />
+        <h2
+          style={{
+            marginTop: '20px',
+            marginLeft: '50px',
+            color: 'white',
+            fontSize: '20px',
+          }}
+        >
+          Together, we can end the cycle of violence.{' '}
+        </h2>
+      </div>
       <FormGrid>
         <FormCol>
           <Grid item container justifyContent="center">
-            <Typography variant="h2" textAlign="center">
-              Welcome to Boilerplate
+            <Typography variant="h2" textAlign="center" marginTop="200px">
+              Login to AVP&apos;s Outreach Database
             </Typography>
           </Grid>
           <Grid item width="1">
@@ -195,7 +226,7 @@ function LoginPage() {
           onClose={handleAlertClose}
         />
       </Grid>
-    </ScreenGrid>
+    </div>
   );
 }
 
