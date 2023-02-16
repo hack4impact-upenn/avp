@@ -40,6 +40,7 @@ export default function DataGrid() {
       type: 'singleSelect',
       valueOptions: ['Therapist 1', 'Therapist 2', 'Therapist 3'],
       width: 160,
+      editable: true,
     },
     {
       field: 'status',
