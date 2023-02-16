@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@material-ui/icons": "^4.11.2",
+    "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.5.3",
     "@mui/system": "^5.5.2",
     "@reduxjs/toolkit": "^1.8.1",
