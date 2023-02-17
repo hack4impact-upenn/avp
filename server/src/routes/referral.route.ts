@@ -1,6 +1,6 @@
 import express from 'express';
 import { isAuthenticated } from '../controllers/auth.middleware';
-import { createReferral, getDepartmentReferrals, getReferral, getReferrals } from '../controllers/referral.controller';
+import { createReferral, getDepartmentReferrals, getReferral, getReferrals, updateReferral } from '../controllers/referral.controller';
 
 const router = express.Router();
 
@@ -8,8 +8,10 @@ router.post('/create', createReferral);
 
 router.get('/all', getReferrals);
 
-router.get('/order/:department/all', getDepartmentReferrals);
+router.get('/:department/all', getDepartmentReferrals);
 
-router.get('/order/:id', getReferral);
+router.get('/:id', getReferral);
+
+router.put('/:id', updateReferral);
 
 export default router;
