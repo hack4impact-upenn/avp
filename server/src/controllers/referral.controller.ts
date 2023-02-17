@@ -298,7 +298,7 @@ const updateReferral = async (
   }
 
   try {
-    const newReferral = await updateReferralById(
+    await updateReferralById(
       id,
       departmentInCharge,
       program,
