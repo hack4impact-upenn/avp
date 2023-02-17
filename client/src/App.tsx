@@ -9,6 +9,7 @@ import { store, persistor } from './util/redux/store';
 import NotFoundPage from './NotFound/NotFoundPage';
 import HomePage from './Home/HomePage';
 import AdminDashboardPage from './AdminDashboard/AdminDashboardPage';
+import FormPage from './FormPage/FormPage';
 import {
   UnauthenticatedRoutesWrapper,
   ProtectedRoutesWrapper,
@@ -59,6 +60,7 @@ function App() {
                   />
                   {/* Routes accessed only if user is authenticated */}
                   <Route element={<ProtectedRoutesWrapper />}>
+                    <Route path="/form" element={<FormPage />} />
                     <Route path="/database" element={<DatabasePage />} />
                     <Route path="/home" element={<HomePage />} />
                   </Route>
