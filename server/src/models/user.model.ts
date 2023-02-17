@@ -20,7 +20,7 @@ const UserSchema = new mongoose.Schema({
   },
   phone: {
     type: String,
-    match: /^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/g,
+    match: /^(\+\d{1,2}\s?)?1?-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/,
   },
   password: {
     type: String,
