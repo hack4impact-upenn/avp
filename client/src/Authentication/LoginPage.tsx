@@ -151,16 +151,16 @@ function LoginPage() {
           alt="logo"
           style={{ marginTop: '200px', marginLeft: '50px' }}
         />
-        <h2
-          style={{
-            marginTop: '20px',
-            marginLeft: '50px',
-            color: 'white',
-            fontSize: '20px',
-          }}
+        <Typography
+          display="flex"
+          variant="h2"
+          textAlign="center"
+          margin="40px"
+          justifyContent="center"
+          color="white"
         >
-          Together, we can end the cycle of violence.{' '}
-        </h2>
+          Together, we can end the cycle of violence.
+        </Typography>
       </div>
       <FormGrid>
         <FormCol>
