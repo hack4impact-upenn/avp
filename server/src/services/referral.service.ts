@@ -109,15 +109,15 @@ const createNewReferral = async (
 };
 
 const getAllReferrals = async () => {
-  return await Referral.find().exec();
+  return Referral.find().exec();
 };
 
 const getAllDepartmentReferrals = async (department: string) => {
-  return await Referral.find({ departmentInCharge: department }).exec();
+  return Referral.find({ departmentInCharge: department }).exec();
 };
 
 const getReferralById = async (id: string) => {
-  return await Referral.find({ _id: id }).exec();
+  return Referral.find({ _id: id }).exec();
 };
 
 const updateReferralById = async (

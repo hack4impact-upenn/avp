@@ -1,5 +1,4 @@
 import express from 'express';
-import { isAuthenticated } from '../controllers/auth.middleware';
 import { createReferral, getDepartmentReferrals, getReferral, getReferrals, updateReferral } from '../controllers/referral.controller';
 
 const router = express.Router();
