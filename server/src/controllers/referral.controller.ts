@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import express from 'express';
 import ApiError from '../util/apiError';
-import { createNewReferral } from '../services/referral.service';
+import { createNewReferral, getAllDepartmentReferrals, getAllReferrals, getReferralById } from '../services/referral.service';
 import StatusCode from '../util/statusCode';
 
 const createReferral = async (
@@ -150,4 +150,62 @@ const createReferral = async (
   }
 };
 
-export { createReferral };
+const getReferrals = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+
+  try {
+    const referrals = await getAllReferrals();
+    res.status(StatusCode.OK).json(referrals);
+  } catch (err) {
+    next(
+      ApiError.internal(
+        `Unable to get all referrals due to the following error: ${err}`,
+      ),
+    );
+  }
+};
+
+const getDepartmentReferrals = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+
+  const { department } = req.params;
+
+  try {
+    const referrals = await getAllDepartmentReferrals(department);
+    res.status(StatusCode.OK).json(referrals);
+  } catch (err) {
+    next(
+      ApiError.internal(
+        `Unable to get all referrals of the department due to the following error: ${err}`,
+      ),
+    );
+  }
+};
+
+const getReferral = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+
+  const { id } = req.params;
+
+  try {
+    const referrals = await getReferralById(id);
+    res.status(StatusCode.OK).json(referrals);
+  } catch (err) {
+    next(
+      ApiError.internal(
+        `Unable to get referral by id due to the following error: ${err}`,
+      ),
+    );
+  }
+};
+
+export { createReferral, getReferrals, getDepartmentReferrals, getReferral };

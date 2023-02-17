@@ -108,4 +108,16 @@ const createNewReferral = async (
   return referral;
 };
 
-export { createNewReferral };
+const getAllReferrals = async () => {
+  return await Referral.find().exec();
+};
+
+const getAllDepartmentReferrals = async (department: string) => {
+  return await Referral.find({ departmentInCharge: department }).exec();
+};
+
+const getReferralById = async (id: string) => {
+  return await Referral.find({ _id: id }).exec();
+};
+
+export { createNewReferral, getAllReferrals, getAllDepartmentReferrals, getReferralById };
