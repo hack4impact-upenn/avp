@@ -22,7 +22,8 @@ const styles = {
 
 export default function FormPage() {
   const [activeStep, setActiveStep] = useState(0);
-  const [data, setData] = useState({});
+  const temp = {};
+  const [data, setData] = useState(temp);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
