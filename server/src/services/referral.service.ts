@@ -108,4 +108,118 @@ const createNewReferral = async (
   return referral;
 };
 
-export { createNewReferral };
+const getAllReferrals = async () => {
+  return Referral.find().exec();
+};
+
+const getAllDepartmentReferrals = async (department: string) => {
+  return Referral.find({ departmentInCharge: department }).exec();
+};
+
+const getReferralById = async (id: string) => {
+  return Referral.find({ _id: id }).exec();
+};
+
+const updateReferralById = async (
+  id: string,
+  departmentInCharge: string,
+  program: string,
+  staffAssigned: IUser,
+  therapistAssigned: string,
+  isReferral: boolean,
+  survivorName: string,
+  serviceRequested: string,
+  agencyThatReferred: string,
+  agencyRepName: string,
+  agencyRepEmail: string,
+  agencyRepPhone: string,
+  survivorGender: string,
+  survivorRace: string,
+  survivorDOB: Date,
+  survivorAge: number,
+  survivorSchoolOrCommunitySite: string,
+  survivorGrade: number,
+  isGuardianResponsible: boolean,
+  guardianName: string,
+  guardianRelationship: string,
+  guardianAddress: string,
+  guardianPhone: string,
+  guardianEmail: string,
+  guardianPreferredContactMethod: string,
+  survivorAddress: string,
+  survivorPhoneNumber: string,
+  notesFromOrg: string,
+  relationshipToVictim: string,
+  crimeDCNum: string,
+  crimeDistrict: string,
+  crimeDate: Date,
+  crimeType: string,
+  isGunViolence: boolean,
+  homDecedent: string,
+  homDateOfDeath: Date,
+  homType: string,
+  homLocation: string,
+  homAddress: string,
+  homZipCode: string,
+  homDecedentAge: number,
+  homDecendentSex: string,
+  homDecedentRace: string,
+  homDecedentEthnicity: string,
+  homFMVNum: string,
+  homMEONum: string,
+  homeMNum: string,
+  historyOfCommunication: Array<communicationItem>,
+) => {
+  const updateQuery = {
+    departmentInCharge,
+    program,
+    staffAssigned,
+    therapistAssigned,
+    isReferral,
+    survivorName,
+    serviceRequested,
+    agencyThatReferred,
+    agencyRepName,
+    agencyRepEmail,
+    agencyRepPhone,
+    survivorGender,
+    survivorRace,
+    survivorDOB,
+    survivorAge,
+    survivorSchoolOrCommunitySite,
+    survivorGrade,
+    isGuardianResponsible,
+    guardianName,
+    guardianRelationship,
+    guardianAddress,
+    guardianPhone,
+    guardianEmail,
+    guardianPreferredContactMethod,
+    survivorAddress,
+    survivorPhoneNumber,
+    notesFromOrg,
+    relationshipToVictim,
+    crimeDCNum,
+    crimeDistrict,
+    crimeDate,
+    crimeType,
+    isGunViolence,
+    homDecedent,
+    homDateOfDeath,
+    homType,
+    homLocation,
+    homAddress,
+    homZipCode,
+    homDecedentAge,
+    homDecendentSex,
+    homDecedentRace,
+    homDecedentEthnicity,
+    homFMVNum,
+    homMEONum,
+    homeMNum,
+    historyOfCommunication,
+  };
+  await Referral.findByIdAndUpdate(id, updateQuery);
+};
+
+export { createNewReferral, getAllReferrals, getAllDepartmentReferrals, getReferralById, updateReferralById };
