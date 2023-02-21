@@ -18,5 +18,6 @@ const COLORS = {
   actionBlue: '#155da1', // Action button
 
   // Other colors:
+  primaryAVPColor: '#4EA0B3',
 };
 export default COLORS;
