@@ -1,7 +1,16 @@
 /* eslint-disable import/prefer-default-export */
 import express from 'express';
 import ApiError from '../util/apiError';
-import { addToCommunicationHistory, createNewReferral, deleteCommunicationHistory, getAllDepartmentReferrals, getAllReferrals, getReferralById, updateCommunicationHistory, updateReferralById } from '../services/referral.service';
+import {
+  addToCommunicationHistory,
+  createNewReferral,
+  deleteCommunicationHistory,
+  getAllDepartmentReferrals,
+  getAllReferrals,
+  getReferralById,
+  updateCommunicationHistory,
+  updateReferralById,
+} from '../services/referral.service';
 import StatusCode from '../util/statusCode';
 
 const createReferral = async (
@@ -155,7 +164,6 @@ const getReferrals = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-
   try {
     const referrals = await getAllReferrals();
     res.status(StatusCode.OK).json(referrals);
@@ -173,7 +181,6 @@ const getDepartmentReferrals = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-
   const { department } = req.params;
 
   try {
@@ -193,7 +200,6 @@ const getReferral = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-
   const { id } = req.params;
 
   try {
@@ -213,7 +219,6 @@ const updateReferral = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-
   const { id } = req.params;
 
   const {
@@ -363,7 +368,6 @@ const getCommunicationHistory = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-
   const { id } = req.params;
 
   try {
@@ -376,31 +380,26 @@ const getCommunicationHistory = async (
       ),
     );
   }
-}
+};
 
 const addToHistory = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction,
 ) => {
-
   const { id } = req.params;
 
-  const {
-    dateOfCommunication,
-    method,
-    user,
-    notes,
-    didEstablishedContact,
-  } = req.body;
+  const { dateOfCommunication, method, user, notes, didEstablishedContact } =
+    req.body;
 
   if (!dateOfCommunication || !method || !user || !didEstablishedContact) {
-    next(ApiError.missingFields([
-      'dateOfCommunication',
-      'method',
-      'user',
-      'didEstablishedContact'
-    ]),
+    next(
+      ApiError.missingFields([
+        'dateOfCommunication',
+        'method',
+        'user',
+        'didEstablishedContact',
+      ]),
     );
     return;
   }
@@ -412,7 +411,7 @@ const addToHistory = async (
       method,
       user,
       notes,
-      didEstablishedContact
+      didEstablishedContact,
     );
     res.status(StatusCode.OK).json(referral);
   } catch (err) {
@@ -422,31 +421,26 @@ const addToHistory = async (
       ),
     );
   }
-}
+};
 
 const updateHistory = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction,
 ) => {
-
   const { id, index } = req.params;
 
-  const {
-    dateOfCommunication,
-    method,
-    user,
-    notes,
-    didEstablishedContact,
-  } = req.body;
+  const { dateOfCommunication, method, user, notes, didEstablishedContact } =
+    req.body;
 
   if (!dateOfCommunication || !method || !user || !didEstablishedContact) {
-    next(ApiError.missingFields([
-      'dateOfCommunication',
-      'method',
-      'user',
-      'didEstablishedContact'
-    ]),
+    next(
+      ApiError.missingFields([
+        'dateOfCommunication',
+        'method',
+        'user',
+        'didEstablishedContact',
+      ]),
     );
     return;
   }
@@ -459,7 +453,7 @@ const updateHistory = async (
       method,
       user,
       notes,
-      didEstablishedContact
+      didEstablishedContact,
     );
     res.status(StatusCode.OK).json(referral);
   } catch (err) {
@@ -469,21 +463,17 @@ const updateHistory = async (
       ),
     );
   }
-}
+};
 
 const deleteHistory = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction,
 ) => {
-
   const { id, index } = req.params;
 
   try {
-    const referral = await deleteCommunicationHistory(
-      id,
-      Number(index)
-    );
+    const referral = await deleteCommunicationHistory(id, Number(index));
     res.status(StatusCode.OK).json(referral);
   } catch (err) {
     next(
@@ -492,6 +482,16 @@ const deleteHistory = async (
       ),
     );
   }
-}
+};
 
-export { createReferral, getReferrals, getDepartmentReferrals, getReferral, updateReferral, getCommunicationHistory, addToHistory, updateHistory, deleteHistory };
+export {
+  createReferral,
+  getReferrals,
+  getDepartmentReferrals,
+  getReferral,
+  updateReferral,
+  getCommunicationHistory,
+  addToHistory,
+  updateHistory,
+  deleteHistory,
+};

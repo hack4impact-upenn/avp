@@ -1,5 +1,3 @@
-/* eslint-disable import/prefer-default-export */
-import internal from 'stream';
 import {
   IReferral,
   communicationItem,
@@ -229,18 +227,22 @@ const addToCommunicationHistory = async (
   method: string,
   user: IUser,
   notes: string,
-  didEstablishedContact: boolean
+  didEstablishedContact: boolean,
 ) => {
   const newCommunicationItem: communicationItem = {
     dateOfCommunication,
     method,
     user,
     notes,
-    didEstablishedContact
-  }
-  return Referral.findByIdAndUpdate(id, {
-    $push: { historyOfCommunication: newCommunicationItem }
-  }, { new: true }).exec();
+    didEstablishedContact,
+  };
+  return Referral.findByIdAndUpdate(
+    id,
+    {
+      $push: { historyOfCommunication: newCommunicationItem },
+    },
+    { new: true },
+  ).exec();
 };
 
 const updateCommunicationHistory = async (
@@ -250,49 +252,62 @@ const updateCommunicationHistory = async (
   method: string,
   user: IUser,
   notes: string,
-  didEstablishedContact: boolean
+  didEstablishedContact: boolean,
 ) => {
   const newCommunicationItem: communicationItem = {
     dateOfCommunication,
     method,
     user,
     notes,
-    didEstablishedContact
-  }
-  return Referral.findByIdAndUpdate(id, {
-    $set: {
-      [`historyOfCommunication.${index}`]: newCommunicationItem
-    }
-  }, { new: true }).exec();
+    didEstablishedContact,
+  };
+  return Referral.findByIdAndUpdate(
+    id,
+    {
+      $set: {
+        [`historyOfCommunication.${index}`]: newCommunicationItem,
+      },
+    },
+    { new: true },
+  ).exec();
 };
 
-const deleteCommunicationHistory = async (
-  id: string,
-  index: number,
-) => {
-  return Referral.findByIdAndUpdate(id, [{
-    $set: {
-      historyOfCommunication: {
-        $concatArrays: [
-          {
-            $slice: [
-              "$historyOfCommunication",
-              index
-            ]
-          },
-          {
-            $slice: [
-              "$historyOfCommunication",
-              index + 1,
+const deleteCommunicationHistory = async (id: string, index: number) => {
+  return Referral.findByIdAndUpdate(
+    id,
+    [
+      {
+        $set: {
+          historyOfCommunication: {
+            $concatArrays: [
               {
-                $size: `$historyOfCommunication`
-              }
-            ]
-          }
-        ]
-      }
-    }
-  }], { new: true }).exec();
+                $slice: ['$historyOfCommunication', index],
+              },
+              {
+                $slice: [
+                  '$historyOfCommunication',
+                  index + 1,
+                  {
+                    $size: `$historyOfCommunication`,
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      },
+    ],
+    { new: true },
+  ).exec();
 };
 
-export { createNewReferral, getAllReferrals, getAllDepartmentReferrals, getReferralById, updateReferralById, addToCommunicationHistory, updateCommunicationHistory, deleteCommunicationHistory };
+export {
+  createNewReferral,
+  getAllReferrals,
+  getAllDepartmentReferrals,
+  getReferralById,
+  updateReferralById,
+  addToCommunicationHistory,
+  updateCommunicationHistory,
+  deleteCommunicationHistory,
+};

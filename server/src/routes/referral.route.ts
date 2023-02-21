@@ -1,5 +1,15 @@
 import express from 'express';
-import { createReferral, getDepartmentReferrals, getReferral, getReferrals, updateReferral, getCommunicationHistory, addToHistory, updateHistory, deleteHistory } from '../controllers/referral.controller';
+import {
+  createReferral,
+  getDepartmentReferrals,
+  getReferral,
+  getReferrals,
+  updateReferral,
+  getCommunicationHistory,
+  addToHistory,
+  updateHistory,
+  deleteHistory,
+} from '../controllers/referral.controller';
 
 const router = express.Router();
 
