@@ -245,7 +245,7 @@ const addToCommunicationHistory = async (
 
 const updateCommunicationHistory = async (
   id: string,
-  history_index: string,
+  index: string,
   dateOfCommunication: Date,
   method: string,
   user: IUser,
@@ -261,14 +261,14 @@ const updateCommunicationHistory = async (
   }
   return Referral.findByIdAndUpdate(id, {
     $set: {
-      [`historyOfCommunication.${history_index}`]: newCommunicationItem
+      [`historyOfCommunication.${index}`]: newCommunicationItem
     }
   }, { new: true }).exec();
 };
 
 const deleteCommunicationHistory = async (
   id: string,
-  history_index: number,
+  index: number,
 ) => {
   return Referral.findByIdAndUpdate(id, [{
     $set: {
@@ -277,13 +277,13 @@ const deleteCommunicationHistory = async (
           {
             $slice: [
               "$historyOfCommunication",
-              history_index
+              index
             ]
           },
           {
             $slice: [
               "$historyOfCommunication",
-              history_index + 1,
+              index + 1,
               {
                 $size: `$historyOfCommunication`
               }

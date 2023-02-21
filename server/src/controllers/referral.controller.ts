@@ -430,7 +430,7 @@ const updateHistory = async (
   next: express.NextFunction,
 ) => {
 
-  const { id, history_index } = req.params;
+  const { id, index } = req.params;
 
   const {
     dateOfCommunication,
@@ -454,7 +454,7 @@ const updateHistory = async (
   try {
     const referral = await updateCommunicationHistory(
       id,
-      history_index,
+      index,
       dateOfCommunication,
       method,
       user,
@@ -477,12 +477,12 @@ const deleteHistory = async (
   next: express.NextFunction,
 ) => {
 
-  const { id, history_index } = req.params;
+  const { id, index } = req.params;
 
   try {
     const referral = await deleteCommunicationHistory(
       id,
-      Number(history_index)
+      Number(index)
     );
     res.status(StatusCode.OK).json(referral);
   } catch (err) {

@@ -17,8 +17,8 @@ router.get('/:id/communication/all', getCommunicationHistory);
 
 router.post('/:id/communication', addToHistory);
 
-router.put('/:id/communication/:history_index', updateHistory);
+router.put('/:id/communication/:index', updateHistory);
 
-router.delete('/:id/communication/:history_index', deleteHistory);
+router.delete('/:id/communication/:index', deleteHistory);
 
 export default router;
