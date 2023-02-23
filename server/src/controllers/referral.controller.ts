@@ -1,7 +1,13 @@
 /* eslint-disable import/prefer-default-export */
 import express from 'express';
 import ApiError from '../util/apiError';
-import { createNewReferral, getAllDepartmentReferrals, getAllReferrals, getReferralById, updateReferralById } from '../services/referral.service';
+import {
+  createNewReferral,
+  getAllDepartmentReferrals,
+  getAllReferrals,
+  getReferralById,
+  updateReferralById,
+} from '../services/referral.service';
 import StatusCode from '../util/statusCode';
 
 const createReferral = async (
@@ -155,7 +161,6 @@ const getReferrals = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-
   try {
     const referrals = await getAllReferrals();
     res.status(StatusCode.OK).json(referrals);
@@ -173,7 +178,6 @@ const getDepartmentReferrals = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-
   const { department } = req.params;
 
   try {
@@ -193,7 +197,6 @@ const getReferral = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-
   const { id } = req.params;
 
   try {
@@ -213,7 +216,6 @@ const updateReferral = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-
   const { id } = req.params;
 
   const {
@@ -358,4 +360,10 @@ const updateReferral = async (
   }
 };
 
-export { createReferral, getReferrals, getDepartmentReferrals, getReferral, updateReferral };
+export {
+  createReferral,
+  getReferrals,
+  getDepartmentReferrals,
+  getReferral,
+  updateReferral,
+};
