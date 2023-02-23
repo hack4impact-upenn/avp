@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import {
   IReferral,
   communicationItem,
@@ -117,7 +116,7 @@ const getAllDepartmentReferrals = async (department: string) => {
 };
 
 const getReferralById = async (id: string) => {
-  return Referral.find({ _id: id }).exec();
+  return Referral.findOne({ _id: id }).exec();
 };
 
 const updateReferralById = async (
@@ -219,7 +218,96 @@ const updateReferralById = async (
     homeMNum,
     historyOfCommunication,
   };
-  await Referral.findByIdAndUpdate(id, updateQuery);
+  return Referral.findByIdAndUpdate(id, updateQuery, { new: true }).exec();
 };
 
-export { createNewReferral, getAllReferrals, getAllDepartmentReferrals, getReferralById, updateReferralById };
+const addToCommunicationHistory = async (
+  id: string,
+  dateOfCommunication: Date,
+  method: string,
+  user: IUser,
+  notes: string,
+  didEstablishedContact: boolean,
+) => {
+  const newCommunicationItem: communicationItem = {
+    dateOfCommunication,
+    method,
+    user,
+    notes,
+    didEstablishedContact,
+  };
+  return Referral.findByIdAndUpdate(
+    id,
+    {
+      $push: { historyOfCommunication: newCommunicationItem },
+    },
+    { new: true },
+  ).exec();
+};
+
+const updateCommunicationHistory = async (
+  id: string,
+  index: string,
+  dateOfCommunication: Date,
+  method: string,
+  user: IUser,
+  notes: string,
+  didEstablishedContact: boolean,
+) => {
+  const newCommunicationItem: communicationItem = {
+    dateOfCommunication,
+    method,
+    user,
+    notes,
+    didEstablishedContact,
+  };
+  return Referral.findByIdAndUpdate(
+    id,
+    {
+      $set: {
+        [`historyOfCommunication.${index}`]: newCommunicationItem,
+      },
+    },
+    { new: true },
+  ).exec();
+};
+
+const deleteCommunicationHistory = async (id: string, index: number) => {
+  return Referral.findByIdAndUpdate(
+    id,
+    [
+      {
+        $set: {
+          historyOfCommunication: {
+            $concatArrays: [
+              {
+                $slice: ['$historyOfCommunication', index],
+              },
+              {
+                $slice: [
+                  '$historyOfCommunication',
+                  index + 1,
+                  {
+                    $size: `$historyOfCommunication`,
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      },
+    ],
+    { new: true },
+  ).exec();
+};
+
+export {
+  createNewReferral,
+  getAllReferrals,
+  getAllDepartmentReferrals,
+  getReferralById,
+  updateReferralById,
+  addToCommunicationHistory,
+  updateCommunicationHistory,
+  deleteCommunicationHistory,
+};
