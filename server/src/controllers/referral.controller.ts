@@ -9,6 +9,9 @@ import {
   updateReferralById,
 } from '../services/referral.service';
 import StatusCode from '../util/statusCode';
+//SendGrid setup
+const confirmEmail = require('@sendgrid/mail')
+confirmEmail.setApiKey(process.env.SENDGRID_API_KEY)
 
 const createReferral = async (
   req: express.Request,
@@ -147,6 +150,36 @@ const createReferral = async (
       historyOfCommunication,
     );
     res.sendStatus(StatusCode.CREATED);
+    const msg = {
+      to: agencyRepEmail,
+      from: 'bach.tran@hack4impact.org',
+      subject: `Referral for ${survivorName} to AVP for ${serviceRequested} - Confirmation`,
+      text: `Hi ${agencyRepName},
+
+      Thank you for submitting a referral on behalf of ${agencyThatReferred} for ${survivorName}. The service that you requested was ${serviceRequested}.
+      
+      We are sending this email to confirm the successful submission of a referral to AVP.
+      
+      You will receive a follow-up email when the referral is assigned to an AVP staff member.
+      
+      Thank you,
+      Anti-Violence Partnership of Philadelphia`,
+      html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+    }
+    
+    confirmEmail
+      .send(msg)
+      .then((res : any) => {
+        console.log(res[0].statusCode)
+        console.log(res[0].headers)
+      })
+      .catch((err : any) => {
+        next(
+          ApiError.internal(
+            `Unable to send referral confirmation email due to the following error: ${err}`,
+          ),
+        )
+      })
   } catch (err) {
     next(
       ApiError.internal(
@@ -351,6 +384,7 @@ const updateReferral = async (
       historyOfCommunication,
     );
     res.sendStatus(StatusCode.OK);
+    //send email
   } catch (err) {
     next(
       ApiError.internal(
