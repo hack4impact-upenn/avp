@@ -1,7 +1,11 @@
 /* eslint-disable */
 import React, { useEffect } from 'react';
 import Box from '@mui/material/Box';
-import { DataGridPremium } from '@mui/x-data-grid-premium';
+import {
+  DataGridPremium,
+  GridToolbar,
+  useGridApiRef,
+} from '@mui/x-data-grid-premium';
 import { Button, Chip } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import LoopIcon from '@mui/icons-material/Loop';
@@ -10,33 +14,34 @@ import { GridColumns, GridRenderCellParams } from '@mui/x-data-grid-pro';
 
 /* Wrapper Around DataGridPremium */
 export default function DataGrid() {
+  const apiRef = useGridApiRef();
   const columns: GridColumns = [
-    { field: 'id', headerName: 'ID', width: 90 },
+    { field: 'id', headerName: 'ID', width: 30 },
     {
-      field: 'dept',
-      headerName: 'AVP Department in Charge',
+      field: 'department',
+      headerName: 'Department in Charge',
       width: 210,
       editable: true,
     },
     {
       field: 'program',
-      headerName: 'AVP Program',
+      headerName: 'Program',
       width: 150,
       editable: true,
       type: 'singleSelect',
       valueOptions: ['Program 1', 'Program 2', 'Program 3'],
     },
     {
-      field: 'staff',
-      headerName: 'AVP Staff Assigned',
+      field: 'staffAssigned',
+      headerName: 'Staff',
       type: 'singleSelect',
       valueOptions: ['Person 1', 'Person 2', 'Person 3'],
       width: 160,
       editable: true,
     },
     {
-      field: 'therapist',
-      headerName: 'Therapist Assigned',
+      field: 'therapistAssigned',
+      headerName: 'Therapist',
       type: 'singleSelect',
       valueOptions: ['Therapist 1', 'Therapist 2', 'Therapist 3'],
       width: 160,
@@ -155,120 +160,114 @@ export default function DataGrid() {
       width: 150,
     },
     {
-      field: 'service',
+      field: 'serviceRequested',
       headerName: 'Service Requested',
       width: 150,
     },
     {
-      field: 'agency',
+      field: 'agencyThatReferred',
       headerName: 'Agency that Referred',
       width: 150,
     },
     {
-      field: 'repName',
+      field: 'agencyRepName',
       headerName: 'Agency Rep Name',
       width: 150,
     },
     {
-      field: 'repEmail',
+      field: 'agencyRepEmail',
       headerName: 'Agency Rep Email',
       width: 150,
     },
     {
-      field: 'repNumber',
+      field: 'agencyRepPhone',
       headerName: 'Agency Rep Phone Number',
       width: 150,
     },
     {
-      field: 'gender',
+      field: 'survivorGender',
       headerName: 'Survivor Gender',
       width: 150,
     },
     {
-      field: 'race',
+      field: 'survivorRace',
       headerName: 'Survivor Race/Ethnicity',
       width: 150,
     },
     {
-      field: 'birthday',
+      field: 'survivorDOB',
       headerName: 'Survivor Date of Birth',
       width: 150,
       editable: true,
       type: 'date',
     },
     {
-      field: 'age',
+      field: 'survivorAge',
       headerName: 'Survivor Age',
       width: 150,
     },
     {
-      field: 'school',
-      headerName: 'What School or Community does Survivor Attend?',
+      field: 'survivorSchoolOrCommunitySite',
+      headerName: 'Survivor School/Community Site',
       width: 150,
     },
     {
-      field: 'grade',
-      headerName: 'What Grade is the Survivor in?',
+      field: 'survivorGrade',
+      headerName: 'Survivor Grade',
       width: 150,
     },
     {
       field: 'isParentContact',
-      headerName:
-        'Is a parent/responsible adult the main contact for the survivor/victim? For therapy, survivor/victims 14 years old and older can sign themselves up',
+      headerName: 'Is Adult Responsible',
       width: 150,
     },
     {
-      field: 'parentName',
-      headerName: 'Name of Parent/Responsible Adult',
+      field: 'guardianName',
+      headerName: 'Name of Adult',
       width: 150,
     },
     {
-      field: 'relationship',
-      headerName: 'Relationship to victim/survivor being referred',
+      field: 'guardianRelationship',
+      headerName: 'Relationship of Adult to Victim',
       width: 150,
     },
     {
-      field: 'parentAddress',
-      headerName: 'Address of Parent/Responsible Adult',
+      field: 'guardianAddress',
+      headerName: 'Address of Adult',
       width: 150,
     },
     {
-      field: 'parentPhone',
-      headerName: 'Phone # of Parent/Responsible Adult',
+      field: 'guardianPhone',
+      headerName: 'Phone # ofAdult',
       width: 150,
     },
     {
-      field: 'parentEmail',
-      headerName: 'Email Address of Parent/Responsible Adult',
+      field: 'guardianEmail',
+      headerName: 'Email Address of Adult',
       width: 150,
     },
     {
-      field: 'parentContactMethod',
-      headerName: 'Preferred Contact Method',
+      field: 'guardianPreferredContactMethod',
+      headerName: 'Adult Preferred Contact Method',
       width: 150,
     },
     {
-      field: 'address',
-      headerName: 'Survivor Complete Address',
+      field: 'survivorAddress',
+      headerName: 'Survivor Address',
       width: 150,
     },
     {
-      field: 'phone',
+      field: 'survivorPhoneNumber',
       headerName: 'Survivor Phone Number',
       width: 150,
     },
     {
-      field: 'notes',
+      field: 'notesFromOrg',
       headerName: 'Notes from Organization',
       width: 150,
     },
     {
-      field: 'referralPDF',
-      headerName: 'Referral PDF',
-      width: 150,
-    },
-    {
-      field: 'language',
+      field: 'primaryLanguage',
       headerName: 'Primary Language',
       width: 150,
     },
@@ -278,107 +277,107 @@ export default function DataGrid() {
       width: 150,
     },
     {
-      field: 'incidentNo',
-      headerName: 'Crime Incident Number (DC #)',
+      field: 'crimeDCNum',
+      headerName: 'DC #',
       width: 150,
     },
     {
-      field: 'districtOfCrime',
-      headerName: 'Police District of Crime',
+      field: 'crimeDistrict',
+      headerName: 'District of Crime',
       width: 150,
     },
     {
-      field: 'dateOfCrime',
+      field: 'crimeDate',
       headerName: 'Date of Crime',
       width: 150,
       editable: true,
       type: 'date',
     },
     {
-      field: 'typeOfCrime',
+      field: 'crimeType',
       headerName: 'Type of Crime/Victimization',
       width: 150,
     },
     {
-      field: 'hasGun',
-      headerName: 'Gun Violence?',
+      field: 'isGunViolence',
+      headerName: 'Is Gun Violence',
       width: 150,
     },
     {
-      field: 'decedent',
-      headerName: 'Decedent',
+      field: 'homDecendent',
+      headerName: 'Homicide Decedent',
       width: 150,
     },
     {
-      field: 'deathDate',
-      headerName: 'Date of Death',
+      field: 'homDateOfDeath',
+      headerName: 'Homicide Date of Death',
       width: 150,
       editable: true,
       type: 'date',
     },
     {
-      field: 'deathCause',
-      headerName: 'Cause of Death',
+      field: 'homCauseOfDeath',
+      headerName: 'Homicide Cause Of Death',
       width: 150,
     },
     {
-      field: 'homicideType',
+      field: 'homType',
       headerName: 'Type of Homicide',
       width: 150,
     },
     {
-      field: 'location',
-      headerName: 'Location',
+      field: 'homLocation',
+      headerName: 'Homicide Location',
       width: 150,
     },
     {
-      field: 'incidentAddress',
-      headerName: 'Address of Incident',
+      field: 'homAddress',
+      headerName: 'Homicide Address',
       width: 150,
     },
     {
-      field: 'incidentZip',
-      headerName: 'Zip Code of Incident',
+      field: 'homZipCode',
+      headerName: 'Homicide Zip Code',
       width: 150,
     },
     {
-      field: 'decedentAge',
-      headerName: 'Decedent Age',
+      field: 'homDecendentAge',
+      headerName: 'Homicide Decedent Age',
       width: 150,
     },
     {
-      field: 'decedentSex',
-      headerName: 'Decedent Sex',
+      field: 'homDecedentSex',
+      headerName: 'Homicide Decedent Sex',
       width: 150,
     },
     {
-      field: 'decedentRace',
-      headerName: 'Decedent Race',
+      field: 'homDecedentRace',
+      headerName: 'Homicide Decedent Race',
       width: 150,
     },
     {
-      field: 'decedentEthnicity',
-      headerName: 'Decedent Ethnicity',
+      field: 'homDecedentEthnicity',
+      headerName: 'Homicide Decedent Ethnicity',
       width: 150,
     },
     {
-      field: 'fmv',
-      headerName: 'FMV #',
+      field: 'homFMVNum',
+      headerName: 'Homicide FMV #',
       width: 150,
     },
     {
-      field: 'meo',
-      headerName: 'MEO #',
+      field: 'homMEONum',
+      headerName: 'Homicide MEO #',
       width: 150,
     },
     {
-      field: 'm',
-      headerName: 'M #',
+      field: 'homMNum',
+      headerName: 'Homicide M #',
       width: 150,
     },
     {
-      field: 'caseInfo',
-      headerName: 'Case Information',
+      field: 'homCaseInformation',
+      headerName: 'Homicide Case Information',
       width: 150,
     },
   ];
@@ -417,6 +416,7 @@ export default function DataGrid() {
         disableSelectionOnClick
         initialState={{ pinnedColumns: { right: ['view'] } }}
         experimentalFeatures={{ newEditingApi: true }}
+        components={{ Toolbar: GridToolbar }}
       />
     </Box>
   );
