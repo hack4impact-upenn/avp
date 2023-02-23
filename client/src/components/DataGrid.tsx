@@ -1,7 +1,11 @@
 /* eslint-disable */
 import React, { useEffect } from 'react';
 import Box from '@mui/material/Box';
-import { DataGridPremium, GridToolbar, useGridApiRef, } from '@mui/x-data-grid-premium';
+import {
+  DataGridPremium,
+  GridToolbar,
+  useGridApiRef,
+} from '@mui/x-data-grid-premium';
 import { Button, Chip } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import LoopIcon from '@mui/icons-material/Loop';
@@ -214,8 +218,7 @@ export default function DataGrid() {
     },
     {
       field: 'isParentContact',
-      headerName:
-        'Is Adult Responsible',
+      headerName: 'Is Adult Responsible',
       width: 150,
     },
     {
