@@ -24,6 +24,7 @@ const createNewReferral = async (
   survivorAge: number,
   survivorSchoolOrCommunitySite: string,
   survivorGrade: number,
+  survivorPreferredContactMethod: string,
   isGuardianResponsible: boolean,
   guardianName: string,
   guardianRelationship: string,
@@ -73,6 +74,7 @@ const createNewReferral = async (
     survivorAge,
     survivorSchoolOrCommunitySite,
     survivorGrade,
+    survivorPreferredContactMethod,
     isGuardianResponsible,
     guardianName,
     guardianRelationship,
@@ -139,6 +141,7 @@ const updateReferralById = async (
   survivorAge: number,
   survivorSchoolOrCommunitySite: string,
   survivorGrade: number,
+  survivorPreferredContactMethod: string,
   isGuardianResponsible: boolean,
   guardianName: string,
   guardianRelationship: string,
@@ -188,6 +191,7 @@ const updateReferralById = async (
     survivorAge,
     survivorSchoolOrCommunitySite,
     survivorGrade,
+    survivorPreferredContactMethod,
     isGuardianResponsible,
     guardianName,
     guardianRelationship,
@@ -222,4 +226,10 @@ const updateReferralById = async (
   await Referral.findByIdAndUpdate(id, updateQuery);
 };
 
-export { createNewReferral, getAllReferrals, getAllDepartmentReferrals, getReferralById, updateReferralById };
+export {
+  createNewReferral,
+  getAllReferrals,
+  getAllDepartmentReferrals,
+  getReferralById,
+  updateReferralById,
+};

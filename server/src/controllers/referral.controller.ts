@@ -10,8 +10,9 @@ import {
 } from '../services/referral.service';
 import StatusCode from '../util/statusCode';
 //SendGrid setup
-const confirmEmail = require('@sendgrid/mail')
-confirmEmail.setApiKey(process.env.SENDGRID_API_KEY)
+import sgMail from '@sendgrid/mail';
+const apiKey: string = process.env.SENDGRID_API_KEY as string;
+sgMail.setApiKey(apiKey);
 
 const createReferral = async (
   req: express.Request,
@@ -36,6 +37,7 @@ const createReferral = async (
     survivorAge,
     survivorSchoolOrCommunitySite,
     survivorGrade,
+    survivorPreferredContactMethod,
     isGuardianResponsible,
     guardianName,
     guardianRelationship,
@@ -79,6 +81,7 @@ const createReferral = async (
     !survivorPhoneNumber ||
     !relationshipToVictim ||
     !crimeType ||
+    !survivorPreferredContactMethod ||
     isGunViolence === undefined
   ) {
     next(
@@ -93,6 +96,7 @@ const createReferral = async (
         'survivorPhoneNumber',
         'relationshipToVictim',
         'crimeType',
+        'survivorPreferredContactMethod',
         'isGunViolence',
       ]),
     );
@@ -118,6 +122,7 @@ const createReferral = async (
       survivorAge,
       survivorSchoolOrCommunitySite,
       survivorGrade,
+      survivorPreferredContactMethod,
       isGuardianResponsible,
       guardianName,
       guardianRelationship,
@@ -151,35 +156,31 @@ const createReferral = async (
     );
     res.sendStatus(StatusCode.CREATED);
     const msg = {
-      to: agencyRepEmail,
+      to: `${agencyRepEmail}`,
       from: 'bach.tran@hack4impact.org',
       subject: `Referral for ${survivorName} to AVP for ${serviceRequested} - Confirmation`,
-      text: `Hi ${agencyRepName},
-
-      Thank you for submitting a referral on behalf of ${agencyThatReferred} for ${survivorName}. The service that you requested was ${serviceRequested}.
-      
-      We are sending this email to confirm the successful submission of a referral to AVP.
-      
-      You will receive a follow-up email when the referral is assigned to an AVP staff member.
-      
+      html: `<div>Hi ${agencyRepName}, 
+      <p>Thank you for submitting a referral on behalf of ${agencyThatReferred} for <strong>${survivorName}</strong>. The service that you requested was <strong>${serviceRequested}</strong>.</p>
+      <p>We are sending this email to confirm the successful submission of a referral to AVP.</p>
+      <p>You will receive a follow-up email when the referral is assigned to an AVP staff member.</p>
       Thank you,
-      Anti-Violence Partnership of Philadelphia`,
-      html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-    }
-    
-    confirmEmail
+      <br></br>
+      Anti-Violence Partnership of Philadelphia
+      </div>`,
+    };
+
+    sgMail
       .send(msg)
-      .then((res : any) => {
-        console.log(res[0].statusCode)
-        console.log(res[0].headers)
+      .then((response: any) => {
+        console.log('Email confirmation sent successfully');
       })
-      .catch((err : any) => {
+      .catch((error: any) => {
         next(
           ApiError.internal(
-            `Unable to send referral confirmation email due to the following error: ${err}`,
+            `Unable to send referral confirmation email due to the following error: ${error}`,
           ),
-        )
-      })
+        );
+      });
   } catch (err) {
     next(
       ApiError.internal(
@@ -269,6 +270,7 @@ const updateReferral = async (
     survivorAge,
     survivorSchoolOrCommunitySite,
     survivorGrade,
+    survivorPreferredContactMethod,
     isGuardianResponsible,
     guardianName,
     guardianRelationship,
@@ -312,6 +314,7 @@ const updateReferral = async (
     !survivorPhoneNumber ||
     !relationshipToVictim ||
     !crimeType ||
+    !survivorPreferredContactMethod ||
     isGunViolence === undefined
   ) {
     next(
@@ -326,6 +329,7 @@ const updateReferral = async (
         'survivorPhoneNumber',
         'relationshipToVictim',
         'crimeType',
+        'survivorPreferredContactMethod',
         'isGunViolence',
       ]),
     );
@@ -352,6 +356,7 @@ const updateReferral = async (
       survivorAge,
       survivorSchoolOrCommunitySite,
       survivorGrade,
+      survivorPreferredContactMethod,
       isGuardianResponsible,
       guardianName,
       guardianRelationship,
@@ -384,7 +389,35 @@ const updateReferral = async (
       historyOfCommunication,
     );
     res.sendStatus(StatusCode.OK);
-    //send email
+
+    const staffEmail = 'bach.tran@hack4impact.org';
+    const msg = {
+      to: 'szhang25@seas.upenn.edu',
+      //agencyRepEmail
+      from: 'bach.tran@hack4impact.org',
+      subject: `Update for ${survivorName} to AVP for ${serviceRequested} - Assigned to ${staffAssigned}`,
+      html: `<div>Hi ${agencyRepName}, 
+      <p>Thank you for submitting a referral on behalf of ${agencyThatReferred} for <strong>${survivorName}</strong>, for the service <strong>${serviceRequested}</strong>.</p>
+      <p>We are emailing to let you know that this referral was assigned to <strong>${staffAssigned.firstName} ${staffAssigned.lastName}</strong>. Below is their contact information. You can reach them at <strong>${staffEmail}</strong></p>
+      <p>If you have any questions please feel free to email the staff contact listed above.</p>
+      Thank you,
+      <br></br>
+      Anti-Violence Partnership of Philadelphia
+      </div>`,
+    };
+
+    sgMail
+      .send(msg)
+      .then((response: any) => {
+        console.log('Email confirmation sent successfully');
+      })
+      .catch((error: any) => {
+        next(
+          ApiError.internal(
+            `Unable to send referral confirmation email due to the following error: ${error}`,
+          ),
+        );
+      });
   } catch (err) {
     next(
       ApiError.internal(
