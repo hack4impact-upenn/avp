@@ -17,8 +17,7 @@ import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import { GridColumns, GridRenderCellParams } from '@mui/x-data-grid-pro';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import NoAccountsOutlinedIcon from '@mui/icons-material/NoAccountsOutlined';
-import Select from '@mui/material/Select'
-
+import Select from '@mui/material/Select';
 
 /* Wrapper Around DataGridPremium */
 export default function DataGrid() {
@@ -32,7 +31,11 @@ export default function DataGrid() {
       width: 210,
       editable: true,
       type: 'singleSelect',
-      valueOptions: ['Counseling Services', 'Victim/Witness Services', 'Youth Services'],
+      valueOptions: [
+        'Counseling Services',
+        'Victim/Witness Services',
+        'Youth Services',
+      ],
     },
     {
       field: 'program',
@@ -64,9 +67,19 @@ export default function DataGrid() {
       width: 150,
       editable: true,
       type: 'singleSelect',
-      valueOptions: ['Assigned', 'Unassigned', 'In progress', '1st unsuccessful attempt', 
-      '2nd unsuccessful attempt', '3rd unsuccessful attempt', 'Completed',' Transferred to ETO',
-      'CC Waitlist', 'Outreach Letter Sent', 'Follow-up Letter Sent'],
+      valueOptions: [
+        'Assigned',
+        'Unassigned',
+        'In progress',
+        '1st unsuccessful attempt',
+        '2nd unsuccessful attempt',
+        '3rd unsuccessful attempt',
+        'Completed',
+        ' Transferred to ETO',
+        'CC Waitlist',
+        'Outreach Letter Sent',
+        'Follow-up Letter Sent',
+      ],
       renderCell: (params: GridRenderCellParams<Date>) => (
         <div
           style={{
@@ -87,13 +100,13 @@ export default function DataGrid() {
             }}
             variant="outlined"
             color={
-                params.row.status === 'Assigned'
+              params.row.status === 'Assigned'
                 ? 'success'
                 : params.row.status === 'In progress'
                 ? 'secondary'
                 : params.row.status === 'Completed'
                 ? 'success'
-                : params.row.status === 'Transferred to ETO' 
+                : params.row.status === 'Transferred to ETO'
                 ? 'secondary'
                 : params.row.status === 'CC Waitlist'
                 ? 'secondary'
@@ -116,7 +129,7 @@ export default function DataGrid() {
                 <CheckIcon sx={{ fontSize: '22px' }} />
               ) : params.row.status === 'CC Waitlist' ? (
                 <HourglassTopOutlinedIcon sx={{ fontSize: '22px' }} />
-              )  : params.row.status === 'Outreach Letter Sent' ? (
+              ) : params.row.status === 'Outreach Letter Sent' ? (
                 <MailOutlineIcon sx={{ fontSize: '22px' }} />
               ) : params.row.status === 'Follow-up Letter Sent' ? (
                 <MailOutlineIcon sx={{ fontSize: '22px' }} />
@@ -165,8 +178,13 @@ export default function DataGrid() {
       width: 170,
       editable: true,
       type: 'singleSelect',
-      valueOptions: ['Called & left voicemail', 'Called & talked to client', 
-      'E-mailed', 'Sent letter', 'Texted']
+      valueOptions: [
+        'Called & left voicemail',
+        'Called & talked to client',
+        'E-mailed',
+        'Sent letter',
+        'Texted',
+      ],
     },
     {
       field: 'contact',
@@ -238,8 +256,14 @@ export default function DataGrid() {
       width: 150,
       editable: true,
       type: 'singleSelect',
-      valueOptions: ['Female (woman/girl)', 'Male (man/boy)', 
-      'Non-binary/non-conforming', 'Transgender', 'Other', 'Unknown']
+      valueOptions: [
+        'Female (woman/girl)',
+        'Male (man/boy)',
+        'Non-binary/non-conforming',
+        'Transgender',
+        'Other',
+        'Unknown',
+      ],
     },
     //Todo: Make multiselect
     {
