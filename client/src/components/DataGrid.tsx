@@ -172,6 +172,7 @@ export default function DataGrid() {
       field: 'method',
       headerName: 'Method of Last Communication',
       width: 170,
+      editable: true,
     },
     {
       field: 'contact',
