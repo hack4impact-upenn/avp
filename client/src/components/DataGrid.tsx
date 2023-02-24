@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import {
   DataGridPremium,
@@ -11,9 +11,24 @@ import CheckIcon from '@mui/icons-material/Check';
 import LoopIcon from '@mui/icons-material/Loop';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { GridColumns, GridRenderCellParams } from '@mui/x-data-grid-pro';
+import { useData } from '../util/api';
+import IReferral from '../util/types/referral';
+import CircularProgress from '@mui/material/CircularProgress';
 
 /* Wrapper Around DataGridPremium */
 export default function DataGrid() {
+  const [referralList, setReferralList] = useState<IReferral[]>([]);
+  const referrals = useData('referral/all');
+
+  useEffect(() => {
+    setReferralList(
+      referrals?.data.map((referral: IReferral) => {
+        referral.id = referral._id;
+        return referral;
+      }),
+    );
+  }, [referrals]);
+
   const apiRef = useGridApiRef();
   const columns: GridColumns = [
     { field: 'id', headerName: 'ID', width: 30 },
@@ -382,18 +397,6 @@ export default function DataGrid() {
     },
   ];
 
-  const rows = [
-    { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-    { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-    { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-    { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-    { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-    { id: 6, lastName: 'Melisandre', firstName: 'Derry', age: 150 },
-    { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-    { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-    { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-  ];
-
   var removeLicense = setInterval(function () {
     if (
       typeof document.getElementsByClassName('MuiDataGrid-main')[0] ==
@@ -406,10 +409,18 @@ export default function DataGrid() {
       .childNodes[2].remove();
   }, 10);
 
+  if (!referralList) {
+    return (
+      <div style={{ width: '0', margin: 'auto' }}>
+        <CircularProgress size={80} />
+      </div>
+    );
+  }
+
   return (
     <Box sx={{ height: 520, width: '100%' }}>
       <DataGridPremium
-        rows={rows}
+        rows={referralList}
         columns={columns}
         rowHeight={42}
         checkboxSelection
