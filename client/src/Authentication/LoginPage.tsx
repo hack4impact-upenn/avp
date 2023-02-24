@@ -134,33 +134,39 @@ function LoginPage() {
     <div
       style={{
         display: 'flex',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
       }}
     >
       <div
         style={{
           height: '100vh',
           minHeight: '100vh',
-          width: '60vh',
+          width: '40vw',
           backgroundColor: '#4EA0B3',
           marginRight: '100px',
         }}
       >
-        <img
-          src={avpLogo}
-          alt="logo"
-          style={{ marginTop: '200px', marginLeft: '50px' }}
-        />
-        <Typography
-          display="flex"
-          variant="h2"
-          textAlign="center"
-          margin="40px"
-          justifyContent="center"
-          color="white"
+        <div style={{ color: 'white', display: 'flex' }}>
+          <img
+            src={avpLogo}
+            alt="logo"
+            style={{ marginTop: '200px', marginLeft: '70px' }}
+          />
+          <div style={{ marginTop: '200px', marginLeft: '10px' }}>
+            Anti-Violence <br /> Partnership of Philadelphia
+          </div>
+        </div>
+        <div
+          style={{
+            marginTop: '20px',
+            marginLeft: '70px',
+            marginRight: '70px',
+            color: 'white',
+            fontSize: '48px',
+          }}
         >
-          Together, we can end the cycle of violence.
-        </Typography>
+          Together, we can end the cycle of violence.{' '}
+        </div>
       </div>
       <FormGrid>
         <FormCol>
