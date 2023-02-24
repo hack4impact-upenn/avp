@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import FormStepper from './FormStepper';
 import PageOne from './PageOne';
+import PageTwo from './PageTwo';
 
 const steps = [
   'Type of Service Requested',
@@ -47,7 +48,7 @@ export default function FormPage() {
       ) : (
         activeStep === 1 && (
           <div>
-            <h2>bye</h2>
+            <PageTwo data={data} setData={setData} />
           </div>
         )
       )}
