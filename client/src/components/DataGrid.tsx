@@ -75,7 +75,7 @@ export default function DataGrid() {
         '2nd unsuccessful attempt',
         '3rd unsuccessful attempt',
         'Completed',
-        ' Transferred to ETO',
+        'Transferred to ETO',
         'CC Waitlist',
         'Outreach Letter Sent',
         'Follow-up Letter Sent',
