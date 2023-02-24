@@ -11,7 +11,12 @@ import { Button, Chip } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import LoopIcon from '@mui/icons-material/Loop';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import PersonAddAlt1OutlinedIcon from '@mui/icons-material/PersonAddAlt1Outlined';
+import HourglassTopOutlinedIcon from '@mui/icons-material/HourglassTopOutlined';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import { GridColumns, GridRenderCellParams } from '@mui/x-data-grid-pro';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import NoAccountsOutlinedIcon from '@mui/icons-material/NoAccountsOutlined';
 import { useData } from '../util/api';
 import IReferral from '../util/types/referral';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -33,6 +38,7 @@ export default function DataGrid() {
   const apiRef = useGridApiRef();
   const columns: GridColumns = [
     { field: 'id', headerName: 'ID', width: 30 },
+    //Todo: make department multiselect
     {
       field: 'department',
       headerName: 'Department in Charge',
@@ -83,7 +89,7 @@ export default function DataGrid() {
         '2nd unsuccessful attempt',
         '3rd unsuccessful attempt',
         'Completed',
-        ' Transferred to ETO',
+        'Transferred to ETO',
         'CC Waitlist',
         'Outreach Letter Sent',
         'Follow-up Letter Sent',
@@ -126,9 +132,21 @@ export default function DataGrid() {
             }
             icon={
               params.row.status === 'Assigned' ? (
-                <CheckIcon sx={{ fontSize: '22px' }} />
+                <AccountCircleOutlinedIcon sx={{ fontSize: '22px' }} />
+              ) : params.row.status === 'Unassigned' ? (
+                <NoAccountsOutlinedIcon sx={{ fontSize: '22px' }} />
               ) : params.row.status === 'In progress' ? (
                 <LoopIcon sx={{ fontSize: '22px' }} />
+              ) : params.row.status === 'Completed' ? (
+                <CheckIcon sx={{ fontSize: '22px' }} />
+              ) : params.row.status === 'Transferred to ETO' ? (
+                <CheckIcon sx={{ fontSize: '22px' }} />
+              ) : params.row.status === 'CC Waitlist' ? (
+                <HourglassTopOutlinedIcon sx={{ fontSize: '22px' }} />
+              ) : params.row.status === 'Outreach Letter Sent' ? (
+                <MailOutlineIcon sx={{ fontSize: '22px' }} />
+              ) : params.row.status === 'Follow-up Letter Sent' ? (
+                <MailOutlineIcon sx={{ fontSize: '22px' }} />
               ) : (
                 <ErrorOutlineIcon sx={{ fontSize: '22px' }} />
               )
@@ -173,6 +191,14 @@ export default function DataGrid() {
       headerName: 'Method of Last Communication',
       width: 170,
       editable: true,
+      type: 'singleSelect',
+      valueOptions: [
+        'Called & left voicemail',
+        'Called & talked to client',
+        'E-mailed',
+        'Sent letter',
+        'Texted',
+      ],
     },
     {
       field: 'contact',
@@ -206,6 +232,7 @@ export default function DataGrid() {
       width: 150,
       editable: true,
     },
+    // Todo: Make Drop Down Multiselect (with subheadings for Counseling/Therapy and Victim Services)
     {
       field: 'serviceRequested',
       headerName: 'Service Requested',
@@ -236,12 +263,23 @@ export default function DataGrid() {
       width: 150,
       editable: true,
     },
+    //Todo: Make multiselect
     {
       field: 'survivorGender',
       headerName: 'Survivor Gender',
       width: 150,
       editable: true,
+      type: 'singleSelect',
+      valueOptions: [
+        'Female (woman/girl)',
+        'Male (man/boy)',
+        'Non-binary/non-conforming',
+        'Transgender',
+        'Other',
+        'Unknown',
+      ],
     },
+    //Todo: Make multiselect
     {
       field: 'survivorRace',
       headerName: 'Survivor Race/Ethnicity',
