@@ -397,7 +397,7 @@ const updateReferral = async (
     const msg = {
       to: `${agencyRepEmail}`,
       from: 'bach.tran@hack4impact.org',
-      subject: `Update for ${survivorName} to AVP for ${serviceRequested} - Assigned to ${staffAssigned}`,
+      subject: `Update for ${survivorName} to AVP for ${serviceRequested} - Assigned to ${staffAssigned.firstName} ${staffAssigned.lastName}`,
       html: `<div>Hi ${agencyRepName}, 
       <p>Thank you for submitting a referral on behalf of ${agencyThatReferred} for <strong>${survivorName}</strong>, for the service <strong>${serviceRequested}</strong>.</p>
       <p>We are emailing to let you know that this referral was assigned to <strong>${staffAssigned.firstName} ${staffAssigned.lastName}</strong>. Below is their contact information. You can reach them at <strong>${staffEmail}</strong></p>
