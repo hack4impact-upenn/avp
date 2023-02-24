@@ -392,8 +392,7 @@ const updateReferral = async (
 
     const staffEmail = 'bach.tran@hack4impact.org';
     const msg = {
-      to: 'szhang25@seas.upenn.edu',
-      //agencyRepEmail
+      to: `${agencyRepEmail}`,
       from: 'bach.tran@hack4impact.org',
       subject: `Update for ${survivorName} to AVP for ${serviceRequested} - Assigned to ${staffAssigned}`,
       html: `<div>Hi ${agencyRepName}, 
