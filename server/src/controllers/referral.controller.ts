@@ -172,6 +172,7 @@ const createReferral = async (
     sgMail
       .send(msg)
       .then((response: any) => {
+        console.log(response);
         console.log('Email confirmation sent successfully');
       })
       .catch((error: any) => {
@@ -408,6 +409,7 @@ const updateReferral = async (
     sgMail
       .send(msg)
       .then((response: any) => {
+        console.log(response);
         console.log('Email confirmation sent successfully');
       })
       .catch((error: any) => {
