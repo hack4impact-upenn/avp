@@ -6,6 +6,8 @@ import Box from '@mui/material/Box';
 import FormStepper from './FormStepper';
 import PageOne from './PageOne';
 import PageTwo from './PageTwo';
+import PageThree from './PageThree';
+import PageFour from './PageFour';
 
 const steps = [
   'Type of Service Requested',
@@ -34,6 +36,44 @@ export default function FormPage() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+  let targetPage;
+  switch (activeStep) {
+    case 0:
+      targetPage = (
+        <div>
+          <PageOne data={data} setData={setData} />
+        </div>
+      );
+      break;
+    case 1:
+      targetPage = (
+        <div>
+          <PageTwo data={data} setData={setData} />
+        </div>
+      );
+      break;
+    case 2:
+      targetPage = (
+        <div>
+          <PageThree data={data} setData={setData} />
+        </div>
+      );
+      break;
+    case 3:
+      targetPage = (
+        <div>
+          <PageFour data={data} setData={setData} />
+        </div>
+      );
+      break;
+    default:
+      targetPage = (
+        <div>
+          <PageOne data={data} setData={setData} />
+        </div>
+      );
+  }
+
   return (
     <div style={styles.main}>
       <FormStepper
@@ -41,17 +81,7 @@ export default function FormPage() {
         activeStep={activeStep}
         setActiveStep={setActiveStep}
       />
-      {activeStep === 0 ? (
-        <div>
-          <PageOne data={data} setData={setData} />
-        </div>
-      ) : (
-        activeStep === 1 && (
-          <div>
-            <PageTwo data={data} setData={setData} />
-          </div>
-        )
-      )}
+      {targetPage}
       <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
         <Button
           color="inherit"

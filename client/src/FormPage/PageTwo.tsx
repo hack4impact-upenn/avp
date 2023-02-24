@@ -89,7 +89,7 @@ export default function PageTwo({ data, setData }: Props) {
             }
           />
         </FormControl>
-        
+
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <MobileDatePicker
             label="Date of Death"
@@ -131,21 +131,23 @@ export default function PageTwo({ data, setData }: Props) {
         </Select>
       </FormControl>
 
-      <br/>
+      <br />
 
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <MobileDatePicker
-          label="Date of Incident"
-          inputFormat="MM/DD/YYYY"
-          value={crimeDate}
-          onChange={(newValue: Dayjs | null) => {
-            setCrimeDate(newValue);
-          }}
-          renderInput={(params) => <TextField {...params} />}
-        />
-      </LocalizationProvider>
+      <FormControl sx={{ marginRight: 2, marginBottom: 2 }}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <MobileDatePicker
+            label="Date of Incident"
+            inputFormat="MM/DD/YYYY"
+            value={crimeDate}
+            onChange={(newValue: Dayjs | null) => {
+              setCrimeDate(newValue);
+            }}
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider>
+      </FormControl>
 
-      <FormControl required sx={{ marginLeft: 2, minWidth: 240 }}>
+      <FormControl required sx={{  marginBottom: 2, marginRight: 2, minWidth: 240 }}>
         <InputLabel id="demo-simple-select-required-label">
           Gun Violence?
         </InputLabel>
@@ -167,7 +169,7 @@ export default function PageTwo({ data, setData }: Props) {
 
       <FormControl
         required
-        sx={{ marginTop: 2, marginBottom: 2, minWidth: 420 }}
+        sx={{ marginBottom: 2, marginRight: 2, minWidth: 420 }}
       >
         <TextField
           id="outlined-basic"
@@ -181,7 +183,7 @@ export default function PageTwo({ data, setData }: Props) {
 
       <FormControl
         required
-        sx={{ marginLeft: 2, marginTop: 2, marginBottom: 2, minWidth: 240 }}
+        sx={{ marginBottom: 2, minWidth: 240 }}
       >
         <TextField
           id="outlined-basic"
@@ -195,7 +197,7 @@ export default function PageTwo({ data, setData }: Props) {
 
       <br />
 
-      <FormControl required sx={{ marginBottom: 2, minWidth: 360 }}>
+      <FormControl required sx={{ marginBottom: 2, marginRight: 2, minWidth: 360 }}>
         <TextField
           id="outlined-number"
           label="Police Incident # (DC#)"
@@ -208,7 +210,7 @@ export default function PageTwo({ data, setData }: Props) {
 
       <FormControl
         required
-        sx={{ marginLeft: 2, marginBottom: 2, minWidth: 420 }}
+        sx={{ marginBottom: 2, minWidth: 420 }}
       >
         <InputLabel id="demo-simple-select-required-label">
           Police District of Incident
