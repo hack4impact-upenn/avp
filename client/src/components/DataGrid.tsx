@@ -30,6 +30,7 @@ export default function DataGrid() {
     setReferralList(
       referrals?.data.map((referral: IReferral) => {
         referral.id = referral._id;
+        console.log(referral);
         return referral;
       }),
     );
@@ -60,7 +61,7 @@ export default function DataGrid() {
       valueOptions: ['Program 1', 'Program 2', 'Program 3'],
     },
     {
-      field: 'staffAssigned',
+      field: 'staffAssigned.firstName',
       headerName: 'Staff',
       type: 'singleSelect',
       valueOptions: ['Person 1', 'Person 2', 'Person 3'],
