@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
+
 import {
   DataGridPremium,
   GridToolbar,
@@ -37,6 +38,12 @@ export default function DataGrid() {
       headerName: 'Department in Charge',
       width: 210,
       editable: true,
+      type: 'singleSelect',
+      valueOptions: [
+        'Counseling Services',
+        'Victim/Witness Services',
+        'Youth Services',
+      ],
     },
     {
       field: 'program',
@@ -68,7 +75,19 @@ export default function DataGrid() {
       width: 150,
       editable: true,
       type: 'singleSelect',
-      valueOptions: ['Assigned', 'Unassigned', 'In progress'],
+      valueOptions: [
+        'Assigned',
+        'Unassigned',
+        'In progress',
+        '1st unsuccessful attempt',
+        '2nd unsuccessful attempt',
+        '3rd unsuccessful attempt',
+        'Completed',
+        ' Transferred to ETO',
+        'CC Waitlist',
+        'Outreach Letter Sent',
+        'Follow-up Letter Sent',
+      ],
       renderCell: (params: GridRenderCellParams<Date>) => (
         <div
           style={{
@@ -92,6 +111,16 @@ export default function DataGrid() {
               params.row.status === 'Assigned'
                 ? 'success'
                 : params.row.status === 'In progress'
+                ? 'secondary'
+                : params.row.status === 'Completed'
+                ? 'success'
+                : params.row.status === 'Transferred to ETO'
+                ? 'secondary'
+                : params.row.status === 'CC Waitlist'
+                ? 'secondary'
+                : params.row.status === 'Outreach Letter Sent'
+                ? 'secondary'
+                : params.row.status === 'Follow-up Letter Sent'
                 ? 'secondary'
                 : 'error'
             }
@@ -135,7 +164,7 @@ export default function DataGrid() {
     {
       field: 'lastDate',
       headerName: 'Last Reached Out',
-      width: 150,
+      width: 170,
       editable: true,
       type: 'date',
     },
@@ -154,6 +183,7 @@ export default function DataGrid() {
       field: 'notes',
       headerName: 'Notes from Last Reach Out',
       width: 150,
+      editable: true,
     },
     {
       field: 'nextDate',
@@ -173,41 +203,49 @@ export default function DataGrid() {
       field: 'name',
       headerName: 'Name of Survivor',
       width: 150,
+      editable: true,
     },
     {
       field: 'serviceRequested',
       headerName: 'Service Requested',
       width: 150,
+      editable: true,
     },
     {
       field: 'agencyThatReferred',
       headerName: 'Agency that Referred',
       width: 150,
+      editable: true,
     },
     {
       field: 'agencyRepName',
       headerName: 'Agency Rep Name',
       width: 150,
+      editable: true,
     },
     {
       field: 'agencyRepEmail',
       headerName: 'Agency Rep Email',
       width: 150,
+      editable: true,
     },
     {
       field: 'agencyRepPhone',
       headerName: 'Agency Rep Phone Number',
       width: 150,
+      editable: true,
     },
     {
       field: 'survivorGender',
       headerName: 'Survivor Gender',
       width: 150,
+      editable: true,
     },
     {
       field: 'survivorRace',
       headerName: 'Survivor Race/Ethnicity',
       width: 150,
+      editable: true,
     },
     {
       field: 'survivorDOB',
@@ -220,86 +258,103 @@ export default function DataGrid() {
       field: 'survivorAge',
       headerName: 'Survivor Age',
       width: 150,
+      editable: true,
     },
     {
       field: 'survivorSchoolOrCommunitySite',
       headerName: 'Survivor School/Community Site',
       width: 150,
+      editable: true,
     },
     {
       field: 'survivorGrade',
       headerName: 'Survivor Grade',
       width: 150,
+      editable: true,
     },
     {
       field: 'isParentContact',
       headerName: 'Is Adult Responsible',
       width: 150,
+      editable: true,
     },
     {
       field: 'guardianName',
       headerName: 'Name of Adult',
       width: 150,
+      editable: true,
     },
     {
       field: 'guardianRelationship',
       headerName: 'Relationship of Adult to Victim',
       width: 150,
+      editable: true,
     },
     {
       field: 'guardianAddress',
       headerName: 'Address of Adult',
       width: 150,
+      editable: true,
     },
     {
       field: 'guardianPhone',
       headerName: 'Phone # ofAdult',
       width: 150,
+      editable: true,
     },
     {
       field: 'guardianEmail',
       headerName: 'Email Address of Adult',
       width: 150,
+      editable: true,
     },
     {
       field: 'guardianPreferredContactMethod',
       headerName: 'Adult Preferred Contact Method',
       width: 150,
+      editable: true,
     },
     {
       field: 'survivorAddress',
       headerName: 'Survivor Address',
       width: 150,
+      editable: true,
     },
     {
       field: 'survivorPhoneNumber',
       headerName: 'Survivor Phone Number',
       width: 150,
+      editable: true,
     },
     {
       field: 'notesFromOrg',
       headerName: 'Notes from Organization',
       width: 150,
+      editable: true,
     },
     {
       field: 'primaryLanguage',
       headerName: 'Primary Language',
       width: 150,
+      editable: true,
     },
     {
       field: 'relationshipToVictim',
       headerName: 'Relationship to Victim',
       width: 150,
+      editable: true,
     },
     {
       field: 'crimeDCNum',
       headerName: 'DC #',
       width: 150,
+      editable: true,
     },
     {
       field: 'crimeDistrict',
       headerName: 'District of Crime',
       width: 150,
+      editable: true,
     },
     {
       field: 'crimeDate',
@@ -312,16 +367,19 @@ export default function DataGrid() {
       field: 'crimeType',
       headerName: 'Type of Crime/Victimization',
       width: 150,
+      editable: true,
     },
     {
       field: 'isGunViolence',
       headerName: 'Is Gun Violence',
       width: 150,
+      editable: true,
     },
     {
       field: 'homDecendent',
       headerName: 'Homicide Decedent',
       width: 150,
+      editable: true,
     },
     {
       field: 'homDateOfDeath',
@@ -334,41 +392,49 @@ export default function DataGrid() {
       field: 'homCauseOfDeath',
       headerName: 'Homicide Cause Of Death',
       width: 150,
+      editable: true,
     },
     {
       field: 'homType',
       headerName: 'Type of Homicide',
       width: 150,
+      editable: true,
     },
     {
       field: 'homLocation',
       headerName: 'Homicide Location',
       width: 150,
+      editable: true,
     },
     {
       field: 'homAddress',
       headerName: 'Homicide Address',
       width: 150,
+      editable: true,
     },
     {
       field: 'homZipCode',
       headerName: 'Homicide Zip Code',
       width: 150,
+      editable: true,
     },
     {
       field: 'homDecendentAge',
       headerName: 'Homicide Decedent Age',
       width: 150,
+      editable: true,
     },
     {
       field: 'homDecedentSex',
       headerName: 'Homicide Decedent Sex',
       width: 150,
+      editable: true,
     },
     {
       field: 'homDecedentRace',
       headerName: 'Homicide Decedent Race',
       width: 150,
+      editable: true,
     },
     {
       field: 'homDecedentEthnicity',
@@ -379,21 +445,25 @@ export default function DataGrid() {
       field: 'homFMVNum',
       headerName: 'Homicide FMV #',
       width: 150,
+      editable: true,
     },
     {
       field: 'homMEONum',
       headerName: 'Homicide MEO #',
       width: 150,
+      editable: true,
     },
     {
       field: 'homMNum',
       headerName: 'Homicide M #',
       width: 150,
+      editable: true,
     },
     {
       field: 'homCaseInformation',
       headerName: 'Homicide Case Information',
       width: 150,
+      editable: true,
     },
   ];
 
