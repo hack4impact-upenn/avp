@@ -72,7 +72,10 @@ const policeDistrictOfCrime = [
 export default function PageTwo({ data, setData }: Props) {
   const theme = useTheme();
   const [crimeDate, setCrimeDate] = React.useState<Dayjs | null>(
-    dayjs('2020-01-18T21:11:54'),
+    dayjs('2000-01-01T00:00:00'),
+  );
+  const [homicideDate, sethomicideDate] = React.useState<Dayjs | null>(
+    dayjs('2000-01-01T00:00:00'),
   );
 
   let homicideFields;
@@ -94,9 +97,9 @@ export default function PageTwo({ data, setData }: Props) {
           <MobileDatePicker
             label="Date of Death"
             inputFormat="MM/DD/YYYY"
-            value={crimeDate}
+            value={homicideDate}
             onChange={(newValue: Dayjs | null) => {
-              setCrimeDate(newValue);
+              sethomicideDate(newValue);
             }}
             renderInput={(params) => <TextField {...params} />}
           />
