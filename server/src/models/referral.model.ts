@@ -142,6 +142,10 @@ const ReferralSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  survivorPreferredContactMethod: {
+    type: String,
+    required: true,
+  },
   notesFromOrg: {
     type: String,
     required: false,
@@ -231,6 +235,10 @@ const ReferralSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  homCaseInformation: {
+    type: String,
+    required: false,
+  },
   historyOfCommunication: {
     type: [communicationItemSchema],
     required: false,
@@ -265,6 +273,7 @@ interface IReferral extends mongoose.Document {
   guardianPreferredContactMethod: string;
   survivorAddress: string;
   survivorPhoneNumber: string;
+  survivorPreferredContactMethod: string;
   notesFromOrg: string;
   relationshipToVictim: string;
   crimeDCNum: string;
@@ -285,6 +294,7 @@ interface IReferral extends mongoose.Document {
   homFMVNum: string;
   homMEONum: string;
   homeMNum: string;
+  homCaseInformation: string;
   historyOfCommunication: Array<communicationItem>;
 }
 
