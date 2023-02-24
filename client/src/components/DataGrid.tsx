@@ -1,42 +1,61 @@
 /* eslint-disable */
 import React, { useEffect } from 'react';
 import Box from '@mui/material/Box';
-import { DataGridPremium } from '@mui/x-data-grid-premium';
+
+import {
+  DataGridPremium,
+  GridToolbar,
+  useGridApiRef,
+} from '@mui/x-data-grid-premium';
 import { Button, Chip } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import LoopIcon from '@mui/icons-material/Loop';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import PersonAddAlt1OutlinedIcon from '@mui/icons-material/PersonAddAlt1Outlined';
+import HourglassTopOutlinedIcon from '@mui/icons-material/HourglassTopOutlined';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import { GridColumns, GridRenderCellParams } from '@mui/x-data-grid-pro';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import NoAccountsOutlinedIcon from '@mui/icons-material/NoAccountsOutlined';
+import Select from '@mui/material/Select';
 
 /* Wrapper Around DataGridPremium */
 export default function DataGrid() {
+  const apiRef = useGridApiRef();
   const columns: GridColumns = [
-    { field: 'id', headerName: 'ID', width: 90 },
+    { field: 'id', headerName: 'ID', width: 30 },
+    //Todo: make department multiselect
     {
-      field: 'dept',
-      headerName: 'AVP Department in Charge',
+      field: 'department',
+      headerName: 'Department in Charge',
       width: 210,
       editable: true,
+      type: 'singleSelect',
+      valueOptions: [
+        'Counseling Services',
+        'Victim/Witness Services',
+        'Youth Services',
+      ],
     },
     {
       field: 'program',
-      headerName: 'AVP Program',
+      headerName: 'Program',
       width: 150,
       editable: true,
       type: 'singleSelect',
       valueOptions: ['Program 1', 'Program 2', 'Program 3'],
     },
     {
-      field: 'staff',
-      headerName: 'AVP Staff Assigned',
+      field: 'staffAssigned',
+      headerName: 'Staff',
       type: 'singleSelect',
       valueOptions: ['Person 1', 'Person 2', 'Person 3'],
       width: 160,
       editable: true,
     },
     {
-      field: 'therapist',
-      headerName: 'Therapist Assigned',
+      field: 'therapistAssigned',
+      headerName: 'Therapist',
       type: 'singleSelect',
       valueOptions: ['Therapist 1', 'Therapist 2', 'Therapist 3'],
       width: 160,
@@ -48,7 +67,19 @@ export default function DataGrid() {
       width: 150,
       editable: true,
       type: 'singleSelect',
-      valueOptions: ['Assigned', 'Unassigned', 'In progress'],
+      valueOptions: [
+        'Assigned',
+        'Unassigned',
+        'In progress',
+        '1st unsuccessful attempt',
+        '2nd unsuccessful attempt',
+        '3rd unsuccessful attempt',
+        'Completed',
+        ' Transferred to ETO',
+        'CC Waitlist',
+        'Outreach Letter Sent',
+        'Follow-up Letter Sent',
+      ],
       renderCell: (params: GridRenderCellParams<Date>) => (
         <div
           style={{
@@ -73,13 +104,35 @@ export default function DataGrid() {
                 ? 'success'
                 : params.row.status === 'In progress'
                 ? 'secondary'
+                : params.row.status === 'Completed'
+                ? 'success'
+                : params.row.status === 'Transferred to ETO'
+                ? 'secondary'
+                : params.row.status === 'CC Waitlist'
+                ? 'secondary'
+                : params.row.status === 'Outreach Letter Sent'
+                ? 'secondary'
+                : params.row.status === 'Follow-up Letter Sent'
+                ? 'secondary'
                 : 'error'
             }
             icon={
               params.row.status === 'Assigned' ? (
-                <CheckIcon sx={{ fontSize: '22px' }} />
+                <AccountCircleOutlinedIcon sx={{ fontSize: '22px' }} />
+              ) : params.row.status === 'Unassigned' ? (
+                <NoAccountsOutlinedIcon sx={{ fontSize: '22px' }} />
               ) : params.row.status === 'In progress' ? (
                 <LoopIcon sx={{ fontSize: '22px' }} />
+              ) : params.row.status === 'Completed' ? (
+                <CheckIcon sx={{ fontSize: '22px' }} />
+              ) : params.row.status === 'Transferred to ETO' ? (
+                <CheckIcon sx={{ fontSize: '22px' }} />
+              ) : params.row.status === 'CC Waitlist' ? (
+                <HourglassTopOutlinedIcon sx={{ fontSize: '22px' }} />
+              ) : params.row.status === 'Outreach Letter Sent' ? (
+                <MailOutlineIcon sx={{ fontSize: '22px' }} />
+              ) : params.row.status === 'Follow-up Letter Sent' ? (
+                <MailOutlineIcon sx={{ fontSize: '22px' }} />
               ) : (
                 <ErrorOutlineIcon sx={{ fontSize: '22px' }} />
               )
@@ -115,7 +168,7 @@ export default function DataGrid() {
     {
       field: 'lastDate',
       headerName: 'Last Reached Out',
-      width: 150,
+      width: 170,
       editable: true,
       type: 'date',
     },
@@ -123,6 +176,15 @@ export default function DataGrid() {
       field: 'method',
       headerName: 'Method of Last Communication',
       width: 170,
+      editable: true,
+      type: 'singleSelect',
+      valueOptions: [
+        'Called & left voicemail',
+        'Called & talked to client',
+        'E-mailed',
+        'Sent letter',
+        'Texted',
+      ],
     },
     {
       field: 'contact',
@@ -134,6 +196,7 @@ export default function DataGrid() {
       field: 'notes',
       headerName: 'Notes from Last Reach Out',
       width: 150,
+      editable: true,
     },
     {
       field: 'nextDate',
@@ -153,233 +216,279 @@ export default function DataGrid() {
       field: 'name',
       headerName: 'Name of Survivor',
       width: 150,
+      editable: true,
     },
+    // Todo: Make Drop Down Multiselect (with subheadings for Counseling/Therapy and Victim Services)
     {
-      field: 'service',
+      field: 'serviceRequested',
       headerName: 'Service Requested',
       width: 150,
+      editable: true,
     },
     {
-      field: 'agency',
+      field: 'agencyThatReferred',
       headerName: 'Agency that Referred',
       width: 150,
+      editable: true,
     },
     {
-      field: 'repName',
+      field: 'agencyRepName',
       headerName: 'Agency Rep Name',
       width: 150,
+      editable: true,
     },
     {
-      field: 'repEmail',
+      field: 'agencyRepEmail',
       headerName: 'Agency Rep Email',
       width: 150,
+      editable: true,
     },
     {
-      field: 'repNumber',
+      field: 'agencyRepPhone',
       headerName: 'Agency Rep Phone Number',
       width: 150,
+      editable: true,
     },
+    //Todo: Make multiselect
     {
-      field: 'gender',
+      field: 'survivorGender',
       headerName: 'Survivor Gender',
       width: 150,
+      editable: true,
+      type: 'singleSelect',
+      valueOptions: [
+        'Female (woman/girl)',
+        'Male (man/boy)',
+        'Non-binary/non-conforming',
+        'Transgender',
+        'Other',
+        'Unknown',
+      ],
     },
+    //Todo: Make multiselect
     {
-      field: 'race',
+      field: 'survivorRace',
       headerName: 'Survivor Race/Ethnicity',
       width: 150,
+      editable: true,
     },
     {
-      field: 'birthday',
+      field: 'survivorDOB',
       headerName: 'Survivor Date of Birth',
       width: 150,
       editable: true,
       type: 'date',
     },
     {
-      field: 'age',
+      field: 'survivorAge',
       headerName: 'Survivor Age',
       width: 150,
+      editable: true,
     },
     {
-      field: 'school',
-      headerName: 'What School or Community does Survivor Attend?',
+      field: 'survivorSchoolOrCommunitySite',
+      headerName: 'Survivor School/Community Site',
       width: 150,
+      editable: true,
     },
     {
-      field: 'grade',
-      headerName: 'What Grade is the Survivor in?',
+      field: 'survivorGrade',
+      headerName: 'Survivor Grade',
       width: 150,
+      editable: true,
     },
     {
       field: 'isParentContact',
-      headerName:
-        'Is a parent/responsible adult the main contact for the survivor/victim? For therapy, survivor/victims 14 years old and older can sign themselves up',
+      headerName: 'Is Adult Responsible',
       width: 150,
+      editable: true,
     },
     {
-      field: 'parentName',
-      headerName: 'Name of Parent/Responsible Adult',
+      field: 'guardianName',
+      headerName: 'Name of Adult',
       width: 150,
+      editable: true,
     },
     {
-      field: 'relationship',
-      headerName: 'Relationship to victim/survivor being referred',
+      field: 'guardianRelationship',
+      headerName: 'Relationship of Adult to Victim',
       width: 150,
+      editable: true,
     },
     {
-      field: 'parentAddress',
-      headerName: 'Address of Parent/Responsible Adult',
+      field: 'guardianAddress',
+      headerName: 'Address of Adult',
       width: 150,
+      editable: true,
     },
     {
-      field: 'parentPhone',
-      headerName: 'Phone # of Parent/Responsible Adult',
+      field: 'guardianPhone',
+      headerName: 'Phone # ofAdult',
       width: 150,
+      editable: true,
     },
     {
-      field: 'parentEmail',
-      headerName: 'Email Address of Parent/Responsible Adult',
+      field: 'guardianEmail',
+      headerName: 'Email Address of Adult',
       width: 150,
+      editable: true,
     },
     {
-      field: 'parentContactMethod',
-      headerName: 'Preferred Contact Method',
+      field: 'guardianPreferredContactMethod',
+      headerName: 'Adult Preferred Contact Method',
       width: 150,
+      editable: true,
     },
     {
-      field: 'address',
-      headerName: 'Survivor Complete Address',
+      field: 'survivorAddress',
+      headerName: 'Survivor Address',
       width: 150,
+      editable: true,
     },
     {
-      field: 'phone',
+      field: 'survivorPhoneNumber',
       headerName: 'Survivor Phone Number',
       width: 150,
+      editable: true,
     },
     {
-      field: 'notes',
+      field: 'notesFromOrg',
       headerName: 'Notes from Organization',
       width: 150,
+      editable: true,
     },
     {
-      field: 'referralPDF',
-      headerName: 'Referral PDF',
-      width: 150,
-    },
-    {
-      field: 'language',
+      field: 'primaryLanguage',
       headerName: 'Primary Language',
       width: 150,
+      editable: true,
     },
     {
       field: 'relationshipToVictim',
       headerName: 'Relationship to Victim',
       width: 150,
+      editable: true,
     },
     {
-      field: 'incidentNo',
-      headerName: 'Crime Incident Number (DC #)',
+      field: 'crimeDCNum',
+      headerName: 'DC #',
       width: 150,
+      editable: true,
     },
     {
-      field: 'districtOfCrime',
-      headerName: 'Police District of Crime',
+      field: 'crimeDistrict',
+      headerName: 'District of Crime',
       width: 150,
+      editable: true,
     },
     {
-      field: 'dateOfCrime',
+      field: 'crimeDate',
       headerName: 'Date of Crime',
       width: 150,
       editable: true,
       type: 'date',
     },
     {
-      field: 'typeOfCrime',
+      field: 'crimeType',
       headerName: 'Type of Crime/Victimization',
       width: 150,
+      editable: true,
     },
     {
-      field: 'hasGun',
-      headerName: 'Gun Violence?',
+      field: 'isGunViolence',
+      headerName: 'Is Gun Violence',
       width: 150,
+      editable: true,
     },
     {
-      field: 'decedent',
-      headerName: 'Decedent',
+      field: 'homDecendent',
+      headerName: 'Homicide Decedent',
       width: 150,
+      editable: true,
     },
     {
-      field: 'deathDate',
-      headerName: 'Date of Death',
+      field: 'homDateOfDeath',
+      headerName: 'Homicide Date of Death',
       width: 150,
       editable: true,
       type: 'date',
     },
     {
-      field: 'deathCause',
-      headerName: 'Cause of Death',
+      field: 'homCauseOfDeath',
+      headerName: 'Homicide Cause Of Death',
       width: 150,
+      editable: true,
     },
     {
-      field: 'homicideType',
+      field: 'homType',
       headerName: 'Type of Homicide',
       width: 150,
+      editable: true,
     },
     {
-      field: 'location',
-      headerName: 'Location',
+      field: 'homLocation',
+      headerName: 'Homicide Location',
+      width: 150,
+      editable: true,
+    },
+    {
+      field: 'homAddress',
+      headerName: 'Homicide Address',
+      width: 150,
+      editable: true,
+    },
+    {
+      field: 'homZipCode',
+      headerName: 'Homicide Zip Code',
+      width: 150,
+      editable: true,
+    },
+    {
+      field: 'homDecendentAge',
+      headerName: 'Homicide Decedent Age',
+      width: 150,
+      editable: true,
+    },
+    {
+      field: 'homDecedentSex',
+      headerName: 'Homicide Decedent Sex',
+      width: 150,
+      editable: true,
+    },
+    {
+      field: 'homDecedentRace',
+      headerName: 'Homicide Decedent Race',
+      width: 150,
+      editable: true,
+    },
+    {
+      field: 'homDecedentEthnicity',
+      headerName: 'Homicide Decedent Ethnicity',
       width: 150,
     },
     {
-      field: 'incidentAddress',
-      headerName: 'Address of Incident',
+      field: 'homFMVNum',
+      headerName: 'Homicide FMV #',
       width: 150,
+      editable: true,
     },
     {
-      field: 'incidentZip',
-      headerName: 'Zip Code of Incident',
+      field: 'homMEONum',
+      headerName: 'Homicide MEO #',
       width: 150,
+      editable: true,
     },
     {
-      field: 'decedentAge',
-      headerName: 'Decedent Age',
+      field: 'homMNum',
+      headerName: 'Homicide M #',
       width: 150,
+      editable: true,
     },
     {
-      field: 'decedentSex',
-      headerName: 'Decedent Sex',
+      field: 'homCaseInformation',
+      headerName: 'Homicide Case Information',
       width: 150,
-    },
-    {
-      field: 'decedentRace',
-      headerName: 'Decedent Race',
-      width: 150,
-    },
-    {
-      field: 'decedentEthnicity',
-      headerName: 'Decedent Ethnicity',
-      width: 150,
-    },
-    {
-      field: 'fmv',
-      headerName: 'FMV #',
-      width: 150,
-    },
-    {
-      field: 'meo',
-      headerName: 'MEO #',
-      width: 150,
-    },
-    {
-      field: 'm',
-      headerName: 'M #',
-      width: 150,
-    },
-    {
-      field: 'caseInfo',
-      headerName: 'Case Information',
-      width: 150,
+      editable: true,
     },
   ];
 
@@ -417,6 +526,7 @@ export default function DataGrid() {
         disableSelectionOnClick
         initialState={{ pinnedColumns: { right: ['view'] } }}
         experimentalFeatures={{ newEditingApi: true }}
+        components={{ Toolbar: GridToolbar }}
       />
     </Box>
   );

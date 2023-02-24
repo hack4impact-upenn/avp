@@ -2,10 +2,13 @@
 import express from 'express';
 import ApiError from '../util/apiError';
 import {
+  addToCommunicationHistory,
   createNewReferral,
+  deleteCommunicationHistory,
   getAllDepartmentReferrals,
   getAllReferrals,
   getReferralById,
+  updateCommunicationHistory,
   updateReferralById,
 } from '../services/referral.service';
 import StatusCode from '../util/statusCode';
@@ -235,8 +238,8 @@ const getReferral = async (
   const { id } = req.params;
 
   try {
-    const referrals = await getReferralById(id);
-    res.status(StatusCode.OK).json(referrals);
+    const referral = await getReferralById(id);
+    res.status(StatusCode.OK).json(referral);
   } catch (err) {
     next(
       ApiError.internal(
@@ -338,7 +341,7 @@ const updateReferral = async (
   }
 
   try {
-    await updateReferralById(
+    const referral = await updateReferralById(
       id,
       departmentInCharge,
       program,
@@ -389,7 +392,6 @@ const updateReferral = async (
       homeMNum,
       historyOfCommunication,
     );
-    res.sendStatus(StatusCode.OK);
 
     const staffEmail = 'bach.tran@hack4impact.org';
     const msg = {
@@ -419,10 +421,132 @@ const updateReferral = async (
           ),
         );
       });
+    res.status(StatusCode.OK).json(referral);
   } catch (err) {
     next(
       ApiError.internal(
         `Unable to update referral due to the following error: ${err}`,
+      ),
+    );
+  }
+};
+
+const getCommunicationHistory = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { id } = req.params;
+
+  try {
+    const referral = await getReferralById(id);
+    res.status(StatusCode.OK).json(referral?.historyOfCommunication);
+  } catch (err) {
+    next(
+      ApiError.internal(
+        `Unable to get communication history due to the following error: ${err}`,
+      ),
+    );
+  }
+};
+
+const addToHistory = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { id } = req.params;
+
+  const { dateOfCommunication, method, user, notes, didEstablishedContact } =
+    req.body;
+
+  if (!dateOfCommunication || !method || !user || !didEstablishedContact) {
+    next(
+      ApiError.missingFields([
+        'dateOfCommunication',
+        'method',
+        'user',
+        'didEstablishedContact',
+      ]),
+    );
+    return;
+  }
+
+  try {
+    const referral = await addToCommunicationHistory(
+      id,
+      new Date(dateOfCommunication),
+      method,
+      user,
+      notes,
+      didEstablishedContact,
+    );
+    res.status(StatusCode.OK).json(referral);
+  } catch (err) {
+    next(
+      ApiError.internal(
+        `Unable to add to communication history due to the following error: ${err}`,
+      ),
+    );
+  }
+};
+
+const updateHistory = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { id, index } = req.params;
+
+  const { dateOfCommunication, method, user, notes, didEstablishedContact } =
+    req.body;
+
+  if (!dateOfCommunication || !method || !user || !didEstablishedContact) {
+    next(
+      ApiError.missingFields([
+        'dateOfCommunication',
+        'method',
+        'user',
+        'didEstablishedContact',
+      ]),
+    );
+    return;
+  }
+
+  try {
+    const referral = await updateCommunicationHistory(
+      id,
+      index,
+      dateOfCommunication,
+      method,
+      user,
+      notes,
+      didEstablishedContact,
+    );
+    res.status(StatusCode.OK).json(referral);
+  } catch (err) {
+    next(
+      ApiError.internal(
+        `Unable to update communication history due to the following error: ${err}`,
+      ),
+    );
+  }
+};
+
+const deleteHistory = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { id, index } = req.params;
+
+  try {
+    const referral = await deleteCommunicationHistory(id, Number(index));
+    res.status(StatusCode.OK).json(referral);
+  } catch (err) {
+    next(
+      ApiError.internal(
+        `Unable to delete communication history due to the following error: ${err}`,
       ),
     );
   }
@@ -434,4 +558,8 @@ export {
   getDepartmentReferrals,
   getReferral,
   updateReferral,
+  getCommunicationHistory,
+  addToHistory,
+  updateHistory,
+  deleteHistory,
 };
