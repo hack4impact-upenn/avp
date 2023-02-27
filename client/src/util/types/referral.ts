@@ -14,6 +14,7 @@ interface communicationItem {
 }
 
 interface IReferral extends mongoose.Document {
+  staffName: string;
   _id: string;
   departmentInCharge: string;
   program: string;
