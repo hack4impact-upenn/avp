@@ -30,6 +30,12 @@ export default function DataGrid() {
     setReferralList(
       referrals?.data.map((referral: IReferral) => {
         referral.id = referral._id;
+        if (referral.staffAssigned != null) {
+          referral.staffName =
+            referral.staffAssigned.firstName +
+            ' ' +
+            referral.staffAssigned.lastName;
+        }
         console.log(referral);
         return referral;
       }),
@@ -41,7 +47,7 @@ export default function DataGrid() {
     { field: 'id', headerName: 'ID', width: 30 },
     //Todo: make department multiselect
     {
-      field: 'department',
+      field: 'departmentInCharge',
       headerName: 'Department in Charge',
       width: 210,
       editable: true,
@@ -61,12 +67,12 @@ export default function DataGrid() {
       valueOptions: ['Program 1', 'Program 2', 'Program 3'],
     },
     {
-      field: 'staffAssigned.firstName',
+      field: 'staffName',
       headerName: 'Staff',
-      type: 'singleSelect',
-      valueOptions: ['Person 1', 'Person 2', 'Person 3'],
       width: 160,
       editable: true,
+      type: 'singleSelect',
+      valueOptions: ['Staff 1', 'Staff 2', 'Staff 3'],
     },
     {
       field: 'therapistAssigned',
@@ -228,7 +234,7 @@ export default function DataGrid() {
       editable: true,
     },
     {
-      field: 'name',
+      field: 'survivorName',
       headerName: 'Name of Survivor',
       width: 150,
       editable: true,
@@ -535,7 +541,10 @@ export default function DataGrid() {
         rowHeight={42}
         checkboxSelection
         disableSelectionOnClick
-        initialState={{ pinnedColumns: { right: ['view'] } }}
+        initialState={{
+          columns: { columnVisibilityModel: { id: false } },
+          pinnedColumns: { right: ['view'] },
+        }}
         experimentalFeatures={{ newEditingApi: true }}
         components={{ Toolbar: GridToolbar }}
       />

@@ -15,7 +15,7 @@
     "dev": "cross-env NODE_ENV=development concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
     "server": "cd server && yarn start",
     "client": "cd client && yarn start",
-    "pre-commit": "yarn lint-staged",
+    "pre-commit": "yarn lint-staged && yarn format",
     "pre-push": "yarn lint && yarn prettier-check && yarn test",
     "lint": "eslint --quiet --fix --ext .js,.ts,.tsx .",
     "prettier-check": "prettier --check .",
