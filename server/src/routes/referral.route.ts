@@ -31,4 +31,6 @@ router.put('/:id/communication/:index', updateHistory);
 
 router.delete('/:id/communication/:index', deleteHistory);
 
+// router.get('/duplicates', getDuplicates);
+
 export default router;
