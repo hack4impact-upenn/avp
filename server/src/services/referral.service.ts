@@ -55,6 +55,10 @@ const createNewReferral = async (
   homMEONum: string,
   homeMNum: string,
   historyOfCommunication: Array<communicationItem>,
+  outreachLetterSent: boolean,
+  transferredToCCWaitlist: boolean,
+  followUpLetterSent: boolean,
+  transferredToETO: boolean,
 ) => {
   const newReferral = new Referral({
     departmentInCharge,
@@ -106,6 +110,10 @@ const createNewReferral = async (
     homMEONum,
     homeMNum,
     historyOfCommunication,
+    outreachLetterSent,
+    transferredToCCWaitlist,
+    followUpLetterSent,
+    transferredToETO,
   });
   const referral: IReferral = await newReferral.save();
   return referral;
@@ -174,6 +182,10 @@ const updateReferralById = async (
   homMEONum: string,
   homeMNum: string,
   historyOfCommunication: Array<communicationItem>,
+  outreachLetterSent: boolean,
+  transferredToCCWaitlist: boolean,
+  followUpLetterSent: boolean,
+  transferredToETO: boolean,
 ) => {
   const updateQuery = {
     departmentInCharge,
@@ -225,6 +237,10 @@ const updateReferralById = async (
     homMEONum,
     homeMNum,
     historyOfCommunication,
+    outreachLetterSent,
+    transferredToCCWaitlist,
+    followUpLetterSent,
+    transferredToETO,
   };
   return Referral.findByIdAndUpdate(id, updateQuery, { new: true }).exec();
 };
@@ -236,6 +252,7 @@ const addToCommunicationHistory = async (
   user: IUser,
   notes: string,
   didEstablishedContact: boolean,
+  dateOfNextCommunication: Date,
 ) => {
   const newCommunicationItem: communicationItem = {
     dateOfCommunication,
@@ -243,6 +260,7 @@ const addToCommunicationHistory = async (
     user,
     notes,
     didEstablishedContact,
+    dateOfNextCommunication,
   };
   return Referral.findByIdAndUpdate(
     id,
@@ -261,6 +279,7 @@ const updateCommunicationHistory = async (
   user: IUser,
   notes: string,
   didEstablishedContact: boolean,
+  dateOfNextCommunication: Date,
 ) => {
   const newCommunicationItem: communicationItem = {
     dateOfCommunication,
@@ -268,6 +287,7 @@ const updateCommunicationHistory = async (
     user,
     notes,
     didEstablishedContact,
+    dateOfNextCommunication,
   };
   return Referral.findByIdAndUpdate(
     id,

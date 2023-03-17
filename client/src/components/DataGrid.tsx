@@ -169,6 +169,13 @@ export default function DataGrid() {
       ),
     },
     {
+      field: 'transferredToETO',
+      headerName: 'Added to ETO',
+      width: 120,
+      type: 'boolean',
+      editable: true,
+    },
+    {
       field: 'view',
       headerName: 'View Referral',
       width: 140,
@@ -543,7 +550,7 @@ export default function DataGrid() {
         disableSelectionOnClick
         initialState={{
           columns: { columnVisibilityModel: { id: false } },
-          pinnedColumns: { right: ['view'] },
+          pinnedColumns: { left: ['survivorName'], right: ['view'] },
         }}
         experimentalFeatures={{ newEditingApi: true }}
         components={{ Toolbar: GridToolbar }}

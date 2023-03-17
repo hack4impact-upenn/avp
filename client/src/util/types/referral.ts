@@ -11,6 +11,7 @@ interface communicationItem {
   user: IUser;
   notes?: string;
   didEstablishedContact: boolean;
+  dateOfNextCommunication: Date;
 }
 
 interface IReferral extends mongoose.Document {
@@ -65,6 +66,10 @@ interface IReferral extends mongoose.Document {
   homeMNum: string;
   homCaseInformation: string;
   historyOfCommunication: Array<communicationItem>;
+  outreachLetterSent: boolean;
+  transferredToCCWaitlist: boolean;
+  followUpLetterSent: boolean;
+  transferredToETO: boolean;
 }
 
 export default IReferral;
