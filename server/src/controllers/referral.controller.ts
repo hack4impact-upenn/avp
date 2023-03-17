@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import express from 'express';
+import sgMail from '@sendgrid/mail';
 import ApiError from '../util/apiError';
 import {
   addToCommunicationHistory,
@@ -7,13 +8,13 @@ import {
   deleteCommunicationHistory,
   getAllDepartmentReferrals,
   getAllReferrals,
+  getDuplicateReferrals,
   getReferralById,
   updateCommunicationHistory,
   updateReferralById,
 } from '../services/referral.service';
 import StatusCode from '../util/statusCode';
-//SendGrid setup
-import sgMail from '@sendgrid/mail';
+// SendGrid setup
 const apiKey: string = process.env.SENDGRID_API_KEY as string;
 sgMail.setApiKey(apiKey);
 
@@ -49,6 +50,7 @@ const createReferral = async (
     guardianEmail,
     guardianPreferredContactMethod,
     survivorAddress,
+    survivorEmailAddress,
     survivorPhoneNumber,
     notesFromOrg,
     relationshipToVictim,
@@ -81,6 +83,7 @@ const createReferral = async (
     !agencyRepName ||
     !agencyRepEmail ||
     !agencyRepPhone ||
+    !survivorEmailAddress ||
     !survivorPhoneNumber ||
     !relationshipToVictim ||
     !crimeType ||
@@ -96,6 +99,7 @@ const createReferral = async (
         'agencyRepName',
         'agencyRepEmail',
         'agencyRepPhone',
+        'survivorEmailAddress',
         'survivorPhoneNumber',
         'relationshipToVictim',
         'crimeType',
@@ -134,6 +138,7 @@ const createReferral = async (
       guardianEmail,
       guardianPreferredContactMethod,
       survivorAddress,
+      survivorEmailAddress,
       survivorPhoneNumber,
       notesFromOrg,
       relationshipToVictim,
@@ -283,6 +288,7 @@ const updateReferral = async (
     guardianEmail,
     guardianPreferredContactMethod,
     survivorAddress,
+    survivorEmailAddress,
     survivorPhoneNumber,
     notesFromOrg,
     relationshipToVictim,
@@ -315,6 +321,7 @@ const updateReferral = async (
     !agencyRepName ||
     !agencyRepEmail ||
     !agencyRepPhone ||
+    !survivorEmailAddress ||
     !survivorPhoneNumber ||
     !relationshipToVictim ||
     !crimeType ||
@@ -330,6 +337,7 @@ const updateReferral = async (
         'agencyRepName',
         'agencyRepEmail',
         'agencyRepPhone',
+        'survivorEmailAddress',
         'survivorPhoneNumber',
         'relationshipToVictim',
         'crimeType',
@@ -369,6 +377,7 @@ const updateReferral = async (
       guardianEmail,
       guardianPreferredContactMethod,
       survivorAddress,
+      survivorEmailAddress,
       survivorPhoneNumber,
       notesFromOrg,
       relationshipToVictim,
@@ -552,6 +561,31 @@ const deleteHistory = async (
   }
 };
 
+const getDuplicates = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const phoneNumber = req.query.phoneNumber || '';
+  const email = req.query.email || '';
+
+  if (typeof phoneNumber !== 'string' || typeof email !== 'string') {
+    next(ApiError.internal('Invalid query types'));
+    return;
+  }
+
+  try {
+    const referrals = await getDuplicateReferrals(phoneNumber, email);
+    res.status(StatusCode.OK).json(referrals);
+  } catch (err) {
+    next(
+      ApiError.internal(
+        `Unable to get duplicate referrals due to the following error: ${err}`,
+      ),
+    );
+  }
+};
+
 export {
   createReferral,
   getReferrals,
@@ -562,4 +596,5 @@ export {
   addToHistory,
   updateHistory,
   deleteHistory,
+  getDuplicates,
 };

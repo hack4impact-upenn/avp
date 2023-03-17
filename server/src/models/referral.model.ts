@@ -138,6 +138,10 @@ const ReferralSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  survivorEmailAddress: {
+    type: String,
+    required: true,
+  },
   survivorPhoneNumber: {
     type: String,
     required: true,
@@ -271,6 +275,7 @@ interface IReferral extends mongoose.Document {
   guardianPhone: string;
   guardianEmail: string;
   guardianPreferredContactMethod: string;
+  survivorEmailAddress: string;
   survivorAddress: string;
   survivorPhoneNumber: string;
   survivorPreferredContactMethod: string;

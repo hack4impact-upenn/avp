@@ -32,6 +32,7 @@ const createNewReferral = async (
   guardianEmail: string,
   guardianPreferredContactMethod: string,
   survivorAddress: string,
+  survivorEmailAddress: string,
   survivorPhoneNumber: string,
   notesFromOrg: string,
   relationshipToVictim: string,
@@ -82,6 +83,7 @@ const createNewReferral = async (
     guardianEmail,
     guardianPreferredContactMethod,
     survivorAddress,
+    survivorEmailAddress,
     survivorPhoneNumber,
     notesFromOrg,
     relationshipToVictim,
@@ -149,6 +151,7 @@ const updateReferralById = async (
   guardianEmail: string,
   guardianPreferredContactMethod: string,
   survivorAddress: string,
+  survivorEmailAddress: string,
   survivorPhoneNumber: string,
   notesFromOrg: string,
   relationshipToVictim: string,
@@ -199,6 +202,7 @@ const updateReferralById = async (
     guardianEmail,
     guardianPreferredContactMethod,
     survivorAddress,
+    survivorEmailAddress,
     survivorPhoneNumber,
     notesFromOrg,
     relationshipToVictim,
@@ -305,6 +309,24 @@ const deleteCommunicationHistory = async (id: string, index: number) => {
   ).exec();
 };
 
+const getDuplicateReferrals = async (phoneNumber: string, email: string) => {
+  let phoneNumberRegex = '';
+  if (phoneNumber.length) {
+    for (let i = 0; i < phoneNumber.length; i += 1) {
+      if (phoneNumber[i] >= '0' && phoneNumber[i] <= '9') {
+        phoneNumberRegex += `${phoneNumber[i]}\\D*`;
+      }
+    }
+    phoneNumberRegex += '$';
+  }
+  return Referral.find({
+    $or: [
+      { survivorEmailAddress: { $regex: email || '\\b\\B', $options: 'i' } },
+      { survivorPhoneNumber: { $regex: phoneNumberRegex || '\\b\\B' } },
+    ],
+  });
+};
+
 export {
   createNewReferral,
   getAllReferrals,
@@ -314,4 +336,5 @@ export {
   addToCommunicationHistory,
   updateCommunicationHistory,
   deleteCommunicationHistory,
+  getDuplicateReferrals,
 };
