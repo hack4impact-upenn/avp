@@ -73,6 +73,10 @@ const createReferral = async (
     homMEONum,
     homeMNum,
     historyOfCommunication,
+    outreachLetterSent,
+    transferredToCCWaitlist,
+    followUpLetterSent,
+    transferredToETO,
   } = req.body;
 
   if (
@@ -88,7 +92,11 @@ const createReferral = async (
     !relationshipToVictim ||
     !crimeType ||
     !survivorPreferredContactMethod ||
-    isGunViolence === undefined
+    isGunViolence === undefined ||
+    outreachLetterSent === undefined ||
+    transferredToCCWaitlist === undefined ||
+    followUpLetterSent === undefined ||
+    transferredToETO === undefined
   ) {
     next(
       ApiError.missingFields([
@@ -161,6 +169,10 @@ const createReferral = async (
       homMEONum,
       homeMNum,
       historyOfCommunication,
+      outreachLetterSent,
+      transferredToCCWaitlist,
+      followUpLetterSent,
+      transferredToETO,
     );
     res.sendStatus(StatusCode.CREATED);
     const msg = {
@@ -311,6 +323,10 @@ const updateReferral = async (
     homMEONum,
     homeMNum,
     historyOfCommunication,
+    outreachLetterSent,
+    transferredToCCWaitlist,
+    followUpLetterSent,
+    transferredToETO,
   } = req.body;
 
   if (
@@ -326,7 +342,11 @@ const updateReferral = async (
     !relationshipToVictim ||
     !crimeType ||
     !survivorPreferredContactMethod ||
-    isGunViolence === undefined
+    isGunViolence === undefined ||
+    outreachLetterSent === undefined ||
+    transferredToCCWaitlist === undefined ||
+    followUpLetterSent === undefined ||
+    transferredToETO === undefined
   ) {
     next(
       ApiError.missingFields([
@@ -400,6 +420,10 @@ const updateReferral = async (
       homMEONum,
       homeMNum,
       historyOfCommunication,
+      outreachLetterSent,
+      transferredToCCWaitlist,
+      followUpLetterSent,
+      transferredToETO,
     );
 
     const staffEmail = 'bach.tran@hack4impact.org';
@@ -466,16 +490,29 @@ const addToHistory = async (
 ) => {
   const { id } = req.params;
 
-  const { dateOfCommunication, method, user, notes, didEstablishedContact } =
-    req.body;
+  const {
+    dateOfCommunication,
+    method,
+    user,
+    notes,
+    didEstablishedContact,
+    dateOfNextCommunication,
+  } = req.body;
 
-  if (!dateOfCommunication || !method || !user || !didEstablishedContact) {
+  if (
+    !dateOfCommunication ||
+    !method ||
+    !user ||
+    !didEstablishedContact ||
+    !dateOfNextCommunication
+  ) {
     next(
       ApiError.missingFields([
         'dateOfCommunication',
         'method',
         'user',
         'didEstablishedContact',
+        'dateOfNextCommunication',
       ]),
     );
     return;
@@ -489,6 +526,7 @@ const addToHistory = async (
       user,
       notes,
       didEstablishedContact,
+      new Date(dateOfNextCommunication),
     );
     res.status(StatusCode.OK).json(referral);
   } catch (err) {
@@ -507,16 +545,29 @@ const updateHistory = async (
 ) => {
   const { id, index } = req.params;
 
-  const { dateOfCommunication, method, user, notes, didEstablishedContact } =
-    req.body;
+  const {
+    dateOfCommunication,
+    method,
+    user,
+    notes,
+    didEstablishedContact,
+    dateOfNextCommunication,
+  } = req.body;
 
-  if (!dateOfCommunication || !method || !user || !didEstablishedContact) {
+  if (
+    !dateOfCommunication ||
+    !method ||
+    !user ||
+    !didEstablishedContact ||
+    !dateOfNextCommunication
+  ) {
     next(
       ApiError.missingFields([
         'dateOfCommunication',
         'method',
         'user',
         'didEstablishedContact',
+        'dateOfNextCommunication',
       ]),
     );
     return;
@@ -531,6 +582,7 @@ const updateHistory = async (
       user,
       notes,
       didEstablishedContact,
+      dateOfNextCommunication,
     );
     res.status(StatusCode.OK).json(referral);
   } catch (err) {
