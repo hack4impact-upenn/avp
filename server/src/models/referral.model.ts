@@ -11,6 +11,7 @@ interface communicationItem {
   user: IUser;
   notes?: string;
   didEstablishedContact: boolean;
+  dateOfNextCommunication: Date;
 }
 
 const communicationItemSchema = new mongoose.Schema({
@@ -32,6 +33,10 @@ const communicationItemSchema = new mongoose.Schema({
   },
   didEstablishedContact: {
     type: Boolean,
+    required: true,
+  },
+  dateOfNextCommunication: {
+    type: Date,
     required: true,
   },
 });
@@ -138,7 +143,15 @@ const ReferralSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  survivorEmailAddress: {
+    type: String,
+    required: true,
+  },
   survivorPhoneNumber: {
+    type: String,
+    required: true,
+  },
+  survivorPreferredContactMethod: {
     type: String,
     required: true,
   },
@@ -239,6 +252,22 @@ const ReferralSchema = new mongoose.Schema({
     type: [communicationItemSchema],
     required: false,
   },
+  outreachLetterSent: {
+    type: Boolean,
+    required: true,
+  },
+  transferredToCCWaitlist: {
+    type: Boolean,
+    required: true,
+  },
+  followUpLetterSent: {
+    type: Boolean,
+    required: true,
+  },
+  transferredToETO: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 interface IReferral extends mongoose.Document {
@@ -267,8 +296,10 @@ interface IReferral extends mongoose.Document {
   guardianPhone: string;
   guardianEmail: string;
   guardianPreferredContactMethod: string;
+  survivorEmailAddress: string;
   survivorAddress: string;
   survivorPhoneNumber: string;
+  survivorPreferredContactMethod: string;
   notesFromOrg: string;
   relationshipToVictim: string;
   crimeDCNum: string;
@@ -291,6 +322,10 @@ interface IReferral extends mongoose.Document {
   homMNum: string;
   homCaseInformation: string;
   historyOfCommunication: Array<communicationItem>;
+  outreachLetterSent: boolean;
+  transferredToCCWaitlist: boolean;
+  followUpLetterSent: boolean;
+  transferredToETO: boolean;
 }
 
 const Referral = mongoose.model<IReferral>('Referral', ReferralSchema);
