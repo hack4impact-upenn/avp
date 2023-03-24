@@ -15,7 +15,7 @@
     "dev": "cross-env NODE_ENV=development concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
     "server": "cd server && yarn start",
     "client": "cd client && yarn start",
-    "pre-commit": "yarn lint-staged",
+    "pre-commit": "yarn lint-staged && yarn format",
     "pre-push": "yarn lint && yarn prettier-check && yarn test",
     "lint": "eslint --quiet --fix --ext .js,.ts,.tsx .",
     "prettier-check": "prettier --check .",
@@ -37,6 +37,7 @@
     "concurrently": "^7.0.0",
     "cross-env": "^7.0.3",
     "dayjs": "^1.11.7",
+    "flag": "^5.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.2.2",
@@ -58,7 +59,7 @@
     "eslint-plugin-react-hooks": "^4.3.0",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
-    "prettier": "^2.5.1",
+    "prettier": "^2.8.4",
     "ts-node-dev": "^2.0.0",
     "typescript": "^4.5.5"
   }
