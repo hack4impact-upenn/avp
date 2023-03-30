@@ -12,6 +12,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker'
 import { Theme, useTheme } from '@mui/material/styles';
 
 function getStyles(val: string, valArr: string[], theme: Theme) {
@@ -94,14 +95,12 @@ export default function PageTwo({ data, setData }: Props) {
         </FormControl>
 
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <MobileDatePicker
+          <DesktopDatePicker
             label="Date of Death"
-            inputFormat="MM/DD/YYYY"
             value={homicideDate}
             onChange={(newValue: Dayjs | null) => {
               sethomicideDate(newValue);
             }}
-            renderInput={(params) => <TextField {...params} />}
           />
         </LocalizationProvider>
       </div>
@@ -138,14 +137,12 @@ export default function PageTwo({ data, setData }: Props) {
 
       <FormControl sx={{ marginRight: 2, marginBottom: 2 }}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <MobileDatePicker
+          <DesktopDatePicker
             label="Date of Incident"
-            inputFormat="MM/DD/YYYY"
             value={crimeDate}
             onChange={(newValue: Dayjs | null) => {
               setCrimeDate(newValue);
             }}
-            renderInput={(params) => <TextField {...params} />}
           />
         </LocalizationProvider>
       </FormControl>

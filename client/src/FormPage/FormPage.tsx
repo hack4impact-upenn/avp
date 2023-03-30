@@ -84,7 +84,7 @@ export default function FormPage() {
       {targetPage}
       <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
         <Button
-          color="inherit"
+          variant="contained"
           disabled={activeStep === 0}
           onClick={handleBack}
           sx={{ mr: 1, color: 'white' }}
@@ -92,7 +92,11 @@ export default function FormPage() {
           Back
         </Button>
         <Box sx={{ flex: '1 1 auto' }} />
-        <Button color="inherit" onClick={handleNext} sx={{ color: 'white' }}>
+        <Button
+          variant="contained"
+          onClick={handleNext}
+          sx={{ color: 'white' }}
+        >
           {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
         </Button>
       </Box>

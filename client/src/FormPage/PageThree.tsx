@@ -13,6 +13,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
 function getStyles(val: string, valArr: string[], theme: Theme) {
   return {
@@ -485,14 +486,12 @@ export default function PageThree({ data, setData }: Props) {
       {/* survivorDOB */}
       <FormControl sx={{ marginRight: 2, marginBottom: 2 }}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <MobileDatePicker
+          <DesktopDatePicker
             label="Date of Birth"
-            inputFormat="MM/DD/YYYY"
             value={survivorDOB}
             onChange={(newValue: Dayjs | null) => {
               setsurvivorDOB(newValue);
             }}
-            renderInput={(params) => <TextField {...params} />}
           />
         </LocalizationProvider>
       </FormControl>

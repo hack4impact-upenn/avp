@@ -23,7 +23,7 @@ export default function FormStepper({
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box className="stepper" sx={{ width: '100%' }}>
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
           const stepProps: { completed?: boolean } = {};
