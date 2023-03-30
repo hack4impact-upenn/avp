@@ -12,7 +12,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker'
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { Theme, useTheme } from '@mui/material/styles';
 
 function getStyles(val: string, valArr: string[], theme: Theme) {
