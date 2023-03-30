@@ -81,7 +81,7 @@ export default function FormPage() {
         activeStep={activeStep}
         setActiveStep={setActiveStep}
       />
-      {targetPage}
+      {activeStep === steps.length ? <div /> : targetPage}
       <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
         <Button
           variant="contained"
