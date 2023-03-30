@@ -24,6 +24,7 @@ import AlertPopup from './components/AlertPopup';
 import InviteRegisterPage from './Authentication/InviteRegisterPage';
 import DataGrid from './components/DataGrid';
 import DatabasePage from './Database/DatabasePage';
+import FormPage from './FormPage/FormPage';
 import './index.css';
 
 function App() {
@@ -59,6 +60,7 @@ function App() {
                   />
                   {/* Routes accessed only if user is authenticated */}
                   <Route element={<ProtectedRoutesWrapper />}>
+                    <Route path="/form" element={<FormPage />} />
                     <Route path="/database" element={<DatabasePage />} />
                     <Route path="/home" element={<HomePage />} />
                   </Route>
