@@ -28,17 +28,19 @@ interface Props {
   setData: React.Dispatch<React.SetStateAction<any>>;
 }
 
-const names = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
+const counselingServices = [
+  'Individual Counseling/Therapy In-Person',
+  'Individual Counseling/Therapy Virtual',
+  'Adult Group Counseling/Therapy In-Person',
+  'Adult Group Counseling/Therapy Virtual',
+  'Youth Group Counseling/Therapy In-Person',
+];
+
+const victimServices = [
+  'Court Support',
+  'Detective Updates',
+  'Victims Compensation Assistance Program (VCAP)',
+  'Other: text box',
 ];
 
 export default function PageOne({ data, setData }: Props) {
@@ -78,11 +80,11 @@ export default function PageOne({ data, setData }: Props) {
           input={<OutlinedInput label="Counseling & Therapy" />}
           MenuProps={MenuProps}
         >
-          {names.map((val) => (
+          {counselingServices.map((val) => (
             <MenuItem
               key={val}
               value={val}
-              style={getStyles(val, names, theme)}
+              style={getStyles(val, counselingServices, theme)}
             >
               {val}
             </MenuItem>
@@ -105,11 +107,11 @@ export default function PageOne({ data, setData }: Props) {
           input={<OutlinedInput label="Victim Services" />}
           MenuProps={MenuProps}
         >
-          {names.map((val) => (
+          {victimServices.map((val) => (
             <MenuItem
               key={val}
               value={val}
-              style={getStyles(val, names, theme)}
+              style={getStyles(val, victimServices, theme)}
             >
               {val}
             </MenuItem>
