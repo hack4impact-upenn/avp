@@ -6,6 +6,7 @@ import {
 import { IUser } from '../models/user.model';
 
 const createNewReferral = async (
+  status: string,
   departmentInCharge: string,
   program: string,
   staffAssigned: IUser,
@@ -61,6 +62,7 @@ const createNewReferral = async (
   transferredToETO: boolean,
 ) => {
   const newReferral = new Referral({
+    status,
     departmentInCharge,
     program,
     staffAssigned,
@@ -133,6 +135,7 @@ const getReferralById = async (id: string) => {
 
 const updateReferralById = async (
   id: string,
+  status: string,
   departmentInCharge: string,
   program: string,
   staffAssigned: IUser,
@@ -188,6 +191,7 @@ const updateReferralById = async (
   transferredToETO: boolean,
 ) => {
   const updateQuery = {
+    status,
     departmentInCharge,
     program,
     staffAssigned,

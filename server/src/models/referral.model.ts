@@ -42,6 +42,10 @@ const communicationItemSchema = new mongoose.Schema({
 });
 
 const ReferralSchema = new mongoose.Schema({
+  status: {
+    type: String,
+    required: true,
+  },
   departmentInCharge: {
     type: String,
     required: false,
@@ -272,6 +276,7 @@ const ReferralSchema = new mongoose.Schema({
 
 interface IReferral extends mongoose.Document {
   _id: string;
+  status: string;
   departmentInCharge: string;
   program: string;
   staffAssigned: IUser;
