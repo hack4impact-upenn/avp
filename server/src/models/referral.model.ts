@@ -44,7 +44,7 @@ const communicationItemSchema = new mongoose.Schema({
 const ReferralSchema = new mongoose.Schema({
   status: {
     type: String,
-    required: true
+    required: true,
   },
   departmentInCharge: {
     type: String,

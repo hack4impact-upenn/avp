@@ -14,11 +14,7 @@ import {
   updateReferralById,
 } from '../services/referral.service';
 import StatusCode from '../util/statusCode';
-import {
-  IReferral,
-  communicationItem,
-  Referral,
-} from '../models/referral.model';
+import { communicationItem } from '../models/referral.model';
 import { IUser } from '../models/user.model';
 
 // SendGrid setup
@@ -32,17 +28,17 @@ const setReferralStatus = async (
   transferredToCCWaitlist: boolean,
   followUpLetterSent: boolean,
 ) => {
-  var status = "Unassigned";
+  let status = 'Unassigned';
 
   if (staffAssigned) {
-    status = "Assigned";
+    status = 'Assigned';
   }
   if (outreachLetterSent) {
-    status = "Outreach Letter Sent";
+    status = 'Outreach Letter Sent';
   }
 
-  var establishedContact = false;
-  for (var i = 0; i < historyOfCommunication.length; ++i) {
+  let establishedContact = false;
+  for (let i = 0; i < historyOfCommunication.length; i += 1) {
     if (historyOfCommunication[i].didEstablishedContact) {
       establishedContact = true;
     }
@@ -50,24 +46,33 @@ const setReferralStatus = async (
 
   if (establishedContact) {
     if (transferredToCCWaitlist) {
-      status = "CC Waitlist";
+      status = 'CC Waitlist';
     } else {
-      status = "Completed";
+      status = 'Completed';
     }
-  } else if (historyOfCommunication.length === 1 && !historyOfCommunication[0].didEstablishedContact) {
-    status = "1st unsuccessful attempt";
-  } else if (historyOfCommunication.length === 2 && !historyOfCommunication[1].didEstablishedContact) {
-    status = "2nd unsuccessful attempt";
-  } else if (historyOfCommunication.length === 3 && !historyOfCommunication[2].didEstablishedContact) {
-    status = "3rd unsuccessful attempt";
+  } else if (
+    historyOfCommunication.length === 1 &&
+    !historyOfCommunication[0].didEstablishedContact
+  ) {
+    status = '1st unsuccessful attempt';
+  } else if (
+    historyOfCommunication.length === 2 &&
+    !historyOfCommunication[1].didEstablishedContact
+  ) {
+    status = '2nd unsuccessful attempt';
+  } else if (
+    historyOfCommunication.length === 3 &&
+    !historyOfCommunication[2].didEstablishedContact
+  ) {
+    status = '3rd unsuccessful attempt';
   }
 
   if (followUpLetterSent) {
-    status = "Follow-up letter sent";
+    status = 'Follow-up letter sent';
   }
 
   return status;
-}
+};
 
 const createReferral = async (
   req: express.Request,
@@ -167,14 +172,20 @@ const createReferral = async (
         'outreachLetterSent',
         'transferredToCCWaitlist',
         'followUpLetterSent',
-        'transferredToETO'
+        'transferredToETO',
       ]),
     );
     return;
   }
 
   try {
-    const status = await setReferralStatus(staffAssigned, historyOfCommunication, outreachLetterSent, transferredToCCWaitlist, followUpLetterSent);
+    const status = await setReferralStatus(
+      staffAssigned,
+      historyOfCommunication,
+      outreachLetterSent,
+      transferredToCCWaitlist,
+      followUpLetterSent,
+    );
     await createNewReferral(
       status,
       departmentInCharge,
@@ -423,14 +434,20 @@ const updateReferral = async (
         'outreachLetterSent',
         'transferredToCCWaitlist',
         'followUpLetterSent',
-        'transferredToETO'
+        'transferredToETO',
       ]),
     );
     return;
   }
 
   try {
-    const status = await setReferralStatus(staffAssigned, historyOfCommunication, outreachLetterSent, transferredToCCWaitlist, followUpLetterSent);
+    const status = await setReferralStatus(
+      staffAssigned,
+      historyOfCommunication,
+      outreachLetterSent,
+      transferredToCCWaitlist,
+      followUpLetterSent,
+    );
     const referral = await updateReferralById(
       id,
       status,
@@ -490,8 +507,8 @@ const updateReferral = async (
     );
 
     const staffEmail = 'bach.tran@hack4impact.org';
-    const staffFirstName = staffAssigned?.firstName || "last name placeholder"
-    const staffLastName = staffAssigned?.lastName || "first name placeholder"
+    const staffFirstName = staffAssigned?.firstName || 'last name placeholder';
+    const staffLastName = staffAssigned?.lastName || 'first name placeholder';
     const msg = {
       to: `${agencyRepEmail}`,
       from: 'bach.tran@hack4impact.org',
