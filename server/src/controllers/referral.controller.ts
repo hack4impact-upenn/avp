@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import express from 'express';
+import sgMail from '@sendgrid/mail';
 import ApiError from '../util/apiError';
 import {
   addToCommunicationHistory,
@@ -12,8 +13,7 @@ import {
   updateReferralById,
 } from '../services/referral.service';
 import StatusCode from '../util/statusCode';
-//SendGrid setup
-import sgMail from '@sendgrid/mail';
+// SendGrid setup
 const apiKey: string = process.env.SENDGRID_API_KEY as string;
 sgMail.setApiKey(apiKey);
 
