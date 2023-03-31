@@ -12,6 +12,7 @@ function ScreenGrid({ children }: AnyChildren) {
   return (
     <Grid
       container
+      item
       xs={12}
       height="100vh"
       justifyContent="center"

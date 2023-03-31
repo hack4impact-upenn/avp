@@ -26,6 +26,7 @@ import DataGrid from './components/DataGrid';
 import DatabasePage from './Database/DatabasePage';
 import FormPage from './FormPage/FormPage';
 import './index.css';
+import ReferralViewPage from './ReferralView/ReferralViewPage';
 
 function App() {
   return (
@@ -61,6 +62,10 @@ function App() {
                   {/* Routes accessed only if user is authenticated */}
                   <Route element={<ProtectedRoutesWrapper />}>
                     <Route path="/form" element={<FormPage />} />
+                    <Route
+                      path="/referral/:id"
+                      element={<ReferralViewPage />}
+                    />
                     <Route path="/database" element={<DatabasePage />} />
                     <Route path="/home" element={<HomePage />} />
                   </Route>
