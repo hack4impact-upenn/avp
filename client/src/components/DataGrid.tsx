@@ -6,7 +6,6 @@ import {
   DataGridPremium,
   GridToolbar,
   useGridApiRef,
-  useGridApiContext,
 } from '@mui/x-data-grid-premium';
 import { Button, Chip } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
@@ -15,110 +14,17 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import PersonAddAlt1OutlinedIcon from '@mui/icons-material/PersonAddAlt1Outlined';
 import HourglassTopOutlinedIcon from '@mui/icons-material/HourglassTopOutlined';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
-import {
-  GridColumns,
-  GridFilterInputValueProps,
-  GridFilterOperator,
-  GridRenderCellParams,
-} from '@mui/x-data-grid-pro';
+import { GridColumns, GridRenderCellParams } from '@mui/x-data-grid-pro';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import NoAccountsOutlinedIcon from '@mui/icons-material/NoAccountsOutlined';
 import { useData } from '../util/api';
 import IReferral from '../util/types/referral';
 import CircularProgress from '@mui/material/CircularProgress';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import TextField from '@mui/material/TextField';
 
 /* Wrapper Around DataGridPremium */
 export default function DataGrid() {
   const [referralList, setReferralList] = useState<IReferral[]>([]);
   const referrals = useData('referral/all');
-
-  function CustomEditComponent(props: any) {
-    const { id, value, field } = props;
-    const apiRef = useGridApiContext();
-
-    const handleChange = (event: any) => {
-      const eventValue = event.target.value; // The new value entered by the user
-      console.log({ eventValue });
-      const newValue =
-        typeof eventValue === 'string' ? value.split(',') : eventValue;
-      apiRef.current.setEditCellValue({
-        id,
-        field,
-        value: newValue.filter((x: any) => x !== ''),
-      });
-    };
-
-    return (
-      <Select
-        labelId="demo-multiple-name-label"
-        id="demo-multiple-name"
-        multiple
-        value={value}
-        onChange={handleChange}
-        sx={{ width: '100%' }}
-      >
-        {props.valueOptions.map((option: any) => (
-          <MenuItem key={option} value={option}>
-            {option}
-          </MenuItem>
-        ))}
-      </Select>
-    );
-  }
-
-  function CustomFilterInputSingleSelect(props: any) {
-    const {
-      item,
-      applyValue,
-      type,
-      apiRef,
-      focusElementRef,
-      valueOptions,
-      ...others
-    } = props;
-
-    return (
-      <TextField
-        id={`contains-input-${item.id}`}
-        value={item.value}
-        onChange={(event) => applyValue({ ...item, value: event.target.value })}
-        type={type || 'text'}
-        variant="standard"
-        InputLabelProps={{
-          shrink: true,
-        }}
-        inputRef={focusElementRef}
-        select
-        SelectProps={{
-          native: true,
-        }}
-      >
-        {['', ...valueOptions].map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </TextField>
-    );
-  }
-
-  const filterOperatorsArray: GridFilterOperator = {
-    value: 'contains',
-    getApplyFilterFn: (filterItem: any) => {
-      if (filterItem.value == null || filterItem.value === '') {
-        return null;
-      }
-      return ({ value }: any) => {
-        // if one of the cell values corresponds to the filter item
-        return value.some((cellValue: any) => cellValue === filterItem.value);
-      };
-    },
-    InputComponent: CustomFilterInputSingleSelect,
-    InputComponentProps: { type: 'text' },
-  };
 
   useEffect(() => {
     setReferralList(
@@ -145,20 +51,12 @@ export default function DataGrid() {
       headerName: 'Department in Charge',
       width: 210,
       editable: true,
-      valueOptions: [],
       type: 'singleSelect',
-      valueFormatter: ({ value }) => (value ? value.join(', ') : ''),
-      renderEditCell: (params) => (
-        <CustomEditComponent
-          valueOptions={[
-            'Counseling Services',
-            'Victim/Witness Services',
-            'Youth Services',
-          ]}
-          {...params}
-        />
-      ),
-      filterOperators: [filterOperatorsArray],
+      valueOptions: [
+        'Counseling Services',
+        'Victim/Witness Services',
+        'Youth Services',
+      ],
     },
     {
       field: 'program',
