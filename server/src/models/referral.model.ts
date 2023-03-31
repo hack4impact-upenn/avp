@@ -11,6 +11,7 @@ interface communicationItem {
   user: IUser;
   notes?: string;
   didEstablishedContact: boolean;
+  dateOfNextCommunication: Date;
 }
 
 const communicationItemSchema = new mongoose.Schema({
@@ -34,9 +35,17 @@ const communicationItemSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
+  dateOfNextCommunication: {
+    type: Date,
+    required: true,
+  },
 });
 
 const ReferralSchema = new mongoose.Schema({
+  status: {
+    type: String,
+    required: true,
+  },
   departmentInCharge: {
     type: String,
     required: false,
@@ -137,6 +146,10 @@ const ReferralSchema = new mongoose.Schema({
   survivorAddress: {
     type: String,
     required: false,
+  },
+  survivorEmailAddress: {
+    type: String,
+    required: true,
   },
   survivorPhoneNumber: {
     type: String,
@@ -243,10 +256,27 @@ const ReferralSchema = new mongoose.Schema({
     type: [communicationItemSchema],
     required: false,
   },
+  outreachLetterSent: {
+    type: Boolean,
+    required: true,
+  },
+  transferredToCCWaitlist: {
+    type: Boolean,
+    required: true,
+  },
+  followUpLetterSent: {
+    type: Boolean,
+    required: true,
+  },
+  transferredToETO: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 interface IReferral extends mongoose.Document {
   _id: string;
+  status: string;
   departmentInCharge: string;
   program: string;
   staffAssigned: IUser;
@@ -271,6 +301,7 @@ interface IReferral extends mongoose.Document {
   guardianPhone: string;
   guardianEmail: string;
   guardianPreferredContactMethod: string;
+  survivorEmailAddress: string;
   survivorAddress: string;
   survivorPhoneNumber: string;
   survivorPreferredContactMethod: string;
@@ -296,6 +327,10 @@ interface IReferral extends mongoose.Document {
   homeMNum: string;
   homCaseInformation: string;
   historyOfCommunication: Array<communicationItem>;
+  outreachLetterSent: boolean;
+  transferredToCCWaitlist: boolean;
+  followUpLetterSent: boolean;
+  transferredToETO: boolean;
 }
 
 const Referral = mongoose.model<IReferral>('Referral', ReferralSchema);

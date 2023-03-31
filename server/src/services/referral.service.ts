@@ -6,6 +6,7 @@ import {
 import { IUser } from '../models/user.model';
 
 const createNewReferral = async (
+  status: string,
   departmentInCharge: string,
   program: string,
   staffAssigned: IUser,
@@ -32,6 +33,7 @@ const createNewReferral = async (
   guardianEmail: string,
   guardianPreferredContactMethod: string,
   survivorAddress: string,
+  survivorEmailAddress: string,
   survivorPhoneNumber: string,
   notesFromOrg: string,
   relationshipToVictim: string,
@@ -54,8 +56,13 @@ const createNewReferral = async (
   homMEONum: string,
   homeMNum: string,
   historyOfCommunication: Array<communicationItem>,
+  outreachLetterSent: boolean,
+  transferredToCCWaitlist: boolean,
+  followUpLetterSent: boolean,
+  transferredToETO: boolean,
 ) => {
   const newReferral = new Referral({
+    status,
     departmentInCharge,
     program,
     staffAssigned,
@@ -82,6 +89,7 @@ const createNewReferral = async (
     guardianEmail,
     guardianPreferredContactMethod,
     survivorAddress,
+    survivorEmailAddress,
     survivorPhoneNumber,
     notesFromOrg,
     relationshipToVictim,
@@ -104,6 +112,10 @@ const createNewReferral = async (
     homMEONum,
     homeMNum,
     historyOfCommunication,
+    outreachLetterSent,
+    transferredToCCWaitlist,
+    followUpLetterSent,
+    transferredToETO,
   });
   const referral: IReferral = await newReferral.save();
   return referral;
@@ -123,6 +135,7 @@ const getReferralById = async (id: string) => {
 
 const updateReferralById = async (
   id: string,
+  status: string,
   departmentInCharge: string,
   program: string,
   staffAssigned: IUser,
@@ -149,6 +162,7 @@ const updateReferralById = async (
   guardianEmail: string,
   guardianPreferredContactMethod: string,
   survivorAddress: string,
+  survivorEmailAddress: string,
   survivorPhoneNumber: string,
   notesFromOrg: string,
   relationshipToVictim: string,
@@ -171,8 +185,13 @@ const updateReferralById = async (
   homMEONum: string,
   homeMNum: string,
   historyOfCommunication: Array<communicationItem>,
+  outreachLetterSent: boolean,
+  transferredToCCWaitlist: boolean,
+  followUpLetterSent: boolean,
+  transferredToETO: boolean,
 ) => {
   const updateQuery = {
+    status,
     departmentInCharge,
     program,
     staffAssigned,
@@ -199,6 +218,7 @@ const updateReferralById = async (
     guardianEmail,
     guardianPreferredContactMethod,
     survivorAddress,
+    survivorEmailAddress,
     survivorPhoneNumber,
     notesFromOrg,
     relationshipToVictim,
@@ -221,6 +241,10 @@ const updateReferralById = async (
     homMEONum,
     homeMNum,
     historyOfCommunication,
+    outreachLetterSent,
+    transferredToCCWaitlist,
+    followUpLetterSent,
+    transferredToETO,
   };
   return Referral.findByIdAndUpdate(id, updateQuery, { new: true }).exec();
 };
@@ -232,6 +256,7 @@ const addToCommunicationHistory = async (
   user: IUser,
   notes: string,
   didEstablishedContact: boolean,
+  dateOfNextCommunication: Date,
 ) => {
   const newCommunicationItem: communicationItem = {
     dateOfCommunication,
@@ -239,6 +264,7 @@ const addToCommunicationHistory = async (
     user,
     notes,
     didEstablishedContact,
+    dateOfNextCommunication,
   };
   return Referral.findByIdAndUpdate(
     id,
@@ -257,6 +283,7 @@ const updateCommunicationHistory = async (
   user: IUser,
   notes: string,
   didEstablishedContact: boolean,
+  dateOfNextCommunication: Date,
 ) => {
   const newCommunicationItem: communicationItem = {
     dateOfCommunication,
@@ -264,6 +291,7 @@ const updateCommunicationHistory = async (
     user,
     notes,
     didEstablishedContact,
+    dateOfNextCommunication,
   };
   return Referral.findByIdAndUpdate(
     id,
@@ -305,6 +333,24 @@ const deleteCommunicationHistory = async (id: string, index: number) => {
   ).exec();
 };
 
+const getDuplicateReferrals = async (phoneNumber: string, email: string) => {
+  let phoneNumberRegex = '';
+  if (phoneNumber.length) {
+    for (let i = 0; i < phoneNumber.length; i += 1) {
+      if (phoneNumber[i] >= '0' && phoneNumber[i] <= '9') {
+        phoneNumberRegex += `${phoneNumber[i]}\\D*`;
+      }
+    }
+    phoneNumberRegex += '$';
+  }
+  return Referral.find({
+    $or: [
+      { survivorEmailAddress: { $regex: email || '\\b\\B', $options: 'i' } },
+      { survivorPhoneNumber: { $regex: phoneNumberRegex || '\\b\\B' } },
+    ],
+  });
+};
+
 export {
   createNewReferral,
   getAllReferrals,
@@ -314,4 +360,5 @@ export {
   addToCommunicationHistory,
   updateCommunicationHistory,
   deleteCommunicationHistory,
+  getDuplicateReferrals,
 };

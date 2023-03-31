@@ -16,20 +16,12 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import PersonAddAlt1OutlinedIcon from '@mui/icons-material/PersonAddAlt1Outlined';
 import HourglassTopOutlinedIcon from '@mui/icons-material/HourglassTopOutlined';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
-import {
-  GridColumns,
-  GridFilterInputValueProps,
-  GridFilterOperator,
-  GridRenderCellParams,
-} from '@mui/x-data-grid-pro';
+import { GridColumns, GridRenderCellParams } from '@mui/x-data-grid-pro';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import NoAccountsOutlinedIcon from '@mui/icons-material/NoAccountsOutlined';
 import { useData } from '../util/api';
 import IReferral from '../util/types/referral';
 import CircularProgress from '@mui/material/CircularProgress';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import TextField from '@mui/material/TextField';
 
 /* Wrapper Around DataGridPremium */
 export default function DataGrid() {
@@ -132,7 +124,6 @@ export default function DataGrid() {
     InputComponent: CustomFilterInputSingleSelect,
     InputComponentProps: { type: 'text' },
   };
-
   useEffect(() => {
     setReferralList(
       referrals?.data.map((referral: IReferral) => {
@@ -158,7 +149,6 @@ export default function DataGrid() {
       headerName: 'Department in Charge',
       width: 210,
       editable: true,
-      valueOptions: [],
       type: 'singleSelect',
       valueFormatter: ({ value }) =>
         Array.isArray(value) ? value.join(', ') : '',
@@ -283,6 +273,13 @@ export default function DataGrid() {
           />
         </div>
       ),
+    },
+    {
+      field: 'transferredToETO',
+      headerName: 'Added to ETO',
+      width: 120,
+      type: 'boolean',
+      editable: true,
     },
     {
       field: 'view',
@@ -661,7 +658,7 @@ export default function DataGrid() {
         disableSelectionOnClick
         initialState={{
           columns: { columnVisibilityModel: { id: false } },
-          pinnedColumns: { right: ['view'] },
+          pinnedColumns: { left: ['survivorName'], right: ['view'] },
         }}
         experimentalFeatures={{ newEditingApi: true }}
         components={{ Toolbar: GridToolbar }}

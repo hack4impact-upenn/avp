@@ -9,6 +9,7 @@ import {
   addToHistory,
   updateHistory,
   deleteHistory,
+  getDuplicates,
 } from '../controllers/referral.controller';
 
 const router = express.Router();
@@ -16,6 +17,8 @@ const router = express.Router();
 router.post('/create', createReferral);
 
 router.get('/all', getReferrals);
+
+router.get('/duplicates', getDuplicates);
 
 router.get('/:department/all', getDepartmentReferrals);
 

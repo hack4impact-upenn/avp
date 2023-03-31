@@ -8,14 +8,71 @@ import {
   deleteCommunicationHistory,
   getAllDepartmentReferrals,
   getAllReferrals,
+  getDuplicateReferrals,
   getReferralById,
   updateCommunicationHistory,
   updateReferralById,
 } from '../services/referral.service';
 import StatusCode from '../util/statusCode';
+import { communicationItem } from '../models/referral.model';
+import { IUser } from '../models/user.model';
+
 // SendGrid setup
 const apiKey: string = process.env.SENDGRID_API_KEY as string;
 sgMail.setApiKey(apiKey);
+
+const setReferralStatus = async (
+  staffAssigned: IUser,
+  historyOfCommunication: Array<communicationItem>,
+  outreachLetterSent: boolean,
+  transferredToCCWaitlist: boolean,
+  followUpLetterSent: boolean,
+) => {
+  let status = 'Unassigned';
+
+  if (staffAssigned) {
+    status = 'Assigned';
+  }
+  if (outreachLetterSent) {
+    status = 'Outreach Letter Sent';
+  }
+
+  let establishedContact = false;
+  for (let i = 0; i < historyOfCommunication.length; i += 1) {
+    if (historyOfCommunication[i].didEstablishedContact) {
+      establishedContact = true;
+    }
+  }
+
+  if (establishedContact) {
+    if (transferredToCCWaitlist) {
+      status = 'CC Waitlist';
+    } else {
+      status = 'Completed';
+    }
+  } else if (
+    historyOfCommunication.length === 1 &&
+    !historyOfCommunication[0].didEstablishedContact
+  ) {
+    status = '1st unsuccessful attempt';
+  } else if (
+    historyOfCommunication.length === 2 &&
+    !historyOfCommunication[1].didEstablishedContact
+  ) {
+    status = '2nd unsuccessful attempt';
+  } else if (
+    historyOfCommunication.length === 3 &&
+    !historyOfCommunication[2].didEstablishedContact
+  ) {
+    status = '3rd unsuccessful attempt';
+  }
+
+  if (followUpLetterSent) {
+    status = 'Follow-up letter sent';
+  }
+
+  return status;
+};
 
 const createReferral = async (
   req: express.Request,
@@ -49,6 +106,7 @@ const createReferral = async (
     guardianEmail,
     guardianPreferredContactMethod,
     survivorAddress,
+    survivorEmailAddress,
     survivorPhoneNumber,
     notesFromOrg,
     relationshipToVictim,
@@ -71,6 +129,10 @@ const createReferral = async (
     homMEONum,
     homeMNum,
     historyOfCommunication,
+    outreachLetterSent,
+    transferredToCCWaitlist,
+    followUpLetterSent,
+    transferredToETO,
   } = req.body;
 
   if (
@@ -81,11 +143,16 @@ const createReferral = async (
     !agencyRepName ||
     !agencyRepEmail ||
     !agencyRepPhone ||
+    !survivorEmailAddress ||
     !survivorPhoneNumber ||
     !relationshipToVictim ||
     !crimeType ||
     !survivorPreferredContactMethod ||
-    isGunViolence === undefined
+    isGunViolence === undefined ||
+    outreachLetterSent === undefined ||
+    transferredToCCWaitlist === undefined ||
+    followUpLetterSent === undefined ||
+    transferredToETO === undefined
   ) {
     next(
       ApiError.missingFields([
@@ -96,18 +163,31 @@ const createReferral = async (
         'agencyRepName',
         'agencyRepEmail',
         'agencyRepPhone',
+        'survivorEmailAddress',
         'survivorPhoneNumber',
         'relationshipToVictim',
         'crimeType',
         'survivorPreferredContactMethod',
         'isGunViolence',
+        'outreachLetterSent',
+        'transferredToCCWaitlist',
+        'followUpLetterSent',
+        'transferredToETO',
       ]),
     );
     return;
   }
 
   try {
+    const status = await setReferralStatus(
+      staffAssigned,
+      historyOfCommunication,
+      outreachLetterSent,
+      transferredToCCWaitlist,
+      followUpLetterSent,
+    );
     await createNewReferral(
+      status,
       departmentInCharge,
       program,
       staffAssigned,
@@ -134,6 +214,7 @@ const createReferral = async (
       guardianEmail,
       guardianPreferredContactMethod,
       survivorAddress,
+      survivorEmailAddress,
       survivorPhoneNumber,
       notesFromOrg,
       relationshipToVictim,
@@ -156,6 +237,10 @@ const createReferral = async (
       homMEONum,
       homeMNum,
       historyOfCommunication,
+      outreachLetterSent,
+      transferredToCCWaitlist,
+      followUpLetterSent,
+      transferredToETO,
     );
     res.sendStatus(StatusCode.CREATED);
     const msg = {
@@ -283,6 +368,7 @@ const updateReferral = async (
     guardianEmail,
     guardianPreferredContactMethod,
     survivorAddress,
+    survivorEmailAddress,
     survivorPhoneNumber,
     notesFromOrg,
     relationshipToVictim,
@@ -305,6 +391,10 @@ const updateReferral = async (
     homMEONum,
     homeMNum,
     historyOfCommunication,
+    outreachLetterSent,
+    transferredToCCWaitlist,
+    followUpLetterSent,
+    transferredToETO,
   } = req.body;
 
   if (
@@ -315,11 +405,16 @@ const updateReferral = async (
     !agencyRepName ||
     !agencyRepEmail ||
     !agencyRepPhone ||
+    !survivorEmailAddress ||
     !survivorPhoneNumber ||
     !relationshipToVictim ||
     !crimeType ||
     !survivorPreferredContactMethod ||
-    isGunViolence === undefined
+    isGunViolence === undefined ||
+    outreachLetterSent === undefined ||
+    transferredToCCWaitlist === undefined ||
+    followUpLetterSent === undefined ||
+    transferredToETO === undefined
   ) {
     next(
       ApiError.missingFields([
@@ -330,19 +425,32 @@ const updateReferral = async (
         'agencyRepName',
         'agencyRepEmail',
         'agencyRepPhone',
+        'survivorEmailAddress',
         'survivorPhoneNumber',
         'relationshipToVictim',
         'crimeType',
         'survivorPreferredContactMethod',
         'isGunViolence',
+        'outreachLetterSent',
+        'transferredToCCWaitlist',
+        'followUpLetterSent',
+        'transferredToETO',
       ]),
     );
     return;
   }
 
   try {
+    const status = await setReferralStatus(
+      staffAssigned,
+      historyOfCommunication,
+      outreachLetterSent,
+      transferredToCCWaitlist,
+      followUpLetterSent,
+    );
     const referral = await updateReferralById(
       id,
+      status,
       departmentInCharge,
       program,
       staffAssigned,
@@ -369,6 +477,7 @@ const updateReferral = async (
       guardianEmail,
       guardianPreferredContactMethod,
       survivorAddress,
+      survivorEmailAddress,
       survivorPhoneNumber,
       notesFromOrg,
       relationshipToVictim,
@@ -391,16 +500,22 @@ const updateReferral = async (
       homMEONum,
       homeMNum,
       historyOfCommunication,
+      outreachLetterSent,
+      transferredToCCWaitlist,
+      followUpLetterSent,
+      transferredToETO,
     );
 
     const staffEmail = 'bach.tran@hack4impact.org';
+    const staffFirstName = staffAssigned?.firstName || 'last name placeholder';
+    const staffLastName = staffAssigned?.lastName || 'first name placeholder';
     const msg = {
       to: `${agencyRepEmail}`,
       from: 'bach.tran@hack4impact.org',
-      subject: `Update for ${survivorName} to AVP for ${serviceRequested} - Assigned to ${staffAssigned.firstName} ${staffAssigned.lastName}`,
+      subject: `Update for ${survivorName} to AVP for ${serviceRequested} - Assigned to ${staffFirstName} ${staffLastName}`,
       html: `<div>Hi ${agencyRepName}, 
       <p>Thank you for submitting a referral on behalf of ${agencyThatReferred} for <strong>${survivorName}</strong>, for the service <strong>${serviceRequested}</strong>.</p>
-      <p>We are emailing to let you know that this referral was assigned to <strong>${staffAssigned.firstName} ${staffAssigned.lastName}</strong>. Below is their contact information. You can reach them at <strong>${staffEmail}</strong></p>
+      <p>We are emailing to let you know that this referral was assigned to <strong>${staffFirstName} ${staffLastName}</strong>. Below is their contact information. You can reach them at <strong>${staffEmail}</strong></p>
       <p>If you have any questions please feel free to email the staff contact listed above.</p>
       Thank you,
       <br></br>
@@ -457,16 +572,29 @@ const addToHistory = async (
 ) => {
   const { id } = req.params;
 
-  const { dateOfCommunication, method, user, notes, didEstablishedContact } =
-    req.body;
+  const {
+    dateOfCommunication,
+    method,
+    user,
+    notes,
+    didEstablishedContact,
+    dateOfNextCommunication,
+  } = req.body;
 
-  if (!dateOfCommunication || !method || !user || !didEstablishedContact) {
+  if (
+    !dateOfCommunication ||
+    !method ||
+    !user ||
+    !didEstablishedContact ||
+    !dateOfNextCommunication
+  ) {
     next(
       ApiError.missingFields([
         'dateOfCommunication',
         'method',
         'user',
         'didEstablishedContact',
+        'dateOfNextCommunication',
       ]),
     );
     return;
@@ -480,6 +608,7 @@ const addToHistory = async (
       user,
       notes,
       didEstablishedContact,
+      new Date(dateOfNextCommunication),
     );
     res.status(StatusCode.OK).json(referral);
   } catch (err) {
@@ -498,16 +627,29 @@ const updateHistory = async (
 ) => {
   const { id, index } = req.params;
 
-  const { dateOfCommunication, method, user, notes, didEstablishedContact } =
-    req.body;
+  const {
+    dateOfCommunication,
+    method,
+    user,
+    notes,
+    didEstablishedContact,
+    dateOfNextCommunication,
+  } = req.body;
 
-  if (!dateOfCommunication || !method || !user || !didEstablishedContact) {
+  if (
+    !dateOfCommunication ||
+    !method ||
+    !user ||
+    !didEstablishedContact ||
+    !dateOfNextCommunication
+  ) {
     next(
       ApiError.missingFields([
         'dateOfCommunication',
         'method',
         'user',
         'didEstablishedContact',
+        'dateOfNextCommunication',
       ]),
     );
     return;
@@ -522,6 +664,7 @@ const updateHistory = async (
       user,
       notes,
       didEstablishedContact,
+      dateOfNextCommunication,
     );
     res.status(StatusCode.OK).json(referral);
   } catch (err) {
@@ -552,6 +695,31 @@ const deleteHistory = async (
   }
 };
 
+const getDuplicates = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const phoneNumber = req.query.phoneNumber || '';
+  const email = req.query.email || '';
+
+  if (typeof phoneNumber !== 'string' || typeof email !== 'string') {
+    next(ApiError.internal('Invalid query types'));
+    return;
+  }
+
+  try {
+    const referrals = await getDuplicateReferrals(phoneNumber, email);
+    res.status(StatusCode.OK).json(referrals);
+  } catch (err) {
+    next(
+      ApiError.internal(
+        `Unable to get duplicate referrals due to the following error: ${err}`,
+      ),
+    );
+  }
+};
+
 export {
   createReferral,
   getReferrals,
@@ -562,4 +730,5 @@ export {
   addToHistory,
   updateHistory,
   deleteHistory,
+  getDuplicates,
 };
