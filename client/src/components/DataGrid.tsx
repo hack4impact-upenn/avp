@@ -7,6 +7,7 @@ import {
   GridToolbar,
   useGridApiRef,
   useGridApiContext,
+  GridRowId,
 } from '@mui/x-data-grid-premium';
 import { Button, Chip } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
@@ -34,29 +35,29 @@ import TextField from '@mui/material/TextField';
 export default function DataGrid() {
   const [referralList, setReferralList] = useState<IReferral[]>([]);
   const referrals = useData('referral/all');
-
-  function CustomEditComponent(props: any) {
+  const emptyStringArray: string[] = [""];
+  
+  function CustomEditComponent(props: { api: any; id: GridRowId; value?: string; field: string; valueOptions: string[]; }) {
     const { id, value, field } = props;
     const apiRef = useGridApiContext();
-
+  
     const handleChange = (event: any) => {
       const eventValue = event.target.value; // The new value entered by the user
       console.log({ eventValue });
-      const newValue =
-        typeof eventValue === 'string' ? value.split(',') : eventValue;
+      const newValue = Array.isArray(eventValue) ? eventValue : [eventValue];
       apiRef.current.setEditCellValue({
         id,
         field,
         value: newValue.filter((x: any) => x !== ''),
       });
     };
-
+  
     return (
       <Select
         labelId="demo-multiple-name-label"
         id="demo-multiple-name"
         multiple
-        value={value}
+        value={value && typeof value === 'string' ? value.split(',') : !value ? emptyStringArray : value}
         onChange={handleChange}
         sx={{ width: '100%' }}
       >
@@ -147,7 +148,7 @@ export default function DataGrid() {
       editable: true,
       valueOptions: [],
       type: 'singleSelect',
-      valueFormatter: ({ value }) => (value ? value.join(', ') : ''),
+      valueFormatter: ({ value }) => Array.isArray(value) ? value.join(', ') : '',
       renderEditCell: (params) => (
         <CustomEditComponent
           valueOptions={[
@@ -622,9 +623,13 @@ export default function DataGrid() {
     )
       return;
     clearInterval(removeLicense);
-    document
+    if (document
+      .getElementsByClassName('MuiDataGrid-main')[0]
+      .childNodes[2]) {
+        document
       .getElementsByClassName('MuiDataGrid-main')[0]
       .childNodes[2].remove();
+      }
   }, 10);
 
   if (!referralList) {
