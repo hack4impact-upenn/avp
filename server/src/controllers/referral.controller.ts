@@ -243,10 +243,13 @@ const createReferral = async (
       transferredToETO,
     );
     res.sendStatus(StatusCode.CREATED);
+
+    const nameArr = survivorName.split(' ');
+    const survivorInitials = nameArr[0].splice(0, 1) + nameArr[nameArr.length - 1].charAt(0);
     const msg = {
       to: `${agencyRepEmail}`,
       from: 'bach.tran@hack4impact.org',
-      subject: `Referral for ${survivorName} to AVP for ${serviceRequested} - Confirmation`,
+      subject: `Referral for ${survivorInitials} to AVP for ${serviceRequested} - Confirmation`,
       html: `<div>Hi ${agencyRepName}, 
       <p>Thank you for submitting a referral on behalf of ${agencyThatReferred} for <strong>${survivorName}</strong>. The service that you requested was <strong>${serviceRequested}</strong>.</p>
       <p>We are sending this email to confirm the successful submission of a referral to AVP.</p>
@@ -254,6 +257,7 @@ const createReferral = async (
       Thank you,
       <br></br>
       Anti-Violence Partnership of Philadelphia
+      <p style="color:gray">The content of this email is confidential and intended for the recipient specified in message only. It is strictly forbidden to share any part of this message with any third party, without a written consent of the sender. If you received this message by mistake, please reply to this message and follow with its deletion, so that we can ensure such a mistake does not occur in the future.</p>
       </div>`,
     };
 
@@ -509,19 +513,45 @@ const updateReferral = async (
     const staffEmail = 'bach.tran@hack4impact.org';
     const staffFirstName = staffAssigned?.firstName || 'last name placeholder';
     const staffLastName = staffAssigned?.lastName || 'first name placeholder';
-    const msg = {
+    const nameArr = survivorName.split(' ');
+    const survivorInitials = nameArr[0].splice(0, 1) + nameArr[nameArr.length - 1].charAt(0);
+    let msg = {
       to: `${agencyRepEmail}`,
       from: 'bach.tran@hack4impact.org',
-      subject: `Update for ${survivorName} to AVP for ${serviceRequested} - Assigned to ${staffFirstName} ${staffLastName}`,
-      html: `<div>Hi ${agencyRepName}, 
-      <p>Thank you for submitting a referral on behalf of ${agencyThatReferred} for <strong>${survivorName}</strong>, for the service <strong>${serviceRequested}</strong>.</p>
-      <p>We are emailing to let you know that this referral was assigned to <strong>${staffFirstName} ${staffLastName}</strong>. Below is their contact information. You can reach them at <strong>${staffEmail}</strong></p>
-      <p>If you have any questions please feel free to email the staff contact listed above.</p>
-      Thank you,
-      <br></br>
-      Anti-Violence Partnership of Philadelphia
-      </div>`,
+      subject: '',
+      html: ''
     };
+    if (status === 'Assigned') {
+      msg = {
+        to: `${agencyRepEmail}`,
+        from: 'bach.tran@hack4impact.org',
+        subject: `Update for ${survivorInitials} to AVP for ${serviceRequested} - Assigned to ${staffFirstName} ${staffLastName}`,
+        html: `<div>Hi ${agencyRepName}, 
+        <p>Thank you for submitting a referral on behalf of ${agencyThatReferred} for <strong>${survivorName}</strong>, for the service <strong>${serviceRequested}</strong>.</p>
+        <p>We are emailing to let you know that this referral was assigned to <strong>${staffFirstName} ${staffLastName}</strong>. Below is their contact information. You can reach them at <strong>${staffEmail}</strong></p>
+        <p>If you have any questions please feel free to email the staff contact listed above.</p>
+        Thank you,
+        <br></br>
+        Anti-Violence Partnership of Philadelphia
+        <p style="color:gray">The content of this email is confidential and intended for the recipient specified in message only. It is strictly forbidden to share any part of this message with any third party, without a written consent of the sender. If you received this message by mistake, please reply to this message and follow with its deletion, so that we can ensure such a mistake does not occur in the future.</p>
+        </div>`,
+      };
+    } else if (status === 'Completed') {
+      msg = {
+        to: `${agencyRepEmail}`,
+        from: 'bach.tran@hack4impact.org',
+        subject: `Update for ${survivorInitials} to AVP for ${serviceRequested} - Completed`,
+        html: `<div>Hi ${agencyRepName}, 
+        <p>Thank you for submitting a referral on behalf of ${agencyThatReferred} for <strong>${survivorName}</strong>, for the service <strong>${serviceRequested}</strong>.</p>
+        <p>We are emailing to let you know that we established contact with <strong>${survivorName}</strong> and this referral has been marked as completed.</p>
+        <p>If you have any questions please feel free to email the staff contact listed above.</p>
+        Thank you,
+        <br></br>
+        Anti-Violence Partnership of Philadelphia
+        <p style="color:gray">The content of this email is confidential and intended for the recipient specified in message only. It is strictly forbidden to share any part of this message with any third party, without a written consent of the sender. If you received this message by mistake, please reply to this message and follow with its deletion, so that we can ensure such a mistake does not occur in the future.</p>
+        </div>`,
+      };
+    }
 
     sgMail
       .send(msg)
