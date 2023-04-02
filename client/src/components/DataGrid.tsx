@@ -6,8 +6,11 @@ import {
   DataGridPremium,
   GridToolbar,
   useGridApiRef,
+  useGridApiContext,
+  GridRowId,
+  GridFilterOperator,
 } from '@mui/x-data-grid-premium';
-import { Button, Chip } from '@mui/material';
+import { Button, Chip, MenuItem, Select, TextField } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import LoopIcon from '@mui/icons-material/Loop';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
@@ -25,7 +28,103 @@ import CircularProgress from '@mui/material/CircularProgress';
 export default function DataGrid() {
   const [referralList, setReferralList] = useState<IReferral[]>([]);
   const referrals = useData('referral/all');
+  const emptyStringArray: string[] = [''];
 
+  function CustomEditComponent(props: {
+    api: any;
+    id: GridRowId;
+    value?: string;
+    field: string;
+    valueOptions: string[];
+  }) {
+    const { id, value, field } = props;
+    const apiRef = useGridApiContext();
+
+    const handleChange = (event: any) => {
+      const eventValue = event.target.value; // The new value entered by the user
+      console.log({ eventValue });
+      const newValue = Array.isArray(eventValue) ? eventValue : [eventValue];
+      apiRef.current.setEditCellValue({
+        id,
+        field,
+        value: newValue.filter((x: any) => x !== ''),
+      });
+    };
+
+    return (
+      <Select
+        labelId="demo-multiple-name-label"
+        id="demo-multiple-name"
+        multiple
+        value={
+          value && typeof value === 'string'
+            ? value.split(',')
+            : !value
+            ? emptyStringArray
+            : value
+        }
+        onChange={handleChange}
+        sx={{ width: '100%' }}
+      >
+        {props.valueOptions.map((option: any) => (
+          <MenuItem key={option} value={option}>
+            {option}
+          </MenuItem>
+        ))}
+      </Select>
+    );
+  }
+
+  function CustomFilterInputSingleSelect(props: any) {
+    const {
+      item,
+      applyValue,
+      type,
+      apiRef,
+      focusElementRef,
+      valueOptions,
+      ...others
+    } = props;
+
+    return (
+      <TextField
+        id={`contains-input-${item.id}`}
+        value={item.value}
+        onChange={(event) => applyValue({ ...item, value: event.target.value })}
+        type={type || 'text'}
+        variant="standard"
+        InputLabelProps={{
+          shrink: true,
+        }}
+        inputRef={focusElementRef}
+        select
+        SelectProps={{
+          native: true,
+        }}
+      >
+        {['', ...valueOptions].map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </TextField>
+    );
+  }
+
+  const filterOperatorsArray: GridFilterOperator = {
+    value: 'contains',
+    getApplyFilterFn: (filterItem: any) => {
+      if (filterItem.value == null || filterItem.value === '') {
+        return null;
+      }
+      return ({ value }: any) => {
+        // if one of the cell values corresponds to the filter item
+        return value.some((cellValue: any) => cellValue === filterItem.value);
+      };
+    },
+    InputComponent: CustomFilterInputSingleSelect,
+    InputComponentProps: { type: 'text' },
+  };
   useEffect(() => {
     setReferralList(
       referrals?.data.map((referral: IReferral) => {
@@ -52,11 +151,19 @@ export default function DataGrid() {
       width: 210,
       editable: true,
       type: 'singleSelect',
-      valueOptions: [
-        'Counseling Services',
-        'Victim/Witness Services',
-        'Youth Services',
-      ],
+      valueFormatter: ({ value }) =>
+        Array.isArray(value) ? value.join(', ') : '',
+      renderEditCell: (params) => (
+        <CustomEditComponent
+          valueOptions={[
+            'Counseling Services',
+            'Victim/Witness Services',
+            'Youth Services',
+          ]}
+          {...params}
+        />
+      ),
+      filterOperators: [filterOperatorsArray],
     },
     {
       field: 'program',
@@ -527,9 +634,11 @@ export default function DataGrid() {
     )
       return;
     clearInterval(removeLicense);
-    document
-      .getElementsByClassName('MuiDataGrid-main')[0]
-      .childNodes[2].remove();
+    if (document.getElementsByClassName('MuiDataGrid-main')[0].childNodes[2]) {
+      document
+        .getElementsByClassName('MuiDataGrid-main')[0]
+        .childNodes[2].remove();
+    }
   }, 10);
 
   if (!referralList) {
