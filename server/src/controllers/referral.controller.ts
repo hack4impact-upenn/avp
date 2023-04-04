@@ -515,14 +515,8 @@ const updateReferral = async (
     const staffLastName = staffAssigned?.lastName || 'first name placeholder';
     const nameArr = survivorName.split(' ');
     const survivorInitials = nameArr[0].splice(0, 1) + nameArr[nameArr.length - 1].charAt(0);
-    let msg = {
-      to: `${agencyRepEmail}`,
-      from: 'bach.tran@hack4impact.org',
-      subject: '',
-      html: ''
-    };
     if (status === 'Assigned') {
-      msg = {
+      const msg = {
         to: `${agencyRepEmail}`,
         from: 'bach.tran@hack4impact.org',
         subject: `Update for ${survivorInitials} to AVP for ${serviceRequested} - Assigned to ${staffFirstName} ${staffLastName}`,
@@ -536,8 +530,22 @@ const updateReferral = async (
         <p style="color:gray">The content of this email is confidential and intended for the recipient specified in message only. It is strictly forbidden to share any part of this message with any third party, without a written consent of the sender. If you received this message by mistake, please reply to this message and follow with its deletion, so that we can ensure such a mistake does not occur in the future.</p>
         </div>`,
       };
+
+      sgMail
+      .send(msg)
+      .then((response: any) => {
+        console.log(response);
+        console.log('Email confirmation sent successfully');
+      })
+      .catch((error: any) => {
+        next(
+          ApiError.internal(
+            `Unable to send referral confirmation email due to the following error: ${error}`,
+          ),
+        );
+      });
     } else if (status === 'Completed') {
-      msg = {
+      const msg = {
         to: `${agencyRepEmail}`,
         from: 'bach.tran@hack4impact.org',
         subject: `Update for ${survivorInitials} to AVP for ${serviceRequested} - Completed`,
@@ -551,9 +559,7 @@ const updateReferral = async (
         <p style="color:gray">The content of this email is confidential and intended for the recipient specified in message only. It is strictly forbidden to share any part of this message with any third party, without a written consent of the sender. If you received this message by mistake, please reply to this message and follow with its deletion, so that we can ensure such a mistake does not occur in the future.</p>
         </div>`,
       };
-    }
-
-    sgMail
+      sgMail
       .send(msg)
       .then((response: any) => {
         console.log(response);
@@ -566,6 +572,8 @@ const updateReferral = async (
           ),
         );
       });
+    }
+
     res.status(StatusCode.OK).json(referral);
   } catch (err) {
     next(
