@@ -242,10 +242,9 @@ const createReferral = async (
       followUpLetterSent,
       transferredToETO,
     );
-    res.sendStatus(StatusCode.CREATED);
-
+  
     const nameArr = survivorName.split(' ');
-    const survivorInitials = nameArr[0].splice(0, 1) + nameArr[nameArr.length - 1].charAt(0);
+    const survivorInitials = nameArr[0].charAt(0) + '' + nameArr[nameArr.length - 1].charAt(0);
     const msg = {
       to: `${agencyRepEmail}`,
       from: 'bach.tran@hack4impact.org',
@@ -274,6 +273,7 @@ const createReferral = async (
           ),
         );
       });
+      res.sendStatus(StatusCode.CREATED);
   } catch (err) {
     next(
       ApiError.internal(
@@ -509,12 +509,12 @@ const updateReferral = async (
       followUpLetterSent,
       transferredToETO,
     );
-
+    
     const staffEmail = 'bach.tran@hack4impact.org';
     const staffFirstName = staffAssigned?.firstName || 'last name placeholder';
     const staffLastName = staffAssigned?.lastName || 'first name placeholder';
     const nameArr = survivorName.split(' ');
-    const survivorInitials = nameArr[0].splice(0, 1) + nameArr[nameArr.length - 1].charAt(0);
+    const survivorInitials = nameArr[0].charAt(0)+ '' + nameArr[nameArr.length - 1].charAt(0);
     if (status === 'Assigned') {
       const msg = {
         to: `${agencyRepEmail}`,
