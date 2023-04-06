@@ -1,4 +1,10 @@
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from '@mui/material';
 import React from 'react';
 import { Theme, useTheme } from '@mui/material/styles';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -40,7 +46,7 @@ const victimServices = [
   'Court Support',
   'Detective Updates',
   'Victims Compensation Assistance Program (VCAP)',
-  'Other: text box',
+  'Other: Specify Below',
 ];
 
 export default function PageOne({ data, setData }: Props) {
@@ -64,6 +70,27 @@ export default function PageOne({ data, setData }: Props) {
       serviceRequestedVictim: value.join(', '),
     });
   };
+
+  let otherVictimServices;
+  if (data.serviceRequestedVictim.indexOf('Other') >= 0) {
+    otherVictimServices = (
+      <div>
+        <FormControl required sx={{ m: 1, minWidth: 600 }}>
+          <TextField
+            id="outlined-basic"
+            variant="outlined"
+            label="Please Specify Other Victim Services Requested"
+            onChange={(event) =>
+              setData({
+                ...data,
+                otherServiceRequestedVictim: event.target.value,
+              })
+            }
+          />
+        </FormControl>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -118,6 +145,9 @@ export default function PageOne({ data, setData }: Props) {
           ))}
         </Select>
       </FormControl>
+
+      {/* otherVictimServices */}
+      {otherVictimServices}
     </div>
   );
 }
