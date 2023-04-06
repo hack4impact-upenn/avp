@@ -145,7 +145,7 @@ export default function PageThree({ data, setData }: Props) {
   let youthGradeInput;
   if (data.survivorSchoolOrCommunitySite) {
     youthGradeInput = (
-      <div>
+      <span>
         <FormControl sx={{ marginBottom: 2, minWidth: 240 }}>
           <InputLabel id="demo-simple-select-label">
             Grade Survivor/Victim Is In
@@ -172,7 +172,7 @@ export default function PageThree({ data, setData }: Props) {
             ))}
           </Select>
         </FormControl>
-      </div>
+      </span>
     );
   }
 
@@ -520,7 +520,33 @@ export default function PageThree({ data, setData }: Props) {
       </FormControl>
 
       {/* relationship to victim of crime/violence */}
-      {/* TODO: implement (yarg) */}
+      <FormControl sx={{ marginBottom: 2, minWidth: 420 }}>
+        <InputLabel id="demo-simple-select-label">
+          Relationship To Victim
+        </InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select-label"
+          label="Relationship of Adult to Youth Being Referred"
+          onChange={(event) =>
+            setData({
+              ...data,
+              relationshipToVictim: event.target.value,
+            })
+          }
+        >
+          {relationshipToVictim.map((val) => (
+            <MenuItem
+              key={val}
+              value={val}
+              style={getStyles(val, relationshipToVictim, theme)}
+            >
+              {val}
+            </MenuItem>
+          ))}
+          {/* TODO: add new textbox for input for 'Other' option */}
+        </Select>
+      </FormControl>
 
       <div>
         {/* survivorDOB */}
@@ -551,6 +577,9 @@ export default function PageThree({ data, setData }: Props) {
           />
         </FormControl>
       </div>
+
+      {/* youthQuestions */}
+      {youthQuestions}
 
       {/* preferredLanguage */}
       <FormControl
