@@ -14,6 +14,40 @@ interface communicationItem {
   dateOfNextCommunication: Date;
 }
 
+interface outcomeItem {
+  eligibleForAVPVictimServices: boolean;
+  sentVCAPInfotoClient: boolean;
+  avpAdvocateAssistingWithVCAP: boolean;
+  referredToOtherVSAgencyForVCAP: boolean;
+  vsAgencyName: string;
+  avpAdvocateProvidingCourtSupport: boolean;
+  clientWorkingWithFMV: boolean;
+  fmvNumber: boolean;
+  referredToOtherAgencyForCourt: boolean;
+  courtSupportAgencyName: string;
+  avpAdvocateContactedADA: boolean;
+  avpAdvocateContactedDetective: boolean;
+  eligibleForAVPCounsellingServices: boolean;
+  receivingCrisisCounselling: boolean;
+  scheduledIntakeApptForIndividualTherapy: boolean;
+  intakeAppointmentOutcome: boolean;
+  receivingIndividualTherapy: boolean;
+  therapistName: string;
+  addedToIndividualTherapyWaitlist: boolean;
+  referredForCounsellingServices: boolean;
+  counsellingAgency: boolean;
+  sentAVPSupportGroupInfo: boolean;
+  attendingSupportGroup: boolean;
+  supportGroupName: string;
+  eligibleForYVOServices: boolean;
+  assignedToYVOTherapist: boolean;
+  yvoStaffName: string;
+  addedToYVOIndividualTherapyWaitlist: boolean;
+  assignedToYVOGroup: boolean;
+  addedToYVOGroupWaitlist: boolean;
+  additionalNotes: string;
+}
+
 const communicationItemSchema = new mongoose.Schema({
   dateOfCommunication: {
     type: Date,
@@ -41,11 +75,134 @@ const communicationItemSchema = new mongoose.Schema({
   },
 });
 
-const ReferralSchema = new mongoose.Schema({
-  status: {
-    type: String,
+const outcomeItemSchema = new mongoose.Schema({
+  eligibleForAVPVictimServices: {
+    type: Boolean,
     required: true,
   },
+  sentVCAPInfotoClient: {
+    type: Boolean,
+    required: true,
+  },
+  avpAdvocateAssistingWithVCAP: {
+    type: Boolean,
+    required: true,
+  },
+  referredToOtherVSAgencyForVCAP: {
+    type: Boolean,
+    required: true,
+  },
+  vsAgencyName: {
+    type: String,
+    required: false,
+  },
+  avpAdvocateProvidingCourtSupport: {
+    type: Boolean,
+    required: true,
+  },
+  clientWorkingWithFMV: {
+    type: Boolean,
+    required: true,
+  },
+  fmvNumber: {
+    type: Boolean,
+    required: true,
+  },
+  referredToOtherAgencyForCourt: {
+    type: Boolean,
+    required: true,
+  },
+  courtSupportAgencyName: {
+    type: String,
+    required: false,
+  },
+  avpAdvocateContactedADA: {
+    type: Boolean,
+    required: true,
+  },
+  avpAdvocateContactedDetective: {
+    type: Boolean,
+    required: true,
+  },
+  eligibleForAVPCounsellingServices: {
+    type: Boolean,
+    required: true,
+  },
+  receivingCrisisCounselling: {
+    type: Boolean,
+    required: true,
+  },
+  scheduledIntakeApptForIndividualTherapy: {
+    type: Boolean,
+    required: true,
+  },
+  intakeAppointmentOutcome: {
+    type: Boolean,
+    required: true,
+  },
+  receivingIndividualTherapy: {
+    type: Boolean,
+    required: true,
+  },
+  therapistName: {
+    type: String,
+    required: false,
+  },
+  addedToIndividualTherapyWaitlist: {
+    type: Boolean,
+    required: true,
+  },
+  referredForCounsellingServices: {
+    type: Boolean,
+    required: true,
+  },
+  counsellingAgency: {
+    type: Boolean,
+    required: true,
+  },
+  sentAVPSupportGroupInfo: {
+    type: Boolean,
+    required: true,
+  },
+  attendingSupportGroup: {
+    type: Boolean,
+    required: true,
+  },
+  supportGroupName: {
+    type: String,
+    required: false,
+  },
+  eligibleForYVOServices: {
+    type: Boolean,
+    required: true,
+  },
+  assignedToYVOTherapist: {
+    type: Boolean,
+    required: true,
+  },
+  yvoStaffName: {
+    type: String,
+    required: false,
+  },
+  addedToYVOIndividualTherapyWaitlist: {
+    type: Boolean,
+    required: true,
+  },
+  assignedToYVOGroup: {
+    type: Boolean,
+    required: true,
+  },
+  addedToYVOGroupWaitlist: {
+    type: Boolean,
+    required: true,
+  },
+  additionalNotes: {
+    type: String,
+    required: false,
+  },
+});
+
+const ReferralSchema = new mongoose.Schema({
   departmentInCharge: {
     type: String,
     required: false,
@@ -256,6 +413,11 @@ const ReferralSchema = new mongoose.Schema({
     type: [communicationItemSchema],
     required: false,
   },
+  /* each department will have its own outcome object in the array */
+  departmentOutcomes: {
+    type: [outcomeItemSchema],
+    required: false,
+  },
   outreachLetterSent: {
     type: Boolean,
     required: true,
@@ -276,7 +438,6 @@ const ReferralSchema = new mongoose.Schema({
 
 interface IReferral extends mongoose.Document {
   _id: string;
-  status: string;
   departmentInCharge: string;
   program: string;
   staffAssigned: IUser;
@@ -327,6 +488,7 @@ interface IReferral extends mongoose.Document {
   homeMNum: string;
   homCaseInformation: string;
   historyOfCommunication: Array<communicationItem>;
+  departmentOutcomes: Array<outcomeItem>;
   outreachLetterSent: boolean;
   transferredToCCWaitlist: boolean;
   followUpLetterSent: boolean;
@@ -335,4 +497,4 @@ interface IReferral extends mongoose.Document {
 
 const Referral = mongoose.model<IReferral>('Referral', ReferralSchema);
 
-export { IReferral, Referral, communicationItem };
+export { IReferral, Referral, communicationItem, outcomeItem };
