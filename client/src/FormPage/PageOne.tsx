@@ -72,14 +72,17 @@ export default function PageOne({ data, setData }: Props) {
   };
 
   let otherVictimServices;
-  if (data.serviceRequestedVictim.indexOf('Other') >= 0) {
+  if (
+    data.serviceRequestedVictim &&
+    data.serviceRequestedVictim.indexOf('Other') >= 0
+  ) {
     otherVictimServices = (
       <div>
         <FormControl required sx={{ m: 1, minWidth: 600 }}>
           <TextField
             id="outlined-basic"
             variant="outlined"
-            label="Please Specify Other Victim Services Requested"
+            label="Please Specify Other Requested Victim Services"
             onChange={(event) =>
               setData({
                 ...data,

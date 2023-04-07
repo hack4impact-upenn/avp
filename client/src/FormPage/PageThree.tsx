@@ -142,6 +142,96 @@ export default function PageThree({ data, setData }: Props) {
     dayjs('2000-01-01T00:00:00'),
   );
 
+  let otherGenderInput;
+  if (data.survivorGender && data.survivorGender.indexOf('Other') >= 0) {
+    otherGenderInput = (
+      <span>
+        <FormControl required sx={{ m: 1, minWidth: 240 }}>
+          <TextField
+            id="outlined-basic"
+            variant="outlined"
+            label="Please Specify Gender"
+            onChange={(event) =>
+              setData({
+                ...data,
+                survivorGenderOther: event.target.value,
+              })
+            }
+          />
+        </FormControl>
+      </span>
+    );
+  }
+
+  let otherRaceInput;
+  if (data.survivorRace && data.survivorRace.indexOf('Other') >= 0) {
+    otherRaceInput = (
+      <span>
+        <FormControl required sx={{ m: 1, minWidth: 240 }}>
+          <TextField
+            id="outlined-basic"
+            variant="outlined"
+            label="Please Specify Race"
+            onChange={(event) =>
+              setData({
+                ...data,
+                survivorRaceOther: event.target.value,
+              })
+            }
+          />
+        </FormControl>
+      </span>
+    );
+  }
+
+  let relationshipToVictimExplained;
+  if (
+    data.relationshipToVictim &&
+    data.relationshipToVictim.indexOf('Other') >= 0
+  ) {
+    relationshipToVictimExplained = (
+      <div>
+        <FormControl required sx={{ m: 1, minWidth: 860 }}>
+          <TextField
+            id="outlined-basic"
+            variant="outlined"
+            label="Please Specify Relationship to Victim"
+            onChange={(event) =>
+              setData({
+                ...data,
+                relationshipToVictimOther: event.target.value,
+              })
+            }
+          />
+        </FormControl>
+      </div>
+    );
+  }
+
+  let guardianRelationshipExplained;
+  if (
+    data.guardianRelationship &&
+    data.guardianRelationship.indexOf('Other') >= 0
+  ) {
+    guardianRelationshipExplained = (
+      <div>
+        <FormControl required sx={{ m: 1, minWidth: 860 }}>
+          <TextField
+            id="outlined-basic"
+            variant="outlined"
+            label="Please Specify Relationship of Adult to Youth"
+            onChange={(event) =>
+              setData({
+                ...data,
+                guardianRelationshipOther: event.target.value,
+              })
+            }
+          />
+        </FormControl>
+      </div>
+    );
+  }
+
   let youthGradeInput;
   if (data.survivorSchoolOrCommunitySite) {
     youthGradeInput = (
@@ -297,9 +387,11 @@ export default function PageThree({ data, setData }: Props) {
                     {val}
                   </MenuItem>
                 ))}
-              {/* TODO: add new textbox for input for 'Other' option */}
             </Select>
           </FormControl>
+
+          {/* guardianRelationshipExplained */}
+          {guardianRelationshipExplained}
         </div>
         <div>
           {/* survivorAddress */}
@@ -373,7 +465,7 @@ export default function PageThree({ data, setData }: Props) {
             </FormControl>
 
             {/* guardianPreferredContactMethod */}
-            <FormControl sx={{ width: 240 }}>
+            <FormControl sx={{ m: 1, width: 240 }}>
               <InputLabel id="demo-multiple-name-label">
                 Preferred Contact Method
               </InputLabel>
@@ -503,7 +595,7 @@ export default function PageThree({ data, setData }: Props) {
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select-label"
-          label="Relationship of Adult to Youth Being Referred"
+          label="Relationship to Victim"
           onChange={(event) =>
             setData({
               ...data,
@@ -520,9 +612,11 @@ export default function PageThree({ data, setData }: Props) {
               {val}
             </MenuItem>
           ))}
-          {/* TODO: add new textbox for input for 'Other' option */}
         </Select>
       </FormControl>
+
+      {/* relationshipToVictimExplained */}
+      {relationshipToVictimExplained}
 
       <div>
         {/* survivorDOB */}
@@ -590,9 +684,11 @@ export default function PageThree({ data, setData }: Props) {
                 {val}
               </MenuItem>
             ))}
-            {/* TODO: add new textbox for input for 'Other' option */}
           </Select>
         </FormControl>
+
+        {/* otherGenderInput */}
+        {otherGenderInput}
 
         {/* survivorRace */}
         <FormControl sx={{ m: 1, minWidth: 180 }}>
@@ -617,9 +713,11 @@ export default function PageThree({ data, setData }: Props) {
                 {val}
               </MenuItem>
             ))}
-            {/* TODO: add new textbox for input for 'Other' option */}
           </Select>
         </FormControl>
+
+        {/* otherRaceInput */}
+        {otherRaceInput}
       </div>
 
       {/* survivorAddress */}

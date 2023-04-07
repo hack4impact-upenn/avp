@@ -29,7 +29,7 @@ export default function PageFour({ data, setData }: Props) {
   return (
     <div>
       <div>
-        <FormControl sx={{ marginBottom: 2, marginRight: 2, minWidth: 360 }}>
+        <FormControl sx={{ m: 1, minWidth: 360 }}>
           <TextField
             id="outlined-basic"
             variant="outlined"
@@ -41,7 +41,7 @@ export default function PageFour({ data, setData }: Props) {
         </FormControl>
       </div>
       <div>
-        <FormControl sx={{ marginBottom: 2, marginRight: 2, minWidth: 420 }}>
+        <FormControl sx={{ m: 1, minWidth: 420 }}>
           <TextField
             id="outlined-basic"
             variant="outlined"
@@ -51,7 +51,7 @@ export default function PageFour({ data, setData }: Props) {
             }
           />
         </FormControl>
-        <FormControl sx={{ marginBottom: 2, marginRight: 2, minWidth: 420 }}>
+        <FormControl sx={{ m: 1, minWidth: 420 }}>
           <TextField
             id="outlined-basic"
             variant="outlined"
@@ -63,10 +63,7 @@ export default function PageFour({ data, setData }: Props) {
         </FormControl>
       </div>
       <div>
-        <FormControl
-          required
-          sx={{ marginBottom: 2, marginRight: 2, minWidth: 240 }}
-        >
+        <FormControl required sx={{ m: 1, minWidth: 240 }}>
           <TextField
             id="outlined-number"
             label="Phone Number"
@@ -76,10 +73,7 @@ export default function PageFour({ data, setData }: Props) {
             }
           />
         </FormControl>
-        <FormControl
-          required
-          sx={{ marginBottom: 2, marginRight: 2, minWidth: 360 }}
-        >
+        <FormControl required sx={{ m: 1, minWidth: 360 }}>
           <TextField
             id="outlined-basic"
             variant="outlined"
