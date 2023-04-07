@@ -244,8 +244,9 @@ const createReferral = async (
     );
 
     const nameArr = survivorName.split(' ');
-    const survivorInitials =
-      nameArr[0].charAt(0) + '' + nameArr[nameArr.length - 1].charAt(0);
+    const survivorInitials = `${nameArr[0].charAt(0)}${nameArr[
+      nameArr.length - 1
+    ].charAt(0)}`;
     const msg = {
       to: `${agencyRepEmail}`,
       from: 'bach.tran@hack4impact.org',
@@ -515,8 +516,9 @@ const updateReferral = async (
     const staffFirstName = staffAssigned?.firstName || 'last name placeholder';
     const staffLastName = staffAssigned?.lastName || 'first name placeholder';
     const nameArr = survivorName.split(' ');
-    const survivorInitials =
-      nameArr[0].charAt(0) + '' + nameArr[nameArr.length - 1].charAt(0);
+    const survivorInitials = `${nameArr[0].charAt(0)}${nameArr[
+      nameArr.length - 1
+    ].charAt(0)}`;
     if (status === 'Assigned') {
       const msg = {
         to: `${agencyRepEmail}`,
