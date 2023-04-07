@@ -146,7 +146,7 @@ export default function PageThree({ data, setData }: Props) {
   if (data.survivorSchoolOrCommunitySite) {
     youthGradeInput = (
       <span>
-        <FormControl sx={{ marginBottom: 2, minWidth: 240 }}>
+        <FormControl sx={{ m: 1, minWidth: 240 }}>
           <InputLabel id="demo-simple-select-label">
             Grade Survivor/Victim Is In
           </InputLabel>
@@ -181,7 +181,7 @@ export default function PageThree({ data, setData }: Props) {
     youthQuestions = (
       <div>
         {/* What School Or Community Based Site does Survivor Attend? */}
-        <FormControl sx={{ marginBottom: 2, marginRight: 2, minWidth: 480 }}>
+        <FormControl sx={{ m: 1, minWidth: 480 }}>
           <InputLabel id="demo-simple-select-label">
             School or Community-Based Site Survivor/Victim Attends
           </InputLabel>
@@ -217,7 +217,7 @@ export default function PageThree({ data, setData }: Props) {
   if (data.crime === 'Homicide') {
     homicideQuestions = (
       <div>
-        <FormControl sx={{ marginBottom: 2, marginRight: 2, minWidth: 420 }}>
+        <FormControl sx={{ m: 1, minWidth: 420 }}>
           <TextField
             id="outlined-basic"
             variant="outlined"
@@ -227,7 +227,7 @@ export default function PageThree({ data, setData }: Props) {
             }
           />
         </FormControl>
-        <FormControl sx={{ marginBottom: 2, minWidth: 240 }}>
+        <FormControl sx={{ m: 1, minWidth: 240 }}>
           <InputLabel id="demo-simple-select-label">Gender</InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -260,7 +260,7 @@ export default function PageThree({ data, setData }: Props) {
     contactQuestions = (
       <div>
         <div>
-          <FormControl sx={{ marginBottom: 2, marginRight: 2, minWidth: 420 }}>
+          <FormControl sx={{ m: 1, minWidth: 420 }}>
             <TextField
               id="outlined-basic"
               variant="outlined"
@@ -271,7 +271,7 @@ export default function PageThree({ data, setData }: Props) {
             />
           </FormControl>
 
-          <FormControl sx={{ marginBottom: 2, minWidth: 420 }}>
+          <FormControl sx={{ m: 1, minWidth: 420 }}>
             <InputLabel id="demo-simple-select-label">
               Relationship of Adult to Youth Being Referred
             </InputLabel>
@@ -303,10 +303,7 @@ export default function PageThree({ data, setData }: Props) {
         </div>
         <div>
           {/* survivorAddress */}
-          <FormControl
-            required
-            sx={{ marginBottom: 2, marginRight: 2, minWidth: 420 }}
-          >
+          <FormControl required sx={{ m: 1, minWidth: 420 }}>
             <TextField
               id="outlined-basic"
               variant="outlined"
@@ -317,10 +314,7 @@ export default function PageThree({ data, setData }: Props) {
             />
           </FormControl>
 
-          <FormControl
-            required
-            sx={{ marginBottom: 2, marginRight: 2, minWidth: 240 }}
-          >
+          <FormControl required sx={{ m: 1, minWidth: 240 }}>
             <TextField
               id="outlined-basic"
               variant="outlined"
@@ -331,10 +325,7 @@ export default function PageThree({ data, setData }: Props) {
             />
           </FormControl>
 
-          <FormControl
-            required
-            sx={{ marginBottom: 2, marginRight: 2, minWidth: 30 }}
-          >
+          <FormControl required sx={{ m: 1, minWidth: 30 }}>
             <TextField
               id="outlined-basic"
               variant="outlined"
@@ -345,10 +336,7 @@ export default function PageThree({ data, setData }: Props) {
             />
           </FormControl>
 
-          <FormControl
-            required
-            sx={{ marginBottom: 2, marginRight: 2, minWidth: 60 }}
-          >
+          <FormControl required sx={{ m: 1, minWidth: 60 }}>
             <TextField
               id="outlined-number"
               label="Zip Code (Adult)"
@@ -361,10 +349,7 @@ export default function PageThree({ data, setData }: Props) {
 
           <div>
             {/* guardianPhone */}
-            <FormControl
-              required
-              sx={{ marginBottom: 2, marginRight: 2, minWidth: 240 }}
-            >
+            <FormControl required sx={{ m: 1, minWidth: 240 }}>
               <TextField
                 id="outlined-number"
                 label="Phone Number (Adult)"
@@ -376,10 +361,7 @@ export default function PageThree({ data, setData }: Props) {
             </FormControl>
 
             {/* guardianEmail */}
-            <FormControl
-              required
-              sx={{ marginBottom: 2, marginRight: 2, minWidth: 360 }}
-            >
+            <FormControl required sx={{ m: 1, minWidth: 360 }}>
               <TextField
                 id="outlined-basic"
                 variant="outlined"
@@ -436,10 +418,7 @@ export default function PageThree({ data, setData }: Props) {
     contactQuestions = (
       <div>
         {/* survivorPhoneNumber */}
-        <FormControl
-          required
-          sx={{ marginBottom: 2, marginRight: 2, minWidth: 240 }}
-        >
+        <FormControl required sx={{ m: 1, minWidth: 240 }}>
           <TextField
             id="outlined-number"
             label="Phone Number"
@@ -451,10 +430,7 @@ export default function PageThree({ data, setData }: Props) {
         </FormControl>
 
         {/* survivorEmail */}
-        <FormControl
-          required
-          sx={{ marginBottom: 2, marginRight: 2, minWidth: 360 }}
-        >
+        <FormControl required sx={{ m: 1, minWidth: 360 }}>
           <TextField
             id="outlined-basic"
             variant="outlined"
@@ -466,7 +442,7 @@ export default function PageThree({ data, setData }: Props) {
         </FormControl>
 
         {/* survivorPreferredContactMethod */}
-        <FormControl sx={{ marginBottom: 2, width: 240 }}>
+        <FormControl sx={{ m: 1, width: 240 }}>
           <InputLabel id="demo-multiple-name-label">
             Preferred Contact Method
           </InputLabel>
@@ -508,7 +484,7 @@ export default function PageThree({ data, setData }: Props) {
   return (
     <div>
       {/* survivorName */}
-      <FormControl sx={{ marginBottom: 2, marginRight: 2, minWidth: 420 }}>
+      <FormControl sx={{ m: 1, minWidth: 420 }}>
         <TextField
           id="outlined-basic"
           variant="outlined"
@@ -520,7 +496,7 @@ export default function PageThree({ data, setData }: Props) {
       </FormControl>
 
       {/* relationship to victim of crime/violence */}
-      <FormControl sx={{ marginBottom: 2, minWidth: 420 }}>
+      <FormControl sx={{ m: 1, minWidth: 420 }}>
         <InputLabel id="demo-simple-select-label">
           Relationship To Victim
         </InputLabel>
@@ -550,7 +526,7 @@ export default function PageThree({ data, setData }: Props) {
 
       <div>
         {/* survivorDOB */}
-        <FormControl sx={{ marginRight: 2, marginBottom: 2 }}>
+        <FormControl sx={{ m: 1 }}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DesktopDatePicker
               label="Date of Birth"
@@ -563,10 +539,7 @@ export default function PageThree({ data, setData }: Props) {
         </FormControl>
 
         {/* survivorAge */}
-        <FormControl
-          required
-          sx={{ marginBottom: 2, marginRight: 2, minWidth: 60 }}
-        >
+        <FormControl required sx={{ m: 1, minWidth: 60 }}>
           <TextField
             id="outlined-number"
             label="Age"
@@ -582,10 +555,7 @@ export default function PageThree({ data, setData }: Props) {
       {youthQuestions}
 
       {/* preferredLanguage */}
-      <FormControl
-        required
-        sx={{ marginBottom: 2, marginRight: 2, minWidth: 420 }}
-      >
+      <FormControl required sx={{ m: 1, minWidth: 420 }}>
         <TextField
           id="outlined-basic"
           variant="outlined"
@@ -598,7 +568,7 @@ export default function PageThree({ data, setData }: Props) {
 
       <div>
         {/* survivorGender */}
-        <FormControl sx={{ marginBottom: 2, marginRight: 2, minWidth: 180 }}>
+        <FormControl sx={{ m: 1, minWidth: 180 }}>
           <InputLabel id="demo-simple-select-label">Gender</InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -625,7 +595,7 @@ export default function PageThree({ data, setData }: Props) {
         </FormControl>
 
         {/* survivorRace */}
-        <FormControl sx={{ marginBottom: 2, minWidth: 180 }}>
+        <FormControl sx={{ m: 1, minWidth: 180 }}>
           <InputLabel id="demo-simple-select-label">Race/Ethnicity</InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -653,10 +623,7 @@ export default function PageThree({ data, setData }: Props) {
       </div>
 
       {/* survivorAddress */}
-      <FormControl
-        required
-        sx={{ marginBottom: 2, marginRight: 2, minWidth: 420 }}
-      >
+      <FormControl required sx={{ m: 1, minWidth: 420 }}>
         <TextField
           id="outlined-basic"
           variant="outlined"
@@ -667,10 +634,7 @@ export default function PageThree({ data, setData }: Props) {
         />
       </FormControl>
 
-      <FormControl
-        required
-        sx={{ marginBottom: 2, marginRight: 2, minWidth: 240 }}
-      >
+      <FormControl required sx={{ m: 1, minWidth: 240 }}>
         <TextField
           id="outlined-basic"
           variant="outlined"
@@ -681,10 +645,7 @@ export default function PageThree({ data, setData }: Props) {
         />
       </FormControl>
 
-      <FormControl
-        required
-        sx={{ marginBottom: 2, marginRight: 2, minWidth: 30 }}
-      >
+      <FormControl required sx={{ m: 1, minWidth: 30 }}>
         <TextField
           id="outlined-basic"
           variant="outlined"
@@ -695,10 +656,7 @@ export default function PageThree({ data, setData }: Props) {
         />
       </FormControl>
 
-      <FormControl
-        required
-        sx={{ marginBottom: 2, marginRight: 2, minWidth: 60 }}
-      >
+      <FormControl required sx={{ m: 1, minWidth: 60 }}>
         <TextField
           id="outlined-number"
           label="Zip Code"
@@ -711,7 +669,7 @@ export default function PageThree({ data, setData }: Props) {
 
       {/* is parent/responsible adult the main contact */}
       <div>
-        <FormControl sx={{ marginBottom: 2, marginRight: 2, minWidth: 600 }}>
+        <FormControl sx={{ m: 1, minWidth: 600 }}>
           <InputLabel id="demo-simple-select-label">
             Is a parent/responsible adult the main contact for the
             survivor/victim?
@@ -745,10 +703,7 @@ export default function PageThree({ data, setData }: Props) {
       {homicideQuestions}
 
       {/* additional info */}
-      <FormControl
-        required
-        sx={{ marginBottom: 2, marginRight: 2, minWidth: 1000 }}
-      >
+      <FormControl required sx={{ m: 1, minWidth: 1000 }}>
         <TextField
           id="outlined-basic"
           variant="outlined"
