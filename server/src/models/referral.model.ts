@@ -14,7 +14,7 @@ interface communicationItem {
   dateOfNextCommunication: Date;
 }
 
-interface outcomeItem {
+interface victimServicesOutcomeItem {
   eligibleForAVPVictimServices: boolean;
   sentVCAPInfotoClient: boolean;
   avpAdvocateAssistingWithVCAP: boolean;
@@ -27,6 +27,15 @@ interface outcomeItem {
   courtSupportAgencyName: string;
   avpAdvocateContactedADA: boolean;
   avpAdvocateContactedDetective: boolean;
+  needsRelocationAssistance: boolean;
+  relocationReferralWasSubmitted: boolean;
+  referredToAgencyForOtherServices: boolean;
+  otherAgencyNames: string;
+  otherServices: string;
+  additionalNotes: string;
+}
+
+interface counsellingServicesOutcomeItem {
   eligibleForAVPCounsellingServices: boolean;
   receivingCrisisCounselling: boolean;
   scheduledIntakeApptForIndividualTherapy: boolean;
@@ -39,6 +48,11 @@ interface outcomeItem {
   sentAVPSupportGroupInfo: boolean;
   attendingSupportGroup: boolean;
   supportGroupName: string;
+  addedToSupportGroupWaitlist: boolean;
+  additionalNotes: string;
+}
+
+interface youthServicesOutcomeItem {
   eligibleForYVOServices: boolean;
   assignedToYVOTherapist: boolean;
   yvoStaffName: string;
@@ -75,7 +89,7 @@ const communicationItemSchema = new mongoose.Schema({
   },
 });
 
-const outcomeItemSchema = new mongoose.Schema({
+const VictimServicesOutcomeItemSchema = new mongoose.Schema({
   eligibleForAVPVictimServices: {
     type: Boolean,
     required: true,
@@ -124,6 +138,33 @@ const outcomeItemSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
+  needsRelocationAssistance: {
+    type: Boolean,
+    required: true,
+  },
+  relocationReferralWasSubmitted: {
+    type: Boolean,
+    required: true,
+  },
+  referredToAgencyForOtherServices: {
+    type: Boolean,
+    required: true,
+  },
+  otherAgencyNames: {
+    type: String,
+    required: false,
+  },
+  otherServices: {
+    type: String,
+    required: false,
+  },
+  additionalNotes: {
+    type: String,
+    required: false,
+  },
+});
+
+const CounsellingServicesOutcomeItemSchema = new mongoose.Schema({
   eligibleForAVPCounsellingServices: {
     type: Boolean,
     required: true,
@@ -172,6 +213,17 @@ const outcomeItemSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  addedToSupportGroupWaitlist: {
+    type: Boolean,
+    required: true,
+  },
+  additionalNotes: {
+    type: String,
+    required: false,
+  },
+});
+
+const YouthServicesOutcomeItemSchema = new mongoose.Schema({
   eligibleForYVOServices: {
     type: Boolean,
     required: true,
@@ -417,9 +469,17 @@ const ReferralSchema = new mongoose.Schema({
     type: [communicationItemSchema],
     required: false,
   },
-  /* each department will have its own outcome object in the array */
-  departmentOutcomes: {
-    type: [outcomeItemSchema],
+  /* each department will have its own outcome object */
+  victimServicesOutcome: {
+    type: VictimServicesOutcomeItemSchema,
+    required: false,
+  },
+  counsellingServicesOutcome: {
+    type: CounsellingServicesOutcomeItemSchema,
+    required: false,
+  },
+  youthServicesOutcome: {
+    type: YouthServicesOutcomeItemSchema,
     required: false,
   },
   outreachLetterSent: {
@@ -493,7 +553,9 @@ interface IReferral extends mongoose.Document {
   homeMNum: string;
   homCaseInformation: string;
   historyOfCommunication: Array<communicationItem>;
-  departmentOutcomes: Array<outcomeItem>;
+  victimServicesOutcome: victimServicesOutcomeItem;
+  counsellingServicesOutcome: counsellingServicesOutcomeItem;
+  youthServicesOutcome: youthServicesOutcomeItem;
   outreachLetterSent: boolean;
   transferredToCCWaitlist: boolean;
   followUpLetterSent: boolean;
@@ -502,4 +564,11 @@ interface IReferral extends mongoose.Document {
 
 const Referral = mongoose.model<IReferral>('Referral', ReferralSchema);
 
-export { IReferral, Referral, communicationItem, outcomeItem };
+export {
+  IReferral,
+  Referral,
+  communicationItem,
+  victimServicesOutcomeItem,
+  counsellingServicesOutcomeItem,
+  youthServicesOutcomeItem,
+};
