@@ -514,6 +514,9 @@ const updateReferral = async (
       transferredToCCWaitlist,
       followUpLetterSent,
       transferredToETO,
+      victimServicesOutcome,
+      counsellingServicesOutcome,
+      youthServicesOutcome
     );
 
     const staffEmail = staffAssigned?.email;
@@ -590,7 +593,7 @@ const updateReferral = async (
         subject: `Update for ${survivorInitials} to AVP for ${serviceRequested} - Completed`,
         html: ''
       };
-      if (staffDepartment === 'Counseling Services' || staffDepartment == 'Victim Services') {
+      if (staffDepartment === 'Counseling Services' || staffDepartment === 'Victim Services') {
         msg = {
           to: `${agencyRepEmail}`,
           from: 'bach.tran@hack4impact.org',

@@ -2,6 +2,9 @@ import {
   IReferral,
   communicationItem,
   Referral,
+  victimServicesOutcomeItem,
+  counsellingServicesOutcomeItem,
+  youthServicesOutcomeItem
 } from '../models/referral.model';
 import { IUser } from '../models/user.model';
 
@@ -189,6 +192,9 @@ const updateReferralById = async (
   transferredToCCWaitlist: boolean,
   followUpLetterSent: boolean,
   transferredToETO: boolean,
+  victimServicesOutcome: victimServicesOutcomeItem,
+  counsellingServicesOutcome: counsellingServicesOutcomeItem,
+  youthServicesOutcome:youthServicesOutcomeItem
 ) => {
   const updateQuery = {
     status,
@@ -245,6 +251,9 @@ const updateReferralById = async (
     transferredToCCWaitlist,
     followUpLetterSent,
     transferredToETO,
+    victimServicesOutcome,
+    counsellingServicesOutcome,
+    youthServicesOutcome
   };
   return Referral.findByIdAndUpdate(id, updateQuery, { new: true }).exec();
 };
