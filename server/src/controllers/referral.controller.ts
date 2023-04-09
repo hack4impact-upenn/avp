@@ -242,9 +242,11 @@ const createReferral = async (
       followUpLetterSent,
       transferredToETO,
     );
-  
+
     const nameArr = survivorName.split(' ');
-    const survivorInitials = nameArr[0].charAt(0) + '' + nameArr[nameArr.length - 1].charAt(0);
+    const survivorInitials = `${nameArr[0].charAt(0)}${nameArr[
+      nameArr.length - 1
+    ].charAt(0)}`;
     const msg = {
       to: `${agencyRepEmail}`,
       from: 'bach.tran@hack4impact.org',
@@ -273,7 +275,7 @@ const createReferral = async (
           ),
         );
       });
-      res.sendStatus(StatusCode.CREATED);
+    res.sendStatus(StatusCode.CREATED);
   } catch (err) {
     next(
       ApiError.internal(
@@ -510,12 +512,14 @@ const updateReferral = async (
       followUpLetterSent,
       transferredToETO,
     );
-    
+
     const staffEmail = 'bach.tran@hack4impact.org';
     const staffFirstName = staffAssigned?.firstName || 'last name placeholder';
     const staffLastName = staffAssigned?.lastName || 'first name placeholder';
     const nameArr = survivorName.split(' ');
-    const survivorInitials = nameArr[0].charAt(0)+ '' + nameArr[nameArr.length - 1].charAt(0);
+    const survivorInitials = `${nameArr[0].charAt(0)}${nameArr[
+      nameArr.length - 1
+    ].charAt(0)}`;
     if (status === 'Assigned' && !prevReferral?.staffAssigned) {
       const msg = {
         to: `${agencyRepEmail}`,
@@ -533,18 +537,18 @@ const updateReferral = async (
       };
 
       sgMail
-      .send(msg)
-      .then((response: any) => {
-        console.log(response);
-        console.log('Email confirmation sent successfully');
-      })
-      .catch((error: any) => {
-        next(
-          ApiError.internal(
-            `Unable to send referral confirmation email due to the following error: ${error}`,
-          ),
-        );
-      });
+        .send(msg)
+        .then((response: any) => {
+          console.log(response);
+          console.log('Email confirmation sent successfully');
+        })
+        .catch((error: any) => {
+          next(
+            ApiError.internal(
+              `Unable to send referral confirmation email due to the following error: ${error}`,
+            ),
+          );
+        });
     } else if (status === 'Completed') {
       const msg = {
         to: `${agencyRepEmail}`,
@@ -561,18 +565,18 @@ const updateReferral = async (
         </div>`,
       };
       sgMail
-      .send(msg)
-      .then((response: any) => {
-        console.log(response);
-        console.log('Email confirmation sent successfully');
-      })
-      .catch((error: any) => {
-        next(
-          ApiError.internal(
-            `Unable to send referral confirmation email due to the following error: ${error}`,
-          ),
-        );
-      });
+        .send(msg)
+        .then((response: any) => {
+          console.log(response);
+          console.log('Email confirmation sent successfully');
+        })
+        .catch((error: any) => {
+          next(
+            ApiError.internal(
+              `Unable to send referral confirmation email due to the following error: ${error}`,
+            ),
+          );
+        });
     }
 
     res.status(StatusCode.OK).json(referral);
