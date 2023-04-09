@@ -452,6 +452,7 @@ const updateReferral = async (
       transferredToCCWaitlist,
       followUpLetterSent,
     );
+    const prevReferral = await getReferralById(id);
     const referral = await updateReferralById(
       id,
       status,
@@ -515,7 +516,7 @@ const updateReferral = async (
     const staffLastName = staffAssigned?.lastName || 'first name placeholder';
     const nameArr = survivorName.split(' ');
     const survivorInitials = nameArr[0].charAt(0)+ '' + nameArr[nameArr.length - 1].charAt(0);
-    if (status === 'Assigned') {
+    if (status === 'Assigned' && !prevReferral?.staffAssigned) {
       const msg = {
         to: `${agencyRepEmail}`,
         from: 'bach.tran@hack4impact.org',
