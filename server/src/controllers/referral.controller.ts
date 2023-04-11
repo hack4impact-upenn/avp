@@ -340,6 +340,45 @@ const getReferral = async (
   }
 };
 
+const buildYVOOutcomesString = async (
+  youthServicesOutcome: youthServicesOutcomeItem,
+) => {
+  const outcomes = [];
+  if (youthServicesOutcome.eligibleForYVOServices) {
+    outcomes.push('eligible for YVO Services');
+  }
+  if (youthServicesOutcome.assignedToYVOTherapist) {
+    outcomes.push('assigned to YVO therapist');
+  }
+  if (youthServicesOutcome.addedToYVOIndividualTherapyWaitlist) {
+    outcomes.push('added to YVO individual therapy waitlist');
+  }
+  if (youthServicesOutcome.assignedToYVOGroup) {
+    outcomes.push('assigned to YVO group');
+  }
+  if (youthServicesOutcome.addedToYVOGroupWaitlist) {
+    outcomes.push('added to YVO group waitlist');
+  }
+
+  let outcomeString = '';
+  if (outcomes.length > 0) {
+    outcomeString = outcomeString.concat(outcomes[0]);
+    //if len = 2, format would be 'outcome1 and outcome2'
+    if (outcomes.length === 2) {
+      outcomeString = outcomeString.concat('and', outcomes[1]);
+    } else {
+      for (let i = 1; i < outcomes.length; i+=1) {
+        if (i === outcomes.length - 1) {
+          return outcomeString.concat(', and', outcomes[i]);
+        }
+        outcomeString = outcomeString.concat(', ', outcomes[i]);
+      }
+    }
+  }
+
+  return outcomeString;
+}
+
 const updateReferral = async (
   req: express.Request,
   res: express.Response,
@@ -610,7 +649,7 @@ const updateReferral = async (
         </div>`;
       } else if (staffDepartment === 'Youth Services') {
         const outcomes = buildYVOOutcomesString(youthServicesOutcome);
-        
+
         msg.html = `<div>Hi ${agencyRepName}, 
         <p>Thank you for submitting a referral on behalf of ${agencyThatReferred} for <strong>${survivorName}</strong>, for the service <strong>${serviceRequested}</strong>.</p>
         <p>${survivorName} was ${outcomes}. If a YVO staff member was assigned, they will be contacting you to schedule an appointment. If you have any questions, you can contact the Director of Youth Services, Lorenzo Shedrick, at <strong>lshedrick@avpphila.org</strong>.</p>
@@ -644,45 +683,6 @@ const updateReferral = async (
     );
   }
 };
-
-const buildYVOOutcomesString = async (
-  youthServicesOutcome: youthServicesOutcomeItem,
-) => {
-  const outcomes = [];
-  if (youthServicesOutcome.eligibleForYVOServices) {
-    outcomes.push('eligible for YVO Services');
-  }
-  if (youthServicesOutcome.assignedToYVOTherapist) {
-    outcomes.push('assigned to YVO therapist');
-  }
-  if (youthServicesOutcome.addedToYVOIndividualTherapyWaitlist) {
-    outcomes.push('added to YVO individual therapy waitlist');
-  }
-  if (youthServicesOutcome.assignedToYVOGroup) {
-    outcomes.push('assigned to YVO group');
-  }
-  if (youthServicesOutcome.addedToYVOGroupWaitlist) {
-    outcomes.push('added to YVO group waitlist');
-  }
-
-  let outcomeString = '';
-  if (outcomes.length > 0) {
-    outcomeString = outcomes[0];
-    //if len = 2, format would be 'outcome1 and outcome2'
-    if (outcomes.length == 2) {
-      outcomeString = outcomeString.concat('and', outcomes[1]);
-    } else {
-      for (let i = 1; i < outcomes.length; i++) {
-        if (i === outcomes.length - 1) {
-          return outcomeString.concat(', and', outcomes[i]);
-        }
-        outcomeString = outcomeString.concat(', ', outcomes[i]);
-      }
-    }
-  }
-
-  return outcomeString;
-}
 
 const getCommunicationHistory = async (
   req: express.Request,
