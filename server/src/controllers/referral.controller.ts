@@ -14,7 +14,7 @@ import {
   updateReferralById,
 } from '../services/referral.service';
 import StatusCode from '../util/statusCode';
-import { communicationItem } from '../models/referral.model';
+import { communicationItem, youthServicesOutcomeItem } from '../models/referral.model';
 import { IUser } from '../models/user.model';
 
 // SendGrid setup
@@ -550,7 +550,7 @@ const updateReferral = async (
         .send(msgRep)
         .then((response: any) => {
           console.log(response);
-          console.log('Email confirmation sent successfully');
+          console.log('Email confirmation for assigned referral sent successfully');
         })
         .catch((error: any) => {
           next(
@@ -577,7 +577,7 @@ const updateReferral = async (
         .send(msgStaff)
         .then((response: any) => {
           console.log(response);
-          console.log('Email confirmation sent successfully');
+          console.log('Email confirmation for completed referral sent successfully');
         })
         .catch((error: any) => {
           next(
@@ -587,46 +587,44 @@ const updateReferral = async (
           );
         });
     } else if (status === 'Completed') {
-      let msg = {
+      const msg = {
         to: `${agencyRepEmail}`,
         from: 'bach.tran@hack4impact.org',
         subject: `Update for ${survivorInitials} to AVP for ${serviceRequested} - Completed`,
-        html: ''
+        html: `<div>Hi ${agencyRepName}, 
+        <p>Thank you for submitting a referral on behalf of ${agencyThatReferred} for <strong>${survivorName}</strong>, for the service <strong>${serviceRequested}</strong>.</p>
+        Thank you,
+        <br></br>
+        Anti-Violence Partnership of Philadelphia
+        <p style="color:gray">The content of this email is confidential and intended for the recipient specified in message only. It is strictly forbidden to share any part of this message with any third party, without a written consent of the sender. If you received this message by mistake, please reply to this message and follow with its deletion, so that we can ensure such a mistake does not occur in the future.</p>
+        </div>`,
       };
       if (staffDepartment === 'Counseling Services' || staffDepartment === 'Victim Services') {
-        msg = {
-          to: `${agencyRepEmail}`,
-          from: 'bach.tran@hack4impact.org',
-          subject: `Update for ${survivorInitials} to AVP for ${serviceRequested} - Completed`,
-          html: `<div>Hi ${agencyRepName}, 
-          <p>Thank you for submitting a referral on behalf of ${agencyThatReferred} for <strong>${survivorName}</strong>, for the service <strong>${serviceRequested}</strong>.</p>
-          <p>We are emailing to let you know that we established contact with <strong>${survivorName}</strong> and this referral has been marked as <strong>completed</strong>.</p>
-          Thank you,
-          <br></br>
-          Anti-Violence Partnership of Philadelphia
-          <p style="color:gray">The content of this email is confidential and intended for the recipient specified in message only. It is strictly forbidden to share any part of this message with any third party, without a written consent of the sender. If you received this message by mistake, please reply to this message and follow with its deletion, so that we can ensure such a mistake does not occur in the future.</p>
-          </div>`,
-        };
+        msg.html = `<div>Hi ${agencyRepName}, 
+        <p>Thank you for submitting a referral on behalf of ${agencyThatReferred} for <strong>${survivorName}</strong>, for the service <strong>${serviceRequested}</strong>.</p>
+        <p>We are emailing to let you know that we established contact with <strong>${survivorName}</strong> and this referral has been marked as <strong>completed</strong>.</p>
+        Thank you,
+        <br></br>
+        Anti-Violence Partnership of Philadelphia
+        <p style="color:gray">The content of this email is confidential and intended for the recipient specified in message only. It is strictly forbidden to share any part of this message with any third party, without a written consent of the sender. If you received this message by mistake, please reply to this message and follow with its deletion, so that we can ensure such a mistake does not occur in the future.</p>
+        </div>`;
       } else if (staffDepartment === 'Youth Services') {
-        msg = {
-          to: `${agencyRepEmail}`,
-          from: 'bach.tran@hack4impact.org',
-          subject: `Update for ${survivorInitials} to AVP for ${serviceRequested} - Completed`,
-          html: `<div>Hi ${agencyRepName}, 
-          <p>Thank you for submitting a referral on behalf of ${agencyThatReferred} for <strong>${survivorName}</strong>, for the service <strong>${serviceRequested}</strong>.</p>
-          <p>${survivorName} was ${youthServicesOutcome}. If a YVO staff member was assigned, they will be contacting you to schedule an appointment. If you have any questions, you can contact the Director of Youth Services, Lorenzo Shedrick, at <strong>lshedrick@avpphila.org</strong>.</p>
-          Thank you,
-          <br></br>
-          Anti-Violence Partnership of Philadelphia
-          <p style="color:gray">The content of this email is confidential and intended for the recipient specified in message only. It is strictly forbidden to share any part of this message with any third party, without a written consent of the sender. If you received this message by mistake, please reply to this message and follow with its deletion, so that we can ensure such a mistake does not occur in the future.</p>
-          </div>`,
-        };
+        const outcomes = buildYVOOutcomesString(youthServicesOutcome);
+        
+        msg.html = `<div>Hi ${agencyRepName}, 
+        <p>Thank you for submitting a referral on behalf of ${agencyThatReferred} for <strong>${survivorName}</strong>, for the service <strong>${serviceRequested}</strong>.</p>
+        <p>${survivorName} was ${outcomes}. If a YVO staff member was assigned, they will be contacting you to schedule an appointment. If you have any questions, you can contact the Director of Youth Services, Lorenzo Shedrick, at <strong>lshedrick@avpphila.org</strong>.</p>
+        Thank you,
+        <br></br>
+        Anti-Violence Partnership of Philadelphia
+        <p style="color:gray">The content of this email is confidential and intended for the recipient specified in message only. It is strictly forbidden to share any part of this message with any third party, without a written consent of the sender. If you received this message by mistake, please reply to this message and follow with its deletion, so that we can ensure such a mistake does not occur in the future.</p>
+        </div>`;
       }
       sgMail
         .send(msg)
         .then((response: any) => {
           console.log(response);
-          console.log('Email confirmation sent successfully');
+          console.log('Email confirmation for completed referral sent successfully');
         })
         .catch((error: any) => {
           next(
@@ -646,6 +644,45 @@ const updateReferral = async (
     );
   }
 };
+
+const buildYVOOutcomesString = async (
+  youthServicesOutcome: youthServicesOutcomeItem,
+) => {
+  const outcomes = [];
+  if (youthServicesOutcome.eligibleForYVOServices) {
+    outcomes.push('eligible for YVO Services');
+  }
+  if (youthServicesOutcome.assignedToYVOTherapist) {
+    outcomes.push('assigned to YVO therapist');
+  }
+  if (youthServicesOutcome.addedToYVOIndividualTherapyWaitlist) {
+    outcomes.push('added to YVO individual therapy waitlist');
+  }
+  if (youthServicesOutcome.assignedToYVOGroup) {
+    outcomes.push('assigned to YVO group');
+  }
+  if (youthServicesOutcome.addedToYVOGroupWaitlist) {
+    outcomes.push('added to YVO group waitlist');
+  }
+
+  let outcomeString = '';
+  if (outcomes.length > 0) {
+    outcomeString = outcomes[0];
+    //if len = 2, format would be 'outcome1 and outcome2'
+    if (outcomes.length == 2) {
+      outcomeString = outcomeString.concat('and', outcomes[1]);
+    } else {
+      for (let i = 1; i < outcomes.length; i++) {
+        if (i === outcomes.length - 1) {
+          return outcomeString.concat(', and', outcomes[i]);
+        }
+        outcomeString = outcomeString.concat(', ', outcomes[i]);
+      }
+    }
+  }
+
+  return outcomeString;
+}
 
 const getCommunicationHistory = async (
   req: express.Request,
