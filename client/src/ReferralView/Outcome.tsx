@@ -5,10 +5,16 @@ import {
   MenuItem,
   Select,
   Typography,
+  CircularProgress,
 } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Theme, useTheme } from '@mui/material/styles';
 import OutlinedInput from '@mui/material/OutlinedInput';
+import { Params, useParams } from 'react-router-dom';
+import axios from 'axios';
+import { array } from 'prop-types';
+import { ICommunicationItem } from '../util/types/referral';
+import { useData } from '../util/api';
 
 const sections: any = {
   VCAP: [
@@ -59,48 +65,57 @@ function getStyles(val: string, valArr: string[], theme: Theme) {
 interface Props {
   data: any;
   setData: React.Dispatch<React.SetStateAction<any>>;
+  // id: Readonly<Params<string>>
 }
 
 export default function PageFive({ data, setData }: Props) {
+  const { id } = useParams();
+  const referral = useData(`referral/${id}`);
   const theme = useTheme();
-
-  return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-      }}
-    >
-      {Object.keys(sections).map((k) => (
-        <div style={{ width: '32%' }}>
-          <Typography
-            sx={{ margin: '12px 0px', fontWeight: 'bold', fontSize: '18px' }}
-            color="primary"
-          >
-            {k}
-          </Typography>
-          {sections[k].map((item: any) => (
-            <FormControl
-              sx={{ marginBottom: 2, marginRight: 2, minWidth: 360 }}
+  if (referral) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+        }}
+      >
+        {Object.keys(sections).map((k) => (pos
+          <div style={{ width: '32%' }}>
+            <Typography
+              sx={{ margin: '12px 0px', fontWeight: 'bold', fontSize: '18px' }}
+              color="primary"
             >
-              <InputLabel id={`${item}`}>{item}</InputLabel>
-              <Select
-                labelId={`${item}`}
-                value={data[item]}
-                onChange={(event) =>
-                  setData({ ...data, [item]: event.target.value })
-                }
-                label={item}
+              {k}
+            </Typography>
+            {sections[k].map((item: any) => (
+              <FormControl
+                sx={{ marginBottom: 2, marginRight: 2, minWidth: 360 }}
               >
-                <MenuItem value={1}>Yes</MenuItem>
-                <MenuItem value={0}>No</MenuItem>
-              </Select>
-            </FormControl>
-          ))}
-        </div>
-      ))}
+                <InputLabel id={`${item}`}>{item}</InputLabel>
+                <Select
+                  labelId={`${item}`}
+                  value={data[item]}
+                  onChange={(event) =>
+                    setData({ ...data, [item]: event.target.value })
+                  }
+                  label={item}
+                >
+                  <MenuItem value={1}>Yes</MenuItem>
+                  <MenuItem value={0}>No</MenuItem>
+                </Select>
+              </FormControl>
+            ))}
+          </div>
+        ))}
+      </div>
+    );
+  }
+  return (
+    <div key="invalid-referral">
+      <p>Invalid refferal id.</p>
     </div>
   );
 }

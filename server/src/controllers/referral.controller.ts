@@ -14,7 +14,10 @@ import {
   updateReferralById,
 } from '../services/referral.service';
 import StatusCode from '../util/statusCode';
-import { communicationItem, youthServicesOutcomeItem } from '../models/referral.model';
+import {
+  communicationItem,
+  youthServicesOutcomeItem,
+} from '../models/referral.model';
 import { IUser } from '../models/user.model';
 
 // SendGrid setup
@@ -363,11 +366,11 @@ const buildYVOOutcomesString = async (
   let outcomeString = '';
   if (outcomes.length > 0) {
     outcomeString = outcomeString.concat(outcomes[0]);
-    //if len = 2, format would be 'outcome1 and outcome2'
+    // if len = 2, format would be 'outcome1 and outcome2'
     if (outcomes.length === 2) {
       outcomeString = outcomeString.concat('and', outcomes[1]);
     } else {
-      for (let i = 1; i < outcomes.length; i+=1) {
+      for (let i = 1; i < outcomes.length; i += 1) {
         if (i === outcomes.length - 1) {
           return outcomeString.concat(', and', outcomes[i]);
         }
@@ -377,7 +380,7 @@ const buildYVOOutcomesString = async (
   }
 
   return outcomeString;
-}
+};
 
 const updateReferral = async (
   req: express.Request,
@@ -442,7 +445,7 @@ const updateReferral = async (
     transferredToETO,
     victimServicesOutcome,
     counsellingServicesOutcome,
-    youthServicesOutcome
+    youthServicesOutcome,
   } = req.body;
 
   if (
@@ -555,7 +558,7 @@ const updateReferral = async (
       transferredToETO,
       victimServicesOutcome,
       counsellingServicesOutcome,
-      youthServicesOutcome
+      youthServicesOutcome,
     );
 
     const staffEmail = staffAssigned?.email;
@@ -567,7 +570,11 @@ const updateReferral = async (
     const survivorInitials = `${nameArr[0].charAt(0)}${nameArr[
       nameArr.length - 1
     ].charAt(0)}`;
-    if (status === 'Assigned' && !prevReferral?.staffAssigned && staffDepartment !== 'Youth Services') {
+    if (
+      status === 'Assigned' &&
+      !prevReferral?.staffAssigned &&
+      staffDepartment !== 'Youth Services'
+    ) {
       const msgRep = {
         to: `${agencyRepEmail}`,
         from: 'bach.tran@hack4impact.org',
@@ -589,7 +596,9 @@ const updateReferral = async (
         .send(msgRep)
         .then((response: any) => {
           console.log(response);
-          console.log('Email confirmation for assigned referral sent successfully');
+          console.log(
+            'Email confirmation for assigned referral sent successfully',
+          );
         })
         .catch((error: any) => {
           next(
@@ -598,7 +607,7 @@ const updateReferral = async (
             ),
           );
         });
-      
+
       const msgStaff = {
         to: `${staffEmail}`,
         from: 'bach.tran@hack4impact.org',
@@ -616,7 +625,9 @@ const updateReferral = async (
         .send(msgStaff)
         .then((response: any) => {
           console.log(response);
-          console.log('Email confirmation for completed referral sent successfully');
+          console.log(
+            'Email confirmation for completed referral sent successfully',
+          );
         })
         .catch((error: any) => {
           next(
@@ -638,7 +649,10 @@ const updateReferral = async (
         <p style="color:gray">The content of this email is confidential and intended for the recipient specified in message only. It is strictly forbidden to share any part of this message with any third party, without a written consent of the sender. If you received this message by mistake, please reply to this message and follow with its deletion, so that we can ensure such a mistake does not occur in the future.</p>
         </div>`,
       };
-      if (staffDepartment === 'Counseling Services' || staffDepartment === 'Victim Services') {
+      if (
+        staffDepartment === 'Counseling Services' ||
+        staffDepartment === 'Victim Services'
+      ) {
         msg.html = `<div>Hi ${agencyRepName}, 
         <p>Thank you for submitting a referral on behalf of ${agencyThatReferred} for <strong>${survivorName}</strong>, for the service <strong>${serviceRequested}</strong>.</p>
         <p>We are emailing to let you know that we established contact with <strong>${survivorName}</strong> and this referral has been marked as <strong>completed</strong>.</p>
@@ -663,7 +677,9 @@ const updateReferral = async (
         .send(msg)
         .then((response: any) => {
           console.log(response);
-          console.log('Email confirmation for completed referral sent successfully');
+          console.log(
+            'Email confirmation for completed referral sent successfully',
+          );
         })
         .catch((error: any) => {
           next(
@@ -709,35 +725,30 @@ const addToHistory = async (
   next: express.NextFunction,
 ) => {
   const { id } = req.params;
-
+  const user: IUser | undefined = req.user as IUser;
   const {
     dateOfCommunication,
     method,
-    user,
     notes,
     didEstablishedContact,
     dateOfNextCommunication,
   } = req.body;
-
   if (
     !dateOfCommunication ||
     !method ||
-    !user ||
-    !didEstablishedContact ||
+    didEstablishedContact == null ||
     !dateOfNextCommunication
   ) {
     next(
       ApiError.missingFields([
         'dateOfCommunication',
         'method',
-        'user',
         'didEstablishedContact',
         'dateOfNextCommunication',
       ]),
     );
     return;
   }
-
   try {
     const referral = await addToCommunicationHistory(
       id,
@@ -764,11 +775,10 @@ const updateHistory = async (
   next: express.NextFunction,
 ) => {
   const { id, index } = req.params;
-
+  const user: IUser | undefined = req.user as IUser;
   const {
     dateOfCommunication,
     method,
-    user,
     notes,
     didEstablishedContact,
     dateOfNextCommunication,
@@ -777,8 +787,7 @@ const updateHistory = async (
   if (
     !dateOfCommunication ||
     !method ||
-    !user ||
-    !didEstablishedContact ||
+    didEstablishedContact == null ||
     !dateOfNextCommunication
   ) {
     next(
