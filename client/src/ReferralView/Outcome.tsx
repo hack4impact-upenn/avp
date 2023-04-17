@@ -82,7 +82,7 @@ export default function PageFive({ data, setData }: Props) {
           flexWrap: 'wrap',
         }}
       >
-        {Object.keys(sections).map((k) => (pos
+        {Object.keys(sections).map((k) => (
           <div style={{ width: '32%' }}>
             <Typography
               sx={{ margin: '12px 0px', fontWeight: 'bold', fontSize: '18px' }}

@@ -4,7 +4,7 @@ import {
   Referral,
   victimServicesOutcomeItem,
   counsellingServicesOutcomeItem,
-  youthServicesOutcomeItem
+  youthServicesOutcomeItem,
 } from '../models/referral.model';
 import { IUser } from '../models/user.model';
 
@@ -194,7 +194,7 @@ const updateReferralById = async (
   transferredToETO: boolean,
   victimServicesOutcome: victimServicesOutcomeItem,
   counsellingServicesOutcome: counsellingServicesOutcomeItem,
-  youthServicesOutcome:youthServicesOutcomeItem
+  youthServicesOutcome: youthServicesOutcomeItem,
 ) => {
   const updateQuery = {
     status,
@@ -253,7 +253,7 @@ const updateReferralById = async (
     transferredToETO,
     victimServicesOutcome,
     counsellingServicesOutcome,
-    youthServicesOutcome
+    youthServicesOutcome,
   };
   return Referral.findByIdAndUpdate(id, updateQuery, { new: true }).exec();
 };
