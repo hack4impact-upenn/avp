@@ -341,6 +341,44 @@ export default function DataGrid() {
       type: 'date',
     },
     {
+      field: 'outreachLetter',
+      headerName: 'Outreach Letter File Upload',
+      width: 150,
+      renderCell: (params: GridRenderCellParams<Date>) => (
+        <div style={{ width: '100%', display: 'flex', alignItems: 'center' }}>
+          <Button
+            variant="contained"
+            component="label"
+            size="small"
+            style={{ margin: 'auto', background: '#4EA0B3', height: '26px' }}
+            tabIndex={params.hasFocus ? 0 : -1}
+          >
+            Upload
+            <input type="file" hidden />
+          </Button>
+        </div>
+      ),
+    },
+    {
+      field: 'followUpLetter',
+      headerName: 'Follow-Up Letter Sent',
+      width: 150,
+      renderCell: (params: GridRenderCellParams<Date>) => (
+        <div style={{ width: '100%', display: 'flex', alignItems: 'center' }}>
+          <Button
+            variant="contained"
+            component="label"
+            size="small"
+            style={{ margin: 'auto', background: '#4EA0B3', height: '26px' }}
+            tabIndex={params.hasFocus ? 0 : -1}
+          >
+            Upload
+            <input type="file" hidden />
+          </Button>
+        </div>
+      ),
+    },
+    {
       field: 'isReferral',
       headerName: 'Is Referral',
       width: 120,
@@ -491,6 +529,25 @@ export default function DataGrid() {
       headerName: 'Notes from Organization',
       width: 150,
       editable: true,
+    },
+    {
+      field: 'referralPDF',
+      headerName: 'Referral PDF',
+      width: 150,
+      renderCell: (params: GridRenderCellParams<Date>) => (
+        <div style={{ width: '100%', display: 'flex', alignItems: 'center' }}>
+          <Button
+            variant="contained"
+            component="label"
+            size="small"
+            style={{ margin: 'auto', background: '#4EA0B3', height: '26px' }}
+            tabIndex={params.hasFocus ? 0 : -1}
+          >
+            Upload
+            <input type="file" hidden />
+          </Button>
+        </div>
+      ),
     },
     {
       field: 'primaryLanguage',

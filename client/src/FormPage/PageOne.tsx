@@ -1,4 +1,10 @@
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from '@mui/material';
 import React from 'react';
 import { Theme, useTheme } from '@mui/material/styles';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -67,6 +73,53 @@ export default function PageOne({ data, setData }: Props) {
 
   return (
     <div>
+      <FormControl style={{ marginBottom: '30px' }} sx={{ m: 1, width: 600 }}>
+        <InputLabel id="demo-multiple-name-label">
+          Outreach Letter File Upload
+        </InputLabel>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          style={{
+            margin: 'auto',
+            background: '#4EA0B3',
+            height: '26px',
+          }}
+        >
+          Upload
+          <input type="file" hidden />
+        </Button>
+      </FormControl>
+      <br />
+      <FormControl style={{ marginBottom: '30px' }} sx={{ m: 1, width: 600 }}>
+        <InputLabel id="demo-multiple-name-label">
+          Follow-Up Letter Sent
+        </InputLabel>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          style={{ margin: 'auto', background: '#4EA0B3', height: '26px' }}
+        >
+          Upload
+          <input type="file" hidden />
+        </Button>
+      </FormControl>
+      <br />
+      <FormControl style={{ marginBottom: '30px' }} sx={{ m: 1, width: 600 }}>
+        <InputLabel id="demo-multiple-name-label">Referral PDF</InputLabel>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          style={{ margin: 'auto', background: '#4EA0B3', height: '26px' }}
+        >
+          Upload
+          <input type="file" hidden />
+        </Button>
+      </FormControl>
+      <br />
       <FormControl sx={{ m: 1, width: 600 }}>
         <InputLabel id="demo-multiple-name-label">
           Counseling & Therapy
