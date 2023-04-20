@@ -228,7 +228,7 @@ export default function PageTwo({ data, setData }: Props) {
 
       <br />
 
-      <FormControl required sx={{ minWidth: 540 }}>
+      <FormControl required sx={{ m: 1, minWidth: 540 }}>
         <TextField
           id="outlined-number"
           label="How Many People Are Being Referred For This Victimization/Crime?"

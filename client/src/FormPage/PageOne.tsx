@@ -4,6 +4,7 @@ import {
   MenuItem,
   Select,
   TextField,
+  Box,
 } from '@mui/material';
 import React from 'react';
 import { Theme, useTheme } from '@mui/material/styles';
@@ -83,6 +84,7 @@ export default function PageOne({ data, setData }: Props) {
             id="outlined-basic"
             variant="outlined"
             label="Please Specify Other Requested Victim Services"
+            required
             onChange={(event) =>
               setData({
                 ...data,
@@ -97,7 +99,7 @@ export default function PageOne({ data, setData }: Props) {
 
   return (
     <div>
-      <FormControl sx={{ m: 1, width: 600 }}>
+      <FormControl required sx={{ m: 1, width: 600 }}>
         <InputLabel id="demo-multiple-name-label">
           Counseling & Therapy
         </InputLabel>
@@ -109,6 +111,7 @@ export default function PageOne({ data, setData }: Props) {
           onChange={handleChange}
           input={<OutlinedInput label="Counseling & Therapy" />}
           MenuProps={MenuProps}
+          required
         >
           {counselingServices.map((val) => (
             <MenuItem
@@ -122,7 +125,7 @@ export default function PageOne({ data, setData }: Props) {
         </Select>
       </FormControl>
       <br />
-      <FormControl sx={{ m: 1, width: 600 }}>
+      <FormControl required sx={{ m: 1, width: 600 }}>
         <InputLabel id="demo-multiple-name-label">Victim Services</InputLabel>
         <Select
           labelId="demo-multiple-name-label"
@@ -136,6 +139,7 @@ export default function PageOne({ data, setData }: Props) {
           onChange={handleChangeVictim}
           input={<OutlinedInput label="Victim Services" />}
           MenuProps={MenuProps}
+          required
         >
           {victimServices.map((val) => (
             <MenuItem
