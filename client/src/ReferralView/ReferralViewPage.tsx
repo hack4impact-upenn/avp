@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react';
@@ -5,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { useParams } from 'react-router-dom';
-import { Tab, Tabs } from '@mui/material';
+import { CircularProgress, Tab, Tabs } from '@mui/material';
 import FormStepper from './FormStepper';
 import ServiceReq from './ServiceReq';
 import VictimCrime from './VictimCrime';
@@ -20,8 +21,8 @@ const steps = [
   'Victimization/Crime Information',
   'Contact Info',
   'Referral Source Info',
-  'Outcome of Referral',
   'Communication History',
+  'Outcome of Referral',
 ];
 
 const styles = {
@@ -36,7 +37,8 @@ export default function FormPage() {
   const [activeStep, setActiveStep] = useState(0);
   const temp = {};
   const [data, setData] = useState(temp);
-
+  // const [referralItem, setReferralItem] = useState<IReferral>([]);
+  // const [error, setError] = useState(<null>);
   const referral = useData(`referral/${id}`);
 
   // eslint-disable-next-line no-console
@@ -109,14 +111,14 @@ export default function FormPage() {
     case 4:
       targetPage = (
         <div>
-          <Outcome data={data} setData={setData} />
+          <CommunicationHistory data={data} setData={setData} />
         </div>
       );
       break;
     case 5:
       targetPage = (
         <div>
-          <CommunicationHistory data={data} setData={setData} />
+          <Outcome data={data} setData={setData} />
         </div>
       );
       break;
@@ -153,31 +155,43 @@ export default function FormPage() {
             aria-label="basic tabs example"
           >
             <Tab label="Service Requested" />
-            <Tab sx={{ fontSize: '13px' }} label="Victimization/Crime Info" />
+            <Tab sx={{ fontSize: '13px' }} label="Victimization / Crime Info" />
             <Tab label="Contact Info" />
             <Tab label="Referral Source Info" />
-            <Tab label="Outcome of Referral" />
             <Tab sx={{ fontSize: '13px' }} label="Communication History" />
+            <Tab label="Outcome of Referral" />
           </Tabs>
         </div>
-        <TabPanel value={value} index={0}>
-          <ServiceReq data={data} setData={setData} />
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <VictimCrime data={data} setData={setData} />
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <Contact data={data} setData={setData} />
-        </TabPanel>
-        <TabPanel value={value} index={3}>
-          <ReferralSource data={data} setData={setData} />
-        </TabPanel>
-        <TabPanel value={value} index={4}>
-          <Outcome data={data} setData={setData} />
-        </TabPanel>
-        <TabPanel value={value} index={5}>
-          <CommunicationHistory data={data} setData={setData} />
-        </TabPanel>
+        {!referral ? (
+          <div style={{ width: '0', margin: 'auto' }}>
+            <CircularProgress size={80} />
+          </div>
+        ) : referral?.error == null ? (
+          <div>
+            <TabPanel value={value} index={0}>
+              <ServiceReq data={data} setData={setData} />
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+              <VictimCrime data={data} setData={setData} />
+            </TabPanel>
+            <TabPanel value={value} index={2}>
+              <Contact data={data} setData={setData} />
+            </TabPanel>
+            <TabPanel value={value} index={3}>
+              <ReferralSource data={data} setData={setData} />
+            </TabPanel>
+            <TabPanel value={value} index={4}>
+              <CommunicationHistory data={data} setData={setData} />
+            </TabPanel>
+            <TabPanel value={value} index={5}>
+              <Outcome data={data} setData={setData} />
+            </TabPanel>
+          </div>
+        ) : (
+          <div key="invalid-referral">
+            <p>Invalid referral id.</p>
+          </div>
+        )}
       </Box>
       {/* <FormStepper
         steps={steps}

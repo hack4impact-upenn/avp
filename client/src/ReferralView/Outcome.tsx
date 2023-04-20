@@ -72,50 +72,43 @@ export default function PageFive({ data, setData }: Props) {
   const { id } = useParams();
   const referral = useData(`referral/${id}`);
   const theme = useTheme();
-  if (referral) {
-    return (
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-        }}
-      >
-        {Object.keys(sections).map((k) => (
-          <div style={{ width: '32%' }}>
-            <Typography
-              sx={{ margin: '12px 0px', fontWeight: 'bold', fontSize: '18px' }}
-              color="primary"
-            >
-              {k}
-            </Typography>
-            {sections[k].map((item: any) => (
-              <FormControl
-                sx={{ marginBottom: 2, marginRight: 2, minWidth: 360 }}
-              >
-                <InputLabel id={`${item}`}>{item}</InputLabel>
-                <Select
-                  labelId={`${item}`}
-                  value={data[item]}
-                  onChange={(event) =>
-                    setData({ ...data, [item]: event.target.value })
-                  }
-                  label={item}
-                >
-                  <MenuItem value={1}>Yes</MenuItem>
-                  <MenuItem value={0}>No</MenuItem>
-                </Select>
-              </FormControl>
-            ))}
-          </div>
-        ))}
-      </div>
-    );
-  }
   return (
-    <div key="invalid-referral">
-      <p>Invalid refferal id.</p>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+      }}
+    >
+      {Object.keys(sections).map((k) => (
+        <div style={{ width: '32%' }}>
+          <Typography
+            sx={{ margin: '12px 0px', fontWeight: 'bold', fontSize: '18px' }}
+            color="primary"
+          >
+            {k}
+          </Typography>
+          {sections[k].map((item: any) => (
+            <FormControl
+              sx={{ marginBottom: 2, marginRight: 2, minWidth: 360 }}
+            >
+              <InputLabel id={`${item}`}>{item}</InputLabel>
+              <Select
+                labelId={`${item}`}
+                value={data[item]}
+                onChange={(event) =>
+                  setData({ ...data, [item]: event.target.value })
+                }
+                label={item}
+              >
+                <MenuItem value={1}>Yes</MenuItem>
+                <MenuItem value={0}>No</MenuItem>
+              </Select>
+            </FormControl>
+          ))}
+        </div>
+      ))}
     </div>
   );
 }
