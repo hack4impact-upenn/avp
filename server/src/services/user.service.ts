@@ -141,6 +141,10 @@ const deleteUserById = async (id: string) => {
   return user;
 };
 
+const getUserByRole = async (role: string) => {
+  
+}
+
 export {
   passwordHashSaltRounds,
   createUser,

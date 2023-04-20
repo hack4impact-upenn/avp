@@ -64,5 +64,4 @@ router.post('/invite', isAuthenticated, isAdmin, inviteUser);
  * A GET route to verify the user invite is valid
  */
 router.get('/invite/:token', verifyToken);
-
 export default router;

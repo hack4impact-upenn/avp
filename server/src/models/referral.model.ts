@@ -260,7 +260,7 @@ const ReferralSchema = new mongoose.Schema({
     required: true,
   },
   departmentInCharge: {
-    type: String,
+    type: [String],
     required: false,
   },
   program: {
@@ -503,7 +503,7 @@ const ReferralSchema = new mongoose.Schema({
 interface IReferral extends mongoose.Document {
   _id: string;
   status: string;
-  departmentInCharge: string;
+  departmentInCharge: Array<string>;
   program: string;
   staffAssigned: IUser;
   therapistAssigned: string;

@@ -77,7 +77,10 @@ function App() {
                   <Route
                     path="/"
                     element={
-                      <DynamicRedirect unAuthPath="/login" authPath="/home" />
+                      <DynamicRedirect
+                        unAuthPath="/login"
+                        authPath="/database"
+                      />
                     }
                   />
 

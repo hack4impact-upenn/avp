@@ -23,6 +23,10 @@ import NoAccountsOutlinedIcon from '@mui/icons-material/NoAccountsOutlined';
 import { useData } from '../util/api';
 import IReferral from '../util/types/referral';
 import CircularProgress from '@mui/material/CircularProgress';
+import Checkbox from '@mui/material/Checkbox';
+import ListItemText from '@mui/material/ListItemText';
+import IUser from '../util/types/user';
+
 
 /* Wrapper Around DataGridPremium */
 export default function DataGrid() {
@@ -39,11 +43,12 @@ export default function DataGrid() {
   }) {
     const { id, value, field } = props;
     const apiRef = useGridApiContext();
+    const [labels, setLabels] = useState<string[]>(apiRef.current.getCellValue(id, field));
 
     const handleChange = (event: any) => {
       const eventValue = event.target.value; // The new value entered by the user
-      console.log({ eventValue });
       const newValue = Array.isArray(eventValue) ? eventValue : [eventValue];
+      setLabels(newValue)
       apiRef.current.setEditCellValue({
         id,
         field,
@@ -65,10 +70,12 @@ export default function DataGrid() {
         }
         onChange={handleChange}
         sx={{ width: '100%' }}
+        renderValue={(selected : any) => selected.join(', ')}
       >
         {props.valueOptions.map((option: any) => (
           <MenuItem key={option} value={option}>
-            {option}
+            <Checkbox checked={labels.indexOf(option) > -1} />
+            <ListItemText primary={option} />
           </MenuItem>
         ))}
       </Select>
@@ -125,6 +132,7 @@ export default function DataGrid() {
     InputComponent: CustomFilterInputSingleSelect,
     InputComponentProps: { type: 'text' },
   };
+
   useEffect(() => {
     setReferralList(
       referrals?.data.map((referral: IReferral) => {
@@ -142,6 +150,17 @@ export default function DataGrid() {
   }, [referrals]);
 
   const apiRef = useGridApiRef();
+  const [staffList, setStaffList] = useState<string[]>([]);
+  const staff = useData('admin/all');
+  useEffect(() => {
+    setStaffList(
+      staff?.data.map((user: IUser) => {
+        let name = user.firstName + " " + user.lastName;
+        return name;
+      })
+    )
+  }, [staff, self]);
+
   const columns: GridColumns = [
     { field: 'id', headerName: 'ID', width: 30 },
     //Todo: make department multiselect
@@ -171,7 +190,7 @@ export default function DataGrid() {
       width: 150,
       editable: true,
       type: 'singleSelect',
-      valueOptions: ['Program 1', 'Program 2', 'Program 3'],
+      valueOptions: ['Families of Murder Victims', 'West/Southwest Victim Service', 'Counseling Center', 'Partners in Care', 'Youth Violence Outreach'],
     },
     {
       field: 'staffName',
@@ -179,7 +198,7 @@ export default function DataGrid() {
       width: 160,
       editable: true,
       type: 'singleSelect',
-      valueOptions: ['Staff 1', 'Staff 2', 'Staff 3'],
+      valueOptions: staffList,
     },
     {
       field: 'therapistAssigned',
@@ -650,7 +669,7 @@ export default function DataGrid() {
   }
 
   return (
-    <Box sx={{ height: 520, width: '100%' }}>
+    <Box sx={{ height: '700px', width: '100%' }}>
       <DataGridPremium
         rows={referralList}
         columns={columns}

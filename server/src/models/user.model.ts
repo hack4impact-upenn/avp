@@ -57,6 +57,11 @@ const UserSchema = new mongoose.Schema({
     required: false,
     default: 'None',
   },
+  role: {
+    type: String,
+    required: false,
+    default: 'AVP Staff',
+  },
 });
 
 interface IUser extends mongoose.Document {
@@ -72,6 +77,7 @@ interface IUser extends mongoose.Document {
   resetPasswordTokenExpiryDate: Date | null | undefined;
   admin: boolean;
   department: string;
+  role: string;
 }
 
 const User = mongoose.model<IUser>('User', UserSchema);
