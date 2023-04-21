@@ -12,6 +12,12 @@ import {
   getReferralById,
   updateCommunicationHistory,
   updateReferralById,
+  postVictimServicesOutcome,
+  postCounsellingServicesOutcome,
+  postYouthServicesOutcome,
+  putVictimServicesOutcome,
+  putCounsellingServicesOutcome,
+  putYouthServicesOutcome
 } from '../services/referral.service';
 import StatusCode from '../util/statusCode';
 import {
@@ -867,6 +873,441 @@ const getDuplicates = async (
   }
 };
 
+const getVictimServicesOutcome = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { referral_id } = req.params;
+
+  try {
+    const outcome = (await getReferralById(referral_id))?.victimServicesOutcome;
+    res.status(StatusCode.OK).json(outcome);
+  } catch (err) {
+    next(
+      ApiError.internal(
+        `Unable to get referral by id due to the following error: ${err}`,
+      ),
+    );
+  }
+};
+
+const createVictimServicesOutcome = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { referral_id } = req.params;
+  var {
+    eligibleForAVPVictimServices,
+    sentVCAPInfotoClient,
+    avpAdvocateAssistingWithVCAP,
+    referredToOtherVSAgencyForVCAP,
+    vsAgencyName,
+    avpAdvocateProvidingCourtSupport,
+    clientWorkingWithFMV,
+    fmvNumber,
+    referredToOtherAgencyForCourt,
+    courtSupportAgencyName,
+    avpAdvocateContactedADA,
+    avpAdvocateContactedDetective,
+    needsRelocationAssistance,
+    relocationReferralWasSubmitted,
+    referredToAgencyForOtherServices,
+    otherAgencyNames,
+    otherServices,
+    additionalNotes,
+  } = req.body;
+  if (eligibleForAVPVictimServices === undefined) {
+    eligibleForAVPVictimServices = false;
+  }
+  if (sentVCAPInfotoClient === undefined) {
+    sentVCAPInfotoClient = false;
+  }
+  if (avpAdvocateAssistingWithVCAP === undefined) {
+    avpAdvocateAssistingWithVCAP = false;
+  }
+  if (referredToOtherVSAgencyForVCAP === undefined) {
+    referredToOtherVSAgencyForVCAP = false;
+  }
+  if (avpAdvocateProvidingCourtSupport === undefined) {
+    avpAdvocateProvidingCourtSupport = false;
+  }
+  if (clientWorkingWithFMV === undefined) {
+    clientWorkingWithFMV = false;
+  }
+  if (fmvNumber === undefined) {
+    fmvNumber = false;
+  }
+  if (referredToOtherAgencyForCourt === undefined) {
+    referredToOtherAgencyForCourt = false;
+  }
+  if (avpAdvocateContactedADA === undefined) {
+    avpAdvocateContactedADA = false;
+  }
+  if (avpAdvocateContactedDetective === undefined) {
+    avpAdvocateContactedDetective = false;
+  }
+  if (needsRelocationAssistance === undefined) {
+    needsRelocationAssistance = false;
+  }
+  if (relocationReferralWasSubmitted === undefined) {
+    relocationReferralWasSubmitted = false;
+  }
+  if (referredToAgencyForOtherServices === undefined) {
+    referredToAgencyForOtherServices = false;
+  }
+  try {
+    const outcome = await postVictimServicesOutcome(
+      referral_id,
+      eligibleForAVPVictimServices,
+      sentVCAPInfotoClient,
+      avpAdvocateAssistingWithVCAP,
+      referredToOtherVSAgencyForVCAP,
+      vsAgencyName,
+      avpAdvocateProvidingCourtSupport,
+      clientWorkingWithFMV,
+      fmvNumber,
+      referredToOtherAgencyForCourt,
+      courtSupportAgencyName,
+      avpAdvocateContactedADA,
+      avpAdvocateContactedDetective,
+      needsRelocationAssistance,
+      relocationReferralWasSubmitted,
+      referredToAgencyForOtherServices,
+      otherAgencyNames,
+      otherServices,
+      additionalNotes,
+    );
+    res.status(StatusCode.OK).json(outcome);
+  } catch (err) {
+    next(
+      ApiError.internal(
+        `Unable to add to communication history due to the following error: ${err}`,
+      ),
+    );
+  }
+};
+
+const updateVictimServicesOutcome = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { referral_id } = req.params;
+  const {
+    eligibleForAVPVictimServices,
+    sentVCAPInfotoClient,
+    avpAdvocateAssistingWithVCAP,
+    referredToOtherVSAgencyForVCAP,
+    vsAgencyName,
+    avpAdvocateProvidingCourtSupport,
+    clientWorkingWithFMV,
+    fmvNumber,
+    referredToOtherAgencyForCourt,
+    courtSupportAgencyName,
+    avpAdvocateContactedADA,
+    avpAdvocateContactedDetective,
+    needsRelocationAssistance,
+    relocationReferralWasSubmitted,
+    referredToAgencyForOtherServices,
+    otherAgencyNames,
+    otherServices,
+    additionalNotes,
+  } = req.body;
+
+  try {
+    const outcome = await putVictimServicesOutcome(
+      referral_id,
+      eligibleForAVPVictimServices,
+      sentVCAPInfotoClient,
+      avpAdvocateAssistingWithVCAP,
+      referredToOtherVSAgencyForVCAP,
+      vsAgencyName,
+      avpAdvocateProvidingCourtSupport,
+      clientWorkingWithFMV,
+      fmvNumber,
+      referredToOtherAgencyForCourt,
+      courtSupportAgencyName,
+      avpAdvocateContactedADA,
+      avpAdvocateContactedDetective,
+      needsRelocationAssistance,
+      relocationReferralWasSubmitted,
+      referredToAgencyForOtherServices,
+      otherAgencyNames,
+      otherServices,
+      additionalNotes,
+    );
+    res.status(StatusCode.OK).json(outcome);
+  } catch (err) {
+    next(
+      ApiError.internal(
+        `Unable to add to communication history due to the following error: ${err}`,
+      ),
+    );
+  }
+};
+
+const getCounsellingServicesOutcome = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { referral_id } = req.params;
+
+  try {
+    const outcome = (await getReferralById(referral_id))?.counsellingServicesOutcome;
+    res.status(StatusCode.OK).json(outcome);
+  } catch (err) {
+    next(
+      ApiError.internal(
+        `Unable to get referral by id due to the following error: ${err}`,
+      ),
+    );
+  }
+};
+
+const createCounsellingServicesOutcome = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { referral_id } = req.params;
+  var {
+    eligibleForAVPCounsellingServices,
+    receivingCrisisCounselling,
+    scheduledIntakeApptForIndividualTherapy,
+    intakeAppointmentOutcome,
+    receivingIndividualTherapy,
+    therapistName,
+    addedToIndividualTherapyWaitlist,
+    referredForCounsellingServices,
+    counsellingAgency,
+    sentAVPSupportGroupInfo,
+    attendingSupportGroup,
+    supportGroupName,
+    addedToSupportGroupWaitlist,
+    additionalNotes,
+  } = req.body;
+  if (eligibleForAVPCounsellingServices === undefined) {
+    eligibleForAVPCounsellingServices = false;
+  }
+  if (receivingCrisisCounselling === undefined) {
+    receivingCrisisCounselling = false;
+  }
+  if (scheduledIntakeApptForIndividualTherapy === undefined) {
+    scheduledIntakeApptForIndividualTherapy = false;
+  }
+  if (intakeAppointmentOutcome === undefined) {
+    intakeAppointmentOutcome = false;
+  }
+  if (receivingIndividualTherapy === undefined) {
+    receivingIndividualTherapy = false;
+  }
+  if (addedToIndividualTherapyWaitlist === undefined) {
+    addedToIndividualTherapyWaitlist = false;
+  }
+  if (referredForCounsellingServices === undefined) {
+    referredForCounsellingServices = false;
+  }
+  if (counsellingAgency === undefined) {
+    counsellingAgency = false;
+  }
+  if (sentAVPSupportGroupInfo === undefined) {
+    sentAVPSupportGroupInfo = false;
+  }
+  if (attendingSupportGroup === undefined) {
+    attendingSupportGroup = false;
+  }
+  if (addedToSupportGroupWaitlist === undefined) {
+    addedToSupportGroupWaitlist = false;
+  }
+  try {
+    const outcome = await postCounsellingServicesOutcome(
+      referral_id,
+      eligibleForAVPCounsellingServices,
+      receivingCrisisCounselling,
+      scheduledIntakeApptForIndividualTherapy,
+      intakeAppointmentOutcome,
+      receivingIndividualTherapy,
+      therapistName,
+      addedToIndividualTherapyWaitlist,
+      referredForCounsellingServices,
+      counsellingAgency,
+      sentAVPSupportGroupInfo,
+      attendingSupportGroup,
+      supportGroupName,
+      addedToSupportGroupWaitlist,
+      additionalNotes,
+    );
+    res.status(StatusCode.OK).json(outcome);
+  } catch (err) {
+    next(
+      ApiError.internal(
+        `Unable to add counselling services outcome due to the following error: ${err}`,
+      ),
+    );
+  }
+};
+
+const updateCounsellingServicesOutcome = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { referral_id } = req.params;
+  const {
+    eligibleForAVPCounsellingServices,
+    receivingCrisisCounselling,
+    scheduledIntakeApptForIndividualTherapy,
+    intakeAppointmentOutcome,
+    receivingIndividualTherapy,
+    therapistName,
+    addedToIndividualTherapyWaitlist,
+    referredForCounsellingServices,
+    counsellingAgency,
+    sentAVPSupportGroupInfo,
+    attendingSupportGroup,
+    supportGroupName,
+    addedToSupportGroupWaitlist,
+    additionalNotes,
+  } = req.body;
+
+  try {
+    const outcome = await putCounsellingServicesOutcome(
+      referral_id,
+      eligibleForAVPCounsellingServices,
+      receivingCrisisCounselling,
+      scheduledIntakeApptForIndividualTherapy,
+      intakeAppointmentOutcome,
+      receivingIndividualTherapy,
+      therapistName,
+      addedToIndividualTherapyWaitlist,
+      referredForCounsellingServices,
+      counsellingAgency,
+      sentAVPSupportGroupInfo,
+      attendingSupportGroup,
+      supportGroupName,
+      addedToSupportGroupWaitlist,
+      additionalNotes,
+    );
+    res.status(StatusCode.OK).json(outcome);
+  } catch (err) {
+    next(
+      ApiError.internal(
+        `Unable to add to communication history due to the following error: ${err}`,
+      ),
+    );
+  }
+};
+
+const getYouthServicesOutcome = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { referral_id } = req.params;
+
+  try {
+    const outcome = (await getReferralById(referral_id))?.youthServicesOutcome;
+    res.status(StatusCode.OK).json(outcome);
+  } catch (err) {
+    next(
+      ApiError.internal(
+        `Unable to get referral by id due to the following error: ${err}`,
+      ),
+    );
+  }
+};
+
+const createYouthServicesOutcome = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { referral_id } = req.params;
+  var {
+    eligibleForYVOServices,
+    assignedToYVOTherapist,
+    yvoStaffName,
+    addedToYVOIndividualTherapyWaitlist,
+    assignedToYVOGroup,
+    addedToYVOGroupWaitlist,
+    additionalNotes,
+  } = req.body;
+  if (eligibleForYVOServices === undefined) {
+    eligibleForYVOServices = false;
+  }
+  if (assignedToYVOTherapist === undefined) {
+    assignedToYVOTherapist = false;
+  }
+  if (addedToYVOIndividualTherapyWaitlist === undefined) {
+    addedToYVOIndividualTherapyWaitlist = false;
+  }
+  if (assignedToYVOGroup === undefined) {
+    assignedToYVOGroup = false;
+  }
+  if (addedToYVOGroupWaitlist === undefined) {
+    addedToYVOGroupWaitlist = false;
+  }
+  try {
+    const outcome = await postYouthServicesOutcome(
+      referral_id,
+      eligibleForYVOServices,
+      assignedToYVOTherapist,
+      yvoStaffName,
+      addedToYVOIndividualTherapyWaitlist,
+      assignedToYVOGroup,
+      addedToYVOGroupWaitlist,
+      additionalNotes,
+    );
+    res.status(StatusCode.OK).json(outcome);
+  } catch (err) {
+    next(
+      ApiError.internal(
+        `Unable to add to communication history due to the following error: ${err}`,
+      ),
+    );
+  }
+};
+
+const updateYouthServicesOutcome = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { referral_id } = req.params;
+  const {
+    eligibleForYVOServices,
+    assignedToYVOTherapist,
+    yvoStaffName,
+    addedToYVOIndividualTherapyWaitlist,
+    assignedToYVOGroup,
+    addedToYVOGroupWaitlist,
+    additionalNotes,
+  } = req.body;
+
+  try {
+    const outcome = await putYouthServicesOutcome(
+      referral_id,
+      eligibleForYVOServices,
+      assignedToYVOTherapist,
+      yvoStaffName,
+      addedToYVOIndividualTherapyWaitlist,
+      assignedToYVOGroup,
+      addedToYVOGroupWaitlist,
+      additionalNotes,
+    );
+    res.status(StatusCode.OK).json(outcome);
+  } catch (err) {
+    next(
+      ApiError.internal(
+        `Unable to add to communication history due to the following error: ${err}`,
+      ),
+    );
+  }
+};
+
 export {
   createReferral,
   getReferrals,
@@ -878,4 +1319,13 @@ export {
   updateHistory,
   deleteHistory,
   getDuplicates,
+  getVictimServicesOutcome,
+  createVictimServicesOutcome,
+  updateVictimServicesOutcome,
+  getCounsellingServicesOutcome,
+  createCounsellingServicesOutcome,
+  updateCounsellingServicesOutcome,
+  getYouthServicesOutcome,
+  createYouthServicesOutcome,
+  updateYouthServicesOutcome,
 };

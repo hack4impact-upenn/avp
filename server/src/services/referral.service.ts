@@ -360,6 +360,267 @@ const getDuplicateReferrals = async (phoneNumber: string, email: string) => {
   });
 };
 
+const postVictimServicesOutcome = async (
+  id: string,
+  eligibleForAVPVictimServices: boolean,
+  sentVCAPInfotoClient: boolean,
+  avpAdvocateAssistingWithVCAP: boolean,
+  referredToOtherVSAgencyForVCAP: boolean,
+  vsAgencyName: string,
+  avpAdvocateProvidingCourtSupport: boolean,
+  clientWorkingWithFMV: boolean,
+  fmvNumber: boolean,
+  referredToOtherAgencyForCourt: boolean,
+  courtSupportAgencyName: string,
+  avpAdvocateContactedADA: boolean,
+  avpAdvocateContactedDetective: boolean,
+  needsRelocationAssistance: boolean,
+  relocationReferralWasSubmitted: boolean,
+  referredToAgencyForOtherServices: boolean,
+  otherAgencyNames: string,
+  otherServices: string,
+  additionalNotes: string,
+) => {
+  const newVictimServicesOutcome: victimServicesOutcomeItem = {
+    eligibleForAVPVictimServices,
+    sentVCAPInfotoClient,
+    avpAdvocateAssistingWithVCAP,
+    referredToOtherVSAgencyForVCAP,
+    vsAgencyName,
+    avpAdvocateProvidingCourtSupport,
+    clientWorkingWithFMV,
+    fmvNumber,
+    referredToOtherAgencyForCourt,
+    courtSupportAgencyName,
+    avpAdvocateContactedADA,
+    avpAdvocateContactedDetective,
+    needsRelocationAssistance,
+    relocationReferralWasSubmitted,
+    referredToAgencyForOtherServices,
+    otherAgencyNames,
+    otherServices,
+    additionalNotes,
+  };
+  return Referral.findByIdAndUpdate(
+    id,
+    {
+      victimServicesOutcome: newVictimServicesOutcome,
+    },
+    { new: true },
+  ).exec();
+};
+
+const postCounsellingServicesOutcome = async (
+  id: string,
+  eligibleForAVPCounsellingServices: boolean,
+  receivingCrisisCounselling: boolean,
+  scheduledIntakeApptForIndividualTherapy: boolean,
+  intakeAppointmentOutcome: boolean,
+  receivingIndividualTherapy: boolean,
+  therapistName: string,
+  addedToIndividualTherapyWaitlist: boolean,
+  referredForCounsellingServices: boolean,
+  counsellingAgency: boolean,
+  sentAVPSupportGroupInfo: boolean,
+  attendingSupportGroup: boolean,
+  supportGroupName: string,
+  addedToSupportGroupWaitlist: boolean,
+  additionalNotes: string,
+) => {
+  const newCounsellingServicesOutcome: counsellingServicesOutcomeItem = {
+    eligibleForAVPCounsellingServices,
+    receivingCrisisCounselling,
+    scheduledIntakeApptForIndividualTherapy,
+    intakeAppointmentOutcome,
+    receivingIndividualTherapy,
+    therapistName,
+    addedToIndividualTherapyWaitlist,
+    referredForCounsellingServices,
+    counsellingAgency,
+    sentAVPSupportGroupInfo,
+    attendingSupportGroup,
+    supportGroupName,
+    addedToSupportGroupWaitlist,
+    additionalNotes,
+  };
+  return Referral.findByIdAndUpdate(
+    id,
+    {
+      counsellingServicesOutcome: newCounsellingServicesOutcome,
+    },
+    { new: true },
+  ).exec();
+};
+
+const postYouthServicesOutcome = async (
+  id: string,
+  eligibleForYVOServices: boolean,
+  assignedToYVOTherapist: boolean,
+  yvoStaffName: string,
+  addedToYVOIndividualTherapyWaitlist: boolean,
+  assignedToYVOGroup: boolean,
+  addedToYVOGroupWaitlist: boolean,
+  additionalNotes: string,
+) => {
+  const newYouthServicesOutcome: youthServicesOutcomeItem = {
+    eligibleForYVOServices,
+    assignedToYVOTherapist,
+    yvoStaffName,
+    addedToYVOIndividualTherapyWaitlist,
+    assignedToYVOGroup,
+    addedToYVOGroupWaitlist,
+    additionalNotes,
+  };
+  return Referral.findByIdAndUpdate(
+    id,
+    {
+      youthServicesOutcome: newYouthServicesOutcome,
+    },
+    { new: true },
+  ).exec();
+};
+
+const putVictimServicesOutcome = async (
+  id: string,
+  eligibleForAVPVictimServices: boolean,
+  sentVCAPInfotoClient: boolean,
+  avpAdvocateAssistingWithVCAP: boolean,
+  referredToOtherVSAgencyForVCAP: boolean,
+  vsAgencyName: string,
+  avpAdvocateProvidingCourtSupport: boolean,
+  clientWorkingWithFMV: boolean,
+  fmvNumber: boolean,
+  referredToOtherAgencyForCourt: boolean,
+  courtSupportAgencyName: string,
+  avpAdvocateContactedADA: boolean,
+  avpAdvocateContactedDetective: boolean,
+  needsRelocationAssistance: boolean,
+  relocationReferralWasSubmitted: boolean,
+  referredToAgencyForOtherServices: boolean,
+  otherAgencyNames: string,
+  otherServices: string,
+  additionalNotes: string,
+) => {
+  var updateItem: any = {};
+  const newVictimServicesOutcome: victimServicesOutcomeItem = {
+    eligibleForAVPVictimServices,
+    sentVCAPInfotoClient,
+    avpAdvocateAssistingWithVCAP,
+    referredToOtherVSAgencyForVCAP,
+    vsAgencyName,
+    avpAdvocateProvidingCourtSupport,
+    clientWorkingWithFMV,
+    fmvNumber,
+    referredToOtherAgencyForCourt,
+    courtSupportAgencyName,
+    avpAdvocateContactedADA,
+    avpAdvocateContactedDetective,
+    needsRelocationAssistance,
+    relocationReferralWasSubmitted,
+    referredToAgencyForOtherServices,
+    otherAgencyNames,
+    otherServices,
+    additionalNotes,
+  };
+  for (const [key, value] of Object.entries(newVictimServicesOutcome)) {
+    if (value !== undefined) {
+      updateItem['victimServicesOutcome.' + key] = value;
+    }
+  }
+
+  return Referral.findByIdAndUpdate(
+    id,
+    {
+      $set: updateItem
+    },
+    { new: true },
+  ).exec();
+};
+
+const putCounsellingServicesOutcome = async (
+  id: string,
+  eligibleForAVPCounsellingServices: boolean,
+  receivingCrisisCounselling: boolean,
+  scheduledIntakeApptForIndividualTherapy: boolean,
+  intakeAppointmentOutcome: boolean,
+  receivingIndividualTherapy: boolean,
+  therapistName: string,
+  addedToIndividualTherapyWaitlist: boolean,
+  referredForCounsellingServices: boolean,
+  counsellingAgency: boolean,
+  sentAVPSupportGroupInfo: boolean,
+  attendingSupportGroup: boolean,
+  supportGroupName: string,
+  addedToSupportGroupWaitlist: boolean,
+  additionalNotes: string,
+) => {
+  var updateItem: any = {};
+  const newCounsellingServicesOutcome: counsellingServicesOutcomeItem = {
+    eligibleForAVPCounsellingServices,
+    receivingCrisisCounselling,
+    scheduledIntakeApptForIndividualTherapy,
+    intakeAppointmentOutcome,
+    receivingIndividualTherapy,
+    therapistName,
+    addedToIndividualTherapyWaitlist,
+    referredForCounsellingServices,
+    counsellingAgency,
+    sentAVPSupportGroupInfo,
+    attendingSupportGroup,
+    supportGroupName,
+    addedToSupportGroupWaitlist,
+    additionalNotes,
+  };
+  for (const [key, value] of Object.entries(newCounsellingServicesOutcome)) {
+    if (value !== undefined) {
+      updateItem['counsellingServicesOutcome.' + key] = value;
+    }
+  }
+
+  return Referral.findByIdAndUpdate(
+    id,
+    {
+      $set: updateItem
+    },
+    { new: true },
+  ).exec();
+};
+
+const putYouthServicesOutcome = async (
+  id: string,
+  eligibleForYVOServices: boolean,
+  assignedToYVOTherapist: boolean,
+  yvoStaffName: string,
+  addedToYVOIndividualTherapyWaitlist: boolean,
+  assignedToYVOGroup: boolean,
+  addedToYVOGroupWaitlist: boolean,
+  additionalNotes: string,
+) => {
+  var updateItem: any = {};
+  const newYouthServicesOutcome: youthServicesOutcomeItem = {
+    eligibleForYVOServices,
+    assignedToYVOTherapist,
+    yvoStaffName,
+    addedToYVOIndividualTherapyWaitlist,
+    assignedToYVOGroup,
+    addedToYVOGroupWaitlist,
+    additionalNotes,
+  };
+  for (const [key, value] of Object.entries(newYouthServicesOutcome)) {
+    if (value !== undefined) {
+      updateItem['youthServicesOutcome.' + key] = value;
+    }
+  }
+
+  return Referral.findByIdAndUpdate(
+    id,
+    {
+      $set: updateItem
+    },
+    { new: true },
+  ).exec();
+};
+
 export {
   createNewReferral,
   getAllReferrals,
@@ -370,4 +631,10 @@ export {
   updateCommunicationHistory,
   deleteCommunicationHistory,
   getDuplicateReferrals,
+  postVictimServicesOutcome,
+  postCounsellingServicesOutcome,
+  postYouthServicesOutcome,
+  putVictimServicesOutcome,
+  putCounsellingServicesOutcome,
+  putYouthServicesOutcome
 };
