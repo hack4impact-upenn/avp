@@ -49,11 +49,20 @@ router.post('/:referral_id/victimServicesOutcome', createVictimServicesOutcome);
 
 router.put('/:referral_id/victimServicesOutcome', updateVictimServicesOutcome);
 
-router.get('/:referral_id/counsellingServicesOutcome', getCounsellingServicesOutcome);
+router.get(
+  '/:referral_id/counsellingServicesOutcome',
+  getCounsellingServicesOutcome,
+);
 
-router.post('/:referral_id/counsellingServicesOutcome', createCounsellingServicesOutcome);
+router.post(
+  '/:referral_id/counsellingServicesOutcome',
+  createCounsellingServicesOutcome,
+);
 
-router.put('/:referral_id/counsellingServicesOutcome', updateCounsellingServicesOutcome);
+router.put(
+  '/:referral_id/counsellingServicesOutcome',
+  updateCounsellingServicesOutcome,
+);
 
 router.get('/:referral_id/youthServicesOutcome', getYouthServicesOutcome);
 

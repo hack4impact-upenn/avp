@@ -17,7 +17,7 @@ import {
   postYouthServicesOutcome,
   putVictimServicesOutcome,
   putCounsellingServicesOutcome,
-  putYouthServicesOutcome
+  putYouthServicesOutcome,
 } from '../services/referral.service';
 import StatusCode from '../util/statusCode';
 import {
@@ -878,10 +878,10 @@ const getVictimServicesOutcome = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const { referral_id } = req.params;
+  const { id } = req.params;
 
   try {
-    const outcome = (await getReferralById(referral_id))?.victimServicesOutcome;
+    const outcome = (await getReferralById(id))?.victimServicesOutcome;
     res.status(StatusCode.OK).json(outcome);
   } catch (err) {
     next(
@@ -897,8 +897,8 @@ const createVictimServicesOutcome = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const { referral_id } = req.params;
-  var {
+  const { id } = req.params;
+  let {
     eligibleForAVPVictimServices,
     sentVCAPInfotoClient,
     avpAdvocateAssistingWithVCAP,
@@ -959,7 +959,7 @@ const createVictimServicesOutcome = async (
   }
   try {
     const outcome = await postVictimServicesOutcome(
-      referral_id,
+      id,
       eligibleForAVPVictimServices,
       sentVCAPInfotoClient,
       avpAdvocateAssistingWithVCAP,
@@ -994,7 +994,7 @@ const updateVictimServicesOutcome = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const { referral_id } = req.params;
+  const { id } = req.params;
   const {
     eligibleForAVPVictimServices,
     sentVCAPInfotoClient,
@@ -1018,7 +1018,7 @@ const updateVictimServicesOutcome = async (
 
   try {
     const outcome = await putVictimServicesOutcome(
-      referral_id,
+      id,
       eligibleForAVPVictimServices,
       sentVCAPInfotoClient,
       avpAdvocateAssistingWithVCAP,
@@ -1053,10 +1053,10 @@ const getCounsellingServicesOutcome = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const { referral_id } = req.params;
+  const { id } = req.params;
 
   try {
-    const outcome = (await getReferralById(referral_id))?.counsellingServicesOutcome;
+    const outcome = (await getReferralById(id))?.counsellingServicesOutcome;
     res.status(StatusCode.OK).json(outcome);
   } catch (err) {
     next(
@@ -1072,8 +1072,8 @@ const createCounsellingServicesOutcome = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const { referral_id } = req.params;
-  var {
+  const { id } = req.params;
+  let {
     eligibleForAVPCounsellingServices,
     receivingCrisisCounselling,
     scheduledIntakeApptForIndividualTherapy,
@@ -1124,7 +1124,7 @@ const createCounsellingServicesOutcome = async (
   }
   try {
     const outcome = await postCounsellingServicesOutcome(
-      referral_id,
+      id,
       eligibleForAVPCounsellingServices,
       receivingCrisisCounselling,
       scheduledIntakeApptForIndividualTherapy,
@@ -1155,7 +1155,7 @@ const updateCounsellingServicesOutcome = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const { referral_id } = req.params;
+  const { id } = req.params;
   const {
     eligibleForAVPCounsellingServices,
     receivingCrisisCounselling,
@@ -1175,7 +1175,7 @@ const updateCounsellingServicesOutcome = async (
 
   try {
     const outcome = await putCounsellingServicesOutcome(
-      referral_id,
+      id,
       eligibleForAVPCounsellingServices,
       receivingCrisisCounselling,
       scheduledIntakeApptForIndividualTherapy,
@@ -1206,10 +1206,10 @@ const getYouthServicesOutcome = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const { referral_id } = req.params;
+  const { id } = req.params;
 
   try {
-    const outcome = (await getReferralById(referral_id))?.youthServicesOutcome;
+    const outcome = (await getReferralById(id))?.youthServicesOutcome;
     res.status(StatusCode.OK).json(outcome);
   } catch (err) {
     next(
@@ -1225,8 +1225,8 @@ const createYouthServicesOutcome = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const { referral_id } = req.params;
-  var {
+  const { id } = req.params;
+  let {
     eligibleForYVOServices,
     assignedToYVOTherapist,
     yvoStaffName,
@@ -1252,7 +1252,7 @@ const createYouthServicesOutcome = async (
   }
   try {
     const outcome = await postYouthServicesOutcome(
-      referral_id,
+      id,
       eligibleForYVOServices,
       assignedToYVOTherapist,
       yvoStaffName,
@@ -1276,7 +1276,7 @@ const updateYouthServicesOutcome = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const { referral_id } = req.params;
+  const { id } = req.params;
   const {
     eligibleForYVOServices,
     assignedToYVOTherapist,
@@ -1289,7 +1289,7 @@ const updateYouthServicesOutcome = async (
 
   try {
     const outcome = await putYouthServicesOutcome(
-      referral_id,
+      id,
       eligibleForYVOServices,
       assignedToYVOTherapist,
       yvoStaffName,

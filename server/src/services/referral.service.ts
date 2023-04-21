@@ -501,7 +501,7 @@ const putVictimServicesOutcome = async (
   otherServices: string,
   additionalNotes: string,
 ) => {
-  var updateItem: any = {};
+  const updateItem: any = {};
   const newVictimServicesOutcome: victimServicesOutcomeItem = {
     eligibleForAVPVictimServices,
     sentVCAPInfotoClient,
@@ -522,16 +522,16 @@ const putVictimServicesOutcome = async (
     otherServices,
     additionalNotes,
   };
-  for (const [key, value] of Object.entries(newVictimServicesOutcome)) {
+  Object.entries(newVictimServicesOutcome).forEach(([key, value]) => {
     if (value !== undefined) {
-      updateItem['victimServicesOutcome.' + key] = value;
+      updateItem[`victimServicesOutcome.${key}`] = value;
     }
-  }
+  });
 
   return Referral.findByIdAndUpdate(
     id,
     {
-      $set: updateItem
+      $set: updateItem,
     },
     { new: true },
   ).exec();
@@ -554,7 +554,7 @@ const putCounsellingServicesOutcome = async (
   addedToSupportGroupWaitlist: boolean,
   additionalNotes: string,
 ) => {
-  var updateItem: any = {};
+  const updateItem: any = {};
   const newCounsellingServicesOutcome: counsellingServicesOutcomeItem = {
     eligibleForAVPCounsellingServices,
     receivingCrisisCounselling,
@@ -571,16 +571,16 @@ const putCounsellingServicesOutcome = async (
     addedToSupportGroupWaitlist,
     additionalNotes,
   };
-  for (const [key, value] of Object.entries(newCounsellingServicesOutcome)) {
+  Object.entries(newCounsellingServicesOutcome).forEach(([key, value]) => {
     if (value !== undefined) {
-      updateItem['counsellingServicesOutcome.' + key] = value;
+      updateItem[`counsellingServicesOutcome.${key}`] = value;
     }
-  }
+  });
 
   return Referral.findByIdAndUpdate(
     id,
     {
-      $set: updateItem
+      $set: updateItem,
     },
     { new: true },
   ).exec();
@@ -596,7 +596,7 @@ const putYouthServicesOutcome = async (
   addedToYVOGroupWaitlist: boolean,
   additionalNotes: string,
 ) => {
-  var updateItem: any = {};
+  const updateItem: any = {};
   const newYouthServicesOutcome: youthServicesOutcomeItem = {
     eligibleForYVOServices,
     assignedToYVOTherapist,
@@ -606,16 +606,16 @@ const putYouthServicesOutcome = async (
     addedToYVOGroupWaitlist,
     additionalNotes,
   };
-  for (const [key, value] of Object.entries(newYouthServicesOutcome)) {
+  Object.entries(newYouthServicesOutcome).forEach(([key, value]) => {
     if (value !== undefined) {
-      updateItem['youthServicesOutcome.' + key] = value;
+      updateItem[`youthServicesOutcome.${key}`] = value;
     }
-  }
+  });
 
   return Referral.findByIdAndUpdate(
     id,
     {
-      $set: updateItem
+      $set: updateItem,
     },
     { new: true },
   ).exec();
@@ -636,5 +636,5 @@ export {
   postYouthServicesOutcome,
   putVictimServicesOutcome,
   putCounsellingServicesOutcome,
-  putYouthServicesOutcome
+  putYouthServicesOutcome,
 };
