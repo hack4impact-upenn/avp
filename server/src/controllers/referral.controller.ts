@@ -927,6 +927,9 @@ const createVictimServicesOutcome = async (
   if (avpAdvocateAssistingWithVCAP === undefined) {
     avpAdvocateAssistingWithVCAP = false;
   }
+  if (vsAgencyName === undefined) {
+    vsAgencyName = '';
+  }
   if (referredToOtherVSAgencyForVCAP === undefined) {
     referredToOtherVSAgencyForVCAP = false;
   }
@@ -942,6 +945,9 @@ const createVictimServicesOutcome = async (
   if (referredToOtherAgencyForCourt === undefined) {
     referredToOtherAgencyForCourt = false;
   }
+  if (courtSupportAgencyName === undefined) {
+    courtSupportAgencyName = '';
+  }
   if (avpAdvocateContactedADA === undefined) {
     avpAdvocateContactedADA = false;
   }
@@ -956,6 +962,15 @@ const createVictimServicesOutcome = async (
   }
   if (referredToAgencyForOtherServices === undefined) {
     referredToAgencyForOtherServices = false;
+  }
+  if (otherAgencyNames === undefined) {
+    otherAgencyNames = '';
+  }
+  if (otherServices === undefined) {
+    otherServices = '';
+  }
+  if (additionalNotes === undefined) {
+    additionalNotes = '';
   }
   try {
     const outcome = await postVictimServicesOutcome(
@@ -1104,6 +1119,9 @@ const createCounsellingServicesOutcome = async (
   if (receivingIndividualTherapy === undefined) {
     receivingIndividualTherapy = false;
   }
+  if (therapistName === undefined) {
+    therapistName = '';
+  }
   if (addedToIndividualTherapyWaitlist === undefined) {
     addedToIndividualTherapyWaitlist = false;
   }
@@ -1119,8 +1137,14 @@ const createCounsellingServicesOutcome = async (
   if (attendingSupportGroup === undefined) {
     attendingSupportGroup = false;
   }
+  if (supportGroupName === undefined) {
+    supportGroupName = '';
+  }
   if (addedToSupportGroupWaitlist === undefined) {
     addedToSupportGroupWaitlist = false;
+  }
+  if (additionalNotes === undefined) {
+    additionalNotes = '';
   }
   try {
     const outcome = await postCounsellingServicesOutcome(
@@ -1241,6 +1265,9 @@ const createYouthServicesOutcome = async (
   if (assignedToYVOTherapist === undefined) {
     assignedToYVOTherapist = false;
   }
+  if (yvoStaffName === undefined) {
+    yvoStaffName = '';
+  }
   if (addedToYVOIndividualTherapyWaitlist === undefined) {
     addedToYVOIndividualTherapyWaitlist = false;
   }
@@ -1249,6 +1276,9 @@ const createYouthServicesOutcome = async (
   }
   if (addedToYVOGroupWaitlist === undefined) {
     addedToYVOGroupWaitlist = false;
+  }
+  if (additionalNotes === undefined) {
+    additionalNotes = '';
   }
   try {
     const outcome = await postYouthServicesOutcome(
