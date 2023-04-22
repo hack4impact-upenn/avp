@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -40,10 +40,15 @@ export default function FormPage() {
   // const [referralItem, setReferralItem] = useState<IReferral>([]);
   // const [error, setError] = useState(<null>);
   const referral = useData(`referral/${id}`);
+  // const [referral, setReferral] = useState(temp);
+  useEffect(() => {
+    setData({ referral: referral?.data });
+  }, [referral]);
 
   // eslint-disable-next-line no-console
   console.log(id);
   console.log(referral);
+  console.log(data);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -104,7 +109,11 @@ export default function FormPage() {
     case 3:
       targetPage = (
         <div>
-          <ReferralSource data={data} setData={setData} />
+          <ReferralSource
+            data={data}
+            setData={setData}
+            referral={referral?.data}
+          />
         </div>
       );
       break;
@@ -178,7 +187,11 @@ export default function FormPage() {
               <Contact data={data} setData={setData} />
             </TabPanel>
             <TabPanel value={value} index={3}>
-              <ReferralSource data={data} setData={setData} />
+              <ReferralSource
+                data={data}
+                setData={setData}
+                referral={referral.data}
+              />
             </TabPanel>
             <TabPanel value={value} index={4}>
               <CommunicationHistory data={data} setData={setData} />
