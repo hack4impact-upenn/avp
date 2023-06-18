@@ -6,6 +6,7 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { StepButton } from '@mui/material';
 
 interface FormProps {
   steps: string[];
@@ -24,7 +25,7 @@ export default function FormStepper({
 
   return (
     <Box className="stepper" sx={{ width: '100%' }}>
-      <Stepper activeStep={activeStep}>
+      <Stepper nonLinear activeStep={activeStep}>
         {steps.map((label, index) => {
           const stepProps: { completed?: boolean } = {};
           const labelProps: {
@@ -32,7 +33,10 @@ export default function FormStepper({
           } = {};
           return (
             <Step key={label} {...stepProps}>
-              <StepLabel {...labelProps}>{label}</StepLabel>
+              <StepButton color="inherit" onClick={() => setActiveStep(index)}>
+                {label}
+              </StepButton>
+              {/* <StepLabel {...labelProps}>{label}</StepLabel> */}
             </Step>
           );
         })}

@@ -5,7 +5,7 @@
 import mongoose from 'mongoose';
 import IUser from './user';
 
-interface communicationItem {
+interface ICommunicationItem {
   dateOfCommunication: Date;
   method: string;
   user: IUser;
@@ -14,7 +14,7 @@ interface communicationItem {
   dateOfNextCommunication: Date;
 }
 
-interface IReferral extends mongoose.Document {
+export default interface IReferral extends mongoose.Document {
   staffName: string;
   _id: string;
   departmentInCharge: string;
@@ -65,11 +65,11 @@ interface IReferral extends mongoose.Document {
   homMEONum: string;
   homeMNum: string;
   homCaseInformation: string;
-  historyOfCommunication: Array<communicationItem>;
+  historyOfCommunication: Array<ICommunicationItem>;
   outreachLetterSent: boolean;
   transferredToCCWaitlist: boolean;
   followUpLetterSent: boolean;
   transferredToETO: boolean;
 }
 
-export default IReferral;
+export type { ICommunicationItem, IReferral };
