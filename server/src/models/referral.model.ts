@@ -255,6 +255,10 @@ const YouthServicesOutcomeItemSchema = new mongoose.Schema({
 });
 
 const ReferralSchema = new mongoose.Schema({
+  timestamp: {
+    type: String,
+    required: false,
+  },
   status: {
     type: String,
     required: true,
@@ -405,7 +409,7 @@ const ReferralSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
-  homDecendent: {
+  homDecedent: {
     type: String,
     required: false,
   },
@@ -433,7 +437,7 @@ const ReferralSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  homDecendentAge: {
+  homDecedentAge: {
     type: Number,
     required: false,
   },
@@ -502,6 +506,7 @@ const ReferralSchema = new mongoose.Schema({
 
 interface IReferral extends mongoose.Document {
   _id: string;
+  timestamp: string;
   status: string;
   departmentInCharge: string;
   program: string;
@@ -545,7 +550,7 @@ interface IReferral extends mongoose.Document {
   homAddress: string;
   homZipCode: string;
   homDecedentAge: number;
-  homDecendentSex: string;
+  homDecedentSex: string;
   homDecedentRace: string;
   homDecedentEthnicity: string;
   homFMVNum: string;

@@ -1,6 +1,8 @@
 /* eslint-disable import/prefer-default-export */
 import express from 'express';
 import sgMail from '@sendgrid/mail';
+import csv from 'csv-parser';
+import fs from 'fs';
 import ApiError from '../util/apiError';
 import {
   addToCommunicationHistory,
@@ -131,7 +133,7 @@ const createReferral = async (
     homAddress,
     homZipCode,
     homDecedentAge,
-    homDecendentSex,
+    homDecedentSex,
     homDecedentRace,
     homDecedentEthnicity,
     homFMVNum,
@@ -196,6 +198,7 @@ const createReferral = async (
       followUpLetterSent,
     );
     await createNewReferral(
+      new Date().toString(),
       status,
       departmentInCharge,
       program,
@@ -239,7 +242,7 @@ const createReferral = async (
       homAddress,
       homZipCode,
       homDecedentAge,
-      homDecendentSex,
+      homDecedentSex,
       homDecedentRace,
       homDecedentEthnicity,
       homFMVNum,
@@ -292,6 +295,219 @@ const createReferral = async (
       ),
     );
   }
+};
+
+const uploadReferral = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  // load in file from req body
+  const { file } = req;
+
+  // Check if a file was provided
+  if (!file) {
+    return res.status(400).json({ error: 'No file provided' });
+  }
+  // parse file
+  // Determine the file type (Excel or CSV)
+  if (file.mimetype === 'text/csv') {
+    // Handle CSV file
+    const promises: any[] = [];
+    fs.createReadStream(file.path)
+      .pipe(csv())
+      .on('data', (row) => {
+        // Process each row here
+        // The row variable will contain an object with key-value pairs for each field in the CSV line
+        // create referral obj for each row
+        const newReferral = {
+          timestamp: row.Timestamp || undefined,
+          status: 'Unassigned',
+          departmentInCharge: undefined,
+          program: undefined,
+          staffAssigned: undefined,
+          therapistAssigned: undefined,
+          isReferral: row['Is Referral?'] || true,
+          survivorName: row['Name of Survivor'],
+          serviceRequested: row[''],
+          agencyThatReferred: row['Referral agency'],
+          agencyRepName: row['Agency Rep Name'],
+          agencyRepEmail: row['Agency Rep Email'],
+          agencyRepPhone: row['Agency Rep Phone #'],
+          survivorGender: row['Survivor Gender'],
+          survivorRace: row['Survivor Race/Ethnicity'],
+          survivorDOB: row['Survivor DOB'],
+          survivorAge: row['Survivor Age'],
+          survivorSchoolOrCommunitySite: undefined,
+          survivorGrade: undefined,
+          survivorPreferredContactMethod:
+            row['Survivor Preferred Contact Method'],
+          isGuardianResponsible: undefined,
+          guardianName: row['Name of Adult'],
+          guardianRelationship: undefined,
+          guardianAddress:
+            `${row['Street Address of Adult']}, ${row['City of Adult']}, ${row['State of Adult']} ${row['Zip Code of Adult']}}` ||
+            undefined,
+          guardianPhone: row['Phone # of Adult'],
+          guardianEmail: row['Email of Adult'],
+          guardianPreferredContactMethod:
+            row['Preferred Contact Method of Adult'],
+          survivorAddress:
+            `${row['Survivor Street Address']}, ${row['Survivor City']}, ${row['Survivor State']} ${row['Survivor Zip Code']}}` ||
+            undefined,
+          survivorEmailAddress: row['Survivor Email Address'],
+          survivorPhoneNumber: row['Survivor Phone #'],
+          notesFromOrg: row['Referral Notes'],
+          relationshipToVictim: row['Relationship to Victim'],
+          crimeDCNum: undefined,
+          crimeDistrict: undefined,
+          crimeDate: row['Date of Crime'],
+          crimeType: row['Type of Crime/Victimization'],
+          isGunViolence: row['Is Gun Violence?'] || false,
+          homDecedent: row["Victim's Name"],
+          homDateOfDeath: row['Date of Death'],
+          homType: row['Type of Crime/Victimization'],
+          homLocation: undefined,
+          homAddress: undefined,
+          homZipCode: undefined,
+          homDecedentAge: undefined,
+          homDecedentSex: row["Victim's Gender"],
+          homDecedentRace: row["Victim's Race"],
+          homDecedentEthnicity: undefined,
+          homFMVNum: undefined,
+          homMEONum: undefined,
+          homeMNum: undefined,
+          historyOfCommunication: undefined,
+          outreachLetterSent: row['Outreach Letter Sent?'] || false,
+          transferredToCCWaitlist: row['Transferred to CC Waitlist?'] || false,
+          followUpLetterSent: row['Follow-up Letter Sent?'] || false,
+          transferredToETO: row['Transferred to ETO?'] || false,
+        };
+        if (
+          !newReferral.timestamp ||
+          !newReferral.status ||
+          newReferral.isReferral === undefined ||
+          !newReferral.survivorName ||
+          !newReferral.serviceRequested ||
+          !newReferral.agencyThatReferred ||
+          !newReferral.agencyRepName ||
+          !newReferral.agencyRepEmail ||
+          !newReferral.agencyRepPhone ||
+          !newReferral.survivorEmailAddress ||
+          !newReferral.survivorPhoneNumber ||
+          !newReferral.relationshipToVictim ||
+          !newReferral.crimeType ||
+          !newReferral.survivorPreferredContactMethod ||
+          newReferral.isGunViolence === undefined ||
+          newReferral.outreachLetterSent === undefined ||
+          newReferral.transferredToCCWaitlist === undefined ||
+          newReferral.followUpLetterSent === undefined ||
+          newReferral.transferredToETO === undefined
+        ) {
+          return next(
+            ApiError.missingFields([
+              'timestamp',
+              'status',
+              'isReferral',
+              'survivorName',
+              'serviceRequested',
+              'agencyThatReferred',
+              'agencyRepName',
+              'agencyRepEmail',
+              'agencyRepPhone',
+              'survivorEmailAddress',
+              'survivorPhoneNumber',
+              'relationshipToVictim',
+              'crimeType',
+              'survivorPreferredContactMethod',
+              'isGunViolence',
+              'outreachLetterSent',
+              'transferredToCCWaitlist',
+              'followUpLetterSent',
+              'transferredToETO',
+            ]),
+          );
+        }
+
+        promises.push(
+          createNewReferral(
+            newReferral.timestamp,
+            newReferral.status,
+            newReferral.departmentInCharge,
+            newReferral.program,
+            newReferral.staffAssigned,
+            newReferral.therapistAssigned,
+            newReferral.isReferral,
+            newReferral.survivorName,
+            newReferral.serviceRequested,
+            newReferral.agencyThatReferred,
+            newReferral.agencyRepName,
+            newReferral.agencyRepEmail,
+            newReferral.agencyRepPhone,
+            newReferral.survivorGender,
+            newReferral.survivorRace,
+            newReferral.survivorDOB,
+            newReferral.survivorAge,
+            newReferral.survivorSchoolOrCommunitySite,
+            newReferral.survivorGrade,
+            newReferral.survivorPreferredContactMethod,
+            newReferral.isGuardianResponsible,
+            newReferral.guardianName,
+            newReferral.guardianRelationship,
+            newReferral.guardianAddress,
+            newReferral.guardianPhone,
+            newReferral.guardianEmail,
+            newReferral.guardianPreferredContactMethod,
+            newReferral.survivorAddress,
+            newReferral.survivorEmailAddress,
+            newReferral.survivorPhoneNumber,
+            newReferral.notesFromOrg,
+            newReferral.relationshipToVictim,
+            newReferral.crimeDCNum,
+            newReferral.crimeDistrict,
+            newReferral.crimeDate,
+            newReferral.crimeType,
+            newReferral.isGunViolence,
+            newReferral.homDecedent,
+            newReferral.homDateOfDeath,
+            newReferral.homType,
+            newReferral.homLocation,
+            newReferral.homAddress,
+            newReferral.homZipCode,
+            newReferral.homDecedentAge,
+            newReferral.homDecedentSex,
+            newReferral.homDecedentRace,
+            newReferral.homDecedentEthnicity,
+            newReferral.homFMVNum,
+            newReferral.homMEONum,
+            newReferral.homeMNum,
+            newReferral.historyOfCommunication,
+            newReferral.outreachLetterSent,
+            newReferral.transferredToCCWaitlist,
+            newReferral.followUpLetterSent,
+            newReferral.transferredToETO,
+          ),
+        );
+        console.log('here');
+        return promises;
+      })
+      .on('end', async () => {
+        try {
+          await Promise.all(promises); // Await all promises from each row
+          return res.sendStatus(StatusCode.CREATED);
+        } catch (error) {
+          return next(
+            ApiError.internal(
+              `Unable to create referral due to the following error: ${error}`,
+            ),
+          );
+        }
+      });
+  } else {
+    // Unsupported file type
+    return next(ApiError.internal('Unsupported file type'));
+  }
+  return next(ApiError.internal('Unable to create referral'));
 };
 
 const getReferrals = async (
@@ -438,7 +654,7 @@ const updateReferral = async (
     homAddress,
     homZipCode,
     homDecedentAge,
-    homDecendentSex,
+    homDecedentSex,
     homDecedentRace,
     homDecedentEthnicity,
     homFMVNum,
@@ -551,7 +767,7 @@ const updateReferral = async (
       homAddress,
       homZipCode,
       homDecedentAge,
-      homDecendentSex,
+      homDecedentSex,
       homDecedentRace,
       homDecedentEthnicity,
       homFMVNum,
@@ -1358,4 +1574,5 @@ export {
   getYouthServicesOutcome,
   createYouthServicesOutcome,
   updateYouthServicesOutcome,
+  uploadReferral,
 };
