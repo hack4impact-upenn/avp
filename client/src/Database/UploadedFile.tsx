@@ -20,7 +20,7 @@ function UploadedFile({ file, removeFile }: UploadedFileProps) {
         const diff = Math.random() * 10;
         return Math.min(oldProgress + diff, 100);
       });
-    }, 200);
+    }, 300);
     return () => {
       clearInterval(timer);
     };
@@ -45,20 +45,25 @@ function UploadedFile({ file, removeFile }: UploadedFileProps) {
         py: '7px',
         pl: '15px',
         pr: '10px',
-        mb: '10px',
-        borderRadius: '10px',
-        borderColor: 'primary.main',
-        border: '1px solid',
-        backgroundColor: 'background.paper',
+        maxWidth: '100%',
+        borderRadius: 1,
+        backgroundColor: 'primary.main',
       }}
     >
       <Box
         sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}
       >
-        <ListItemText primary={file.name} />
+        <ListItemText
+          primaryTypographyProps={{ color: 'white' }}
+          primary={file.name}
+        />
         {progress !== 100 && (
           <Box sx={{ width: '100%' }}>
-            <LinearProgress variant="determinate" value={progress} />
+            <LinearProgress
+              variant="determinate"
+              value={progress}
+              color="inherit"
+            />
           </Box>
         )}
       </Box>

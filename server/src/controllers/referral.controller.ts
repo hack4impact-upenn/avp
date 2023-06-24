@@ -307,10 +307,9 @@ const uploadReferral = async (
 
   // Check if a file was provided
   if (!file) {
-    return res.status(400).json({ error: 'No file provided' });
+    return next(ApiError.internal('No file provided'));
   }
   // parse file
-  // Determine the file type (Excel or CSV)
   if (file.mimetype === 'text/csv') {
     // Handle CSV file
     const promises: any[] = [];
@@ -321,58 +320,72 @@ const uploadReferral = async (
         // The row variable will contain an object with key-value pairs for each field in the CSV line
         // create referral obj for each row
         const newReferral = {
-          timestamp: row.Timestamp || undefined,
+          timestamp: row['Time Stamp'] || undefined,
           status: 'Unassigned',
           departmentInCharge: undefined,
           program: undefined,
           staffAssigned: undefined,
           therapistAssigned: undefined,
           isReferral: row['Is Referral?'] || true,
-          survivorName: row['Name of Survivor'],
-          serviceRequested: row[''],
-          agencyThatReferred: row['Referral agency'],
-          agencyRepName: row['Agency Rep Name'],
-          agencyRepEmail: row['Agency Rep Email'],
-          agencyRepPhone: row['Agency Rep Phone #'],
-          survivorGender: row['Survivor Gender'],
-          survivorRace: row['Survivor Race/Ethnicity'],
-          survivorDOB: row['Survivor DOB'],
-          survivorAge: row['Survivor Age'],
+          survivorName: row['Name of Survivor'] || 'NA',
+          serviceRequested: row['Service Requested'],
+          agencyThatReferred: row['Referral Agency'],
+          agencyRepName: row['Agency Rep Name'] || 'NA',
+          agencyRepEmail: row['Agency Rep Email'] || 'NA',
+          agencyRepPhone: row['Agency Rep Phone #'] || 'NA',
+          survivorGender: row['Survivor Gender'] || 'NA',
+          survivorRace: row['Survivor Race/Ethnicity'] || 'NA',
+          survivorDOB:
+            row['Survivor DOB'] && !/[a-zA-Z]/.test(row['Survivor DOB'])
+              ? row['Survivor DOB']
+              : undefined,
+          survivorAge:
+            row['Survivor Age'] && !/[a-zA-Z]/.test(row['Survivor Age'])
+              ? row['Survivor Age']
+              : undefined,
           survivorSchoolOrCommunitySite: undefined,
           survivorGrade: undefined,
           survivorPreferredContactMethod:
-            row['Survivor Preferred Contact Method'],
+            row['Survivor Preferred Method of Contact'] || 'NA',
           isGuardianResponsible: undefined,
-          guardianName: row['Name of Adult'],
+          guardianName: row['Name of Adult'] || 'NA',
           guardianRelationship: undefined,
           guardianAddress:
-            `${row['Street Address of Adult']}, ${row['City of Adult']}, ${row['State of Adult']} ${row['Zip Code of Adult']}}` ||
-            undefined,
-          guardianPhone: row['Phone # of Adult'],
-          guardianEmail: row['Email of Adult'],
+            row['Street Address of Adult'] &&
+            row['City of Adult'] &&
+            row['State of Adult'] &&
+            row['Zip Code of Adult']
+              ? `${row['Street Address of Adult']}, ${row['City of Adult']}, ${row['State of Adult']} ${row['Zip Code of Adult']}}`
+              : undefined,
+          guardianPhone: row['Phone # of Adult'] || 'NA',
+          guardianEmail: row['Email of Adult'] || 'NA',
           guardianPreferredContactMethod:
-            row['Preferred Contact Method of Adult'],
+            row['Preferred Contact Method of Adult'] || 'NA',
           survivorAddress:
-            `${row['Survivor Street Address']}, ${row['Survivor City']}, ${row['Survivor State']} ${row['Survivor Zip Code']}}` ||
-            undefined,
-          survivorEmailAddress: row['Survivor Email Address'],
-          survivorPhoneNumber: row['Survivor Phone #'],
-          notesFromOrg: row['Referral Notes'],
-          relationshipToVictim: row['Relationship to Victim'],
+            row['Street Address of Adult'] &&
+            row['City of Adult'] &&
+            row['State of Adult'] &&
+            row['Zip Code of Adult']
+              ? `${row['Survivor Street Address']}, ${row['Survivor City']}, ${row['Survivor State']} ${row['Survivor Zip Code']}`
+              : undefined,
+          survivorEmailAddress: row['Survivor Email Address'] || 'NA',
+          survivorPhoneNumber: row['Survivor Phone #'] || 'NA',
+          notesFromOrg: row['Referral Notes'] || 'NA',
+          relationshipToVictim: row['Relationship to Victim'] || 'NA',
           crimeDCNum: undefined,
           crimeDistrict: undefined,
-          crimeDate: row['Date of Crime'],
-          crimeType: row['Type of Crime/Victimization'],
+          crimeDate: row['Date of Crime'] || 'NA',
+          crimeType: row['Type of Crime/Victimization'] || 'NA',
           isGunViolence: row['Is Gun Violence?'] || false,
-          homDecedent: row["Victim's Name"],
-          homDateOfDeath: row['Date of Death'],
-          homType: row['Type of Crime/Victimization'],
+          homDecedent: row["Victim's Name"] || 'NA',
+          homDateOfDeath: row['Date of Death'] || 'NA',
+          homType: row['Type of Crime/Victimization'] || 'NA',
           homLocation: undefined,
           homAddress: undefined,
           homZipCode: undefined,
           homDecedentAge: undefined,
-          homDecedentSex: row["Victim's Gender"],
-          homDecedentRace: row["Victim's Race"],
+          homDecedentSex: row["Victim's Gender"] || 'NA',
+          homDecedentRace: row["Victim's Race"] || 'NA',
           homDecedentEthnicity: undefined,
           homFMVNum: undefined,
           homMEONum: undefined,
@@ -383,6 +396,8 @@ const uploadReferral = async (
           followUpLetterSent: row['Follow-up Letter Sent?'] || false,
           transferredToETO: row['Transferred to ETO?'] || false,
         };
+        console.log(newReferral);
+        console.log(!/[a-zA-Z]/.test(row['Survivor DOB']));
         if (
           !newReferral.timestamp ||
           !newReferral.status ||
@@ -507,7 +522,6 @@ const uploadReferral = async (
     // Unsupported file type
     return next(ApiError.internal('Unsupported file type'));
   }
-  return next(ApiError.internal('Unable to create referral'));
 };
 
 const getReferrals = async (

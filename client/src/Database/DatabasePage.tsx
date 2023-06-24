@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Button, Modal, Box, Typography } from '@mui/material';
+import { Button } from '@mui/material';
 import DataGrid from '../components/DataGrid';
+import UploadModal from './UploadModal';
 
 const styles = {
   main: {
@@ -11,19 +12,6 @@ const styles = {
     marginTop: '1rem',
     marginBottom: '1rem',
   },
-};
-
-const modalStyle = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  backgroundColor: 'white',
-  padding: '1rem',
-  width: '400px',
-  maxHeight: '80vh',
-  overflowY: 'auto',
-  textAlign: 'center',
 };
 
 export default function DatabasePage() {
@@ -48,21 +36,10 @@ export default function DatabasePage() {
       >
         Import CSV to Database
       </Button>
-      <Modal
-        open={isModalOpen}
-        onClose={handleModalClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={modalStyle}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
-        </Box>
-      </Modal>
+      <UploadModal
+        isModalOpen={isModalOpen}
+        handleModalClose={handleModalClose}
+      />
     </div>
   );
 }

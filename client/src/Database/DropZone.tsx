@@ -23,8 +23,7 @@ function DropZone({ onDrop }: DropZoneProps) {
         backgroundColor: 'background.paper',
         color: 'text.secondary',
         p: 2,
-        m: '5px',
-        width: '60%',
+        width: '100%',
         '&:hover': {
           backgroundColor: COLORS.lightGray,
         },
