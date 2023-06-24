@@ -1,7 +1,9 @@
 /* eslint-disable import/prefer-default-export */
 import express from 'express';
 import sgMail from '@sendgrid/mail';
+import { v4 as uuidv4 } from 'uuid';
 import ApiError from '../util/apiError';
+import aws from '../util/aws';
 import {
   addToCommunicationHistory,
   createNewReferral,
@@ -18,6 +20,12 @@ import {
   putVictimServicesOutcome,
   putCounsellingServicesOutcome,
   putYouthServicesOutcome,
+  putReferralFileName,
+  putFollowUpFileName,
+  putOutreachFileName,
+  deleteReferralFileById,
+  deleteFollowUpFileById,
+  deleteOutreachFileById,
 } from '../services/referral.service';
 import StatusCode from '../util/statusCode';
 import {
@@ -29,6 +37,8 @@ import { IUser } from '../models/user.model';
 // SendGrid setup
 const apiKey: string = process.env.SENDGRID_API_KEY as string;
 sgMail.setApiKey(apiKey);
+
+const { awsUpload, awsGet } = aws;
 
 const setReferralStatus = async (
   staffAssigned: IUser,
@@ -1306,7 +1316,7 @@ const updateYouthServicesOutcome = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const { id } = req.params;
+  const id = req.params.referral_id;
   const {
     eligibleForYVOServices,
     assignedToYVOTherapist,
@@ -1338,6 +1348,216 @@ const updateYouthServicesOutcome = async (
   }
 };
 
+const createRefferalPDF = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  try {
+    const id = req.params.referral_id;
+    if (
+      req.file &&
+      req.file.buffer &&
+      req.file.mimetype &&
+      req.file.originalname
+    ) {
+      const name = req.file.originalname;
+      const content = req.file.buffer;
+      const type = req.file.mimetype;
+      const key = uuidv4();
+      putReferralFileName(id, name, key, type);
+      await awsUpload(key, content, type);
+    }
+    res.status(StatusCode.OK).json('success');
+  } catch (err) {
+    next(
+      ApiError.internal(
+        `Unable to upload file due to the following error: ${err}`,
+      ),
+    );
+  }
+};
+
+const getReferralFile = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  try {
+    const key = req.params.file_key;
+    const resp = await awsGet(key);
+
+    res.setHeader('Content-Type', 'application/octet-stream');
+    res.setHeader('Content-Disposition', 'attachment; filename="filename.ext"');
+    res.send(resp.Body);
+    // res.status(StatusCode.OK).json('success');
+  } catch (err) {
+    next(
+      ApiError.internal(
+        `Unable to get file due to the following error: ${err}`,
+      ),
+    );
+  }
+};
+
+const deleteReferralFile = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  try {
+    const { id } = req.params;
+    deleteReferralFileById(id);
+    res.status(StatusCode.OK).json('success');
+  } catch (err) {
+    next(
+      ApiError.internal(
+        `Unable to delete file due to the following error: ${err}`,
+      ),
+    );
+  }
+};
+
+const createFollowUpPDF = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  try {
+    const id = req.params.referral_id;
+    if (
+      req.file &&
+      req.file.buffer &&
+      req.file.mimetype &&
+      req.file.originalname
+    ) {
+      const name = req.file.originalname;
+      const content = req.file.buffer;
+      const type = req.file.mimetype;
+      const key = uuidv4();
+      putFollowUpFileName(id, name, key, type);
+      await awsUpload(key, content, type);
+    }
+    res.status(StatusCode.OK).json('success');
+  } catch (err) {
+    next(
+      ApiError.internal(
+        `Unable to upload file due to the following error: ${err}`,
+      ),
+    );
+  }
+};
+
+const getFollowUpFile = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  try {
+    const key = req.params.file_key;
+    const resp = await awsGet(key);
+
+    res.setHeader('Content-Type', 'application/octet-stream');
+    res.setHeader('Content-Disposition', 'attachment; filename="filename.ext"');
+    res.send(resp.Body);
+    // res.status(StatusCode.OK).json('success');
+  } catch (err) {
+    next(
+      ApiError.internal(
+        `Unable to get file due to the following error: ${err}`,
+      ),
+    );
+  }
+};
+
+const deleteFollowUpFile = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  try {
+    const { id } = req.params;
+    deleteFollowUpFileById(id);
+    res.status(StatusCode.OK).json('success');
+  } catch (err) {
+    next(
+      ApiError.internal(
+        `Unable to delete file due to the following error: ${err}`,
+      ),
+    );
+  }
+};
+
+const createOutreachPDF = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  try {
+    const id = req.params.referral_id;
+    if (
+      req.file &&
+      req.file.buffer &&
+      req.file.mimetype &&
+      req.file.originalname
+    ) {
+      const name = req.file.originalname;
+      const content = req.file.buffer;
+      const type = req.file.mimetype;
+      const key = uuidv4();
+      putOutreachFileName(id, name, key, type);
+      await awsUpload(key, content, type);
+    }
+    res.status(StatusCode.OK).json('success');
+  } catch (err) {
+    next(
+      ApiError.internal(
+        `Unable to upload file due to the following error: ${err}`,
+      ),
+    );
+  }
+};
+
+const getOutreachFile = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  try {
+    const key = req.params.file_key;
+    const resp = await awsGet(key);
+
+    res.setHeader('Content-Type', 'application/octet-stream');
+    res.setHeader('Content-Disposition', 'attachment; filename="filename.ext"');
+    res.send(resp.Body);
+    // res.status(StatusCode.OK).json('success');
+  } catch (err) {
+    next(
+      ApiError.internal(
+        `Unable to get file due to the following error: ${err}`,
+      ),
+    );
+  }
+};
+
+const deleteOutreachFile = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  try {
+    const { id } = req.params;
+    deleteOutreachFileById(id);
+    res.status(StatusCode.OK).json('success');
+  } catch (err) {
+    next(
+      ApiError.internal(
+        `Unable to delete file due to the following error: ${err}`,
+      ),
+    );
+  }
+};
+
 export {
   createReferral,
   getReferrals,
@@ -1358,4 +1578,13 @@ export {
   getYouthServicesOutcome,
   createYouthServicesOutcome,
   updateYouthServicesOutcome,
+  createRefferalPDF,
+  getReferralFile,
+  createFollowUpPDF,
+  getFollowUpFile,
+  createOutreachPDF,
+  getOutreachFile,
+  deleteReferralFile,
+  deleteFollowUpFile,
+  deleteOutreachFile,
 };

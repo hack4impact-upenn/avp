@@ -1,4 +1,5 @@
 import express from 'express';
+import multer from 'multer';
 import {
   createReferral,
   getDepartmentReferrals,
@@ -19,7 +20,22 @@ import {
   updateVictimServicesOutcome,
   updateCounsellingServicesOutcome,
   updateYouthServicesOutcome,
+  createRefferalPDF,
+  getReferralFile,
+  createFollowUpPDF,
+  getFollowUpFile,
+  createOutreachPDF,
+  getOutreachFile,
+  deleteFollowUpFile,
+  deleteReferralFile,
+  deleteOutreachFile,
 } from '../controllers/referral.controller';
+
+// const createFollowUpPDF = () => {};
+// const getFollowUpFile = () => {};
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 const router = express.Router();
 
@@ -69,5 +85,35 @@ router.get('/:referral_id/youthServicesOutcome', getYouthServicesOutcome);
 router.post('/:referral_id/youthServicesOutcome', createYouthServicesOutcome);
 
 router.put('/:referral_id/youthServicesOutcome', updateYouthServicesOutcome);
+
+router.post(
+  '/:referral_id/referralPDF',
+  upload.single('file'),
+  createRefferalPDF,
+);
+
+router.get('/referralPDF/:file_key', getReferralFile);
+
+router.delete('/:id/referralPDF', deleteReferralFile);
+
+router.post(
+  '/:referral_id/followUpPDF',
+  upload.single('file'),
+  createFollowUpPDF,
+);
+
+router.get('/followUpPDF/:file_key', getFollowUpFile);
+
+router.delete('/:id/followUpPDF', deleteFollowUpFile);
+
+router.post(
+  '/:referral_id/outreachPDF',
+  upload.single('file'),
+  createOutreachPDF,
+);
+
+router.get('/outreachPDF/:file_key', getOutreachFile);
+
+router.delete('/:id/outreachPDF', deleteOutreachFile);
 
 export default router;

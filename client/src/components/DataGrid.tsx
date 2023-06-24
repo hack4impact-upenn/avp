@@ -1,5 +1,6 @@
 /* eslint-disable */
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import Box from '@mui/material/Box';
 
 import {
@@ -20,14 +21,14 @@ import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import { GridColumns, GridRenderCellParams } from '@mui/x-data-grid-pro';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import NoAccountsOutlinedIcon from '@mui/icons-material/NoAccountsOutlined';
-import { useData } from '../util/api';
+import { URLPREFIX, useDataFlexible, getData } from '../util/api';
 import IReferral from '../util/types/referral';
 import CircularProgress from '@mui/material/CircularProgress';
 
 /* Wrapper Around DataGridPremium */
 export default function DataGrid() {
   const [referralList, setReferralList] = useState<IReferral[]>([]);
-  const referrals = useData('referral/all');
+  const {data: referrals, setData: setReferrals} = useDataFlexible('referral/all');
   const emptyStringArray: string[] = [''];
 
   function CustomEditComponent(props: {
@@ -73,6 +74,69 @@ export default function DataGrid() {
         ))}
       </Select>
     );
+  }
+
+  const handleFileUpload = async (
+    event: any,
+    id: string,
+    urlSuffix: string,
+  ) => {
+    const file = event.target.files[0];
+    const url = `${URLPREFIX}/referral/${id}/${urlSuffix}`;
+
+    // Perform additional checks/validation if needed
+    if (true) {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const response = await axios.post(url, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        console.log('File uploaded successfully!', response);
+        const res = await getData('referral/all');
+        setReferrals(res);
+      } catch (error) {
+        console.error('Error uploading file:', error);
+      }
+    } else {
+      console.log(`succeded! file name is ${file}`);
+    }
+  };
+
+  const handleFileDelete = async (id:string, urlSuffix:string) => {
+    const url = `${URLPREFIX}/referral/${id}/${urlSuffix}`;
+    try {
+      const response = await axios.delete(
+        url,
+        {
+          responseType: 'blob',
+        },
+      );
+      const res = await getData('referral/all');
+      setReferrals(res);
+    } catch (error) {
+      console.error('Error downloading file:', error);
+    }
+  }
+
+  const handleFileGet = async (key:string, name:string, type:string) => {
+    try {
+      const response = await axios.get(`${URLPREFIX}/referral/referralPDF/${key}`, {
+        responseType: 'blob',
+      });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${name}`); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.error('Error downloading file:', error);
+    }
   }
 
   function CustomFilterInputSingleSelect(props: any) {
@@ -135,7 +199,7 @@ export default function DataGrid() {
             ' ' +
             referral.staffAssigned.lastName;
         }
-        console.log(referral);
+        // console.log(referral);
         return referral;
       }),
     );
@@ -343,38 +407,144 @@ export default function DataGrid() {
     {
       field: 'outreachLetter',
       headerName: 'Outreach Letter File Upload',
-      width: 150,
+      width: 200,
       renderCell: (params: GridRenderCellParams<Date>) => (
-        <div style={{ width: '100%', display: 'flex', alignItems: 'center' }}>
-          <Button
-            variant="contained"
-            component="label"
-            size="small"
-            style={{ margin: 'auto', background: '#4EA0B3', height: '26px' }}
-            tabIndex={params.hasFocus ? 0 : -1}
-          >
-            Upload
-            <input type="file" hidden />
-          </Button>
+        <div style={{ width: '100%', display: 'flex', alignItems: 'start' }}>
+          {params.row.outReachLetterFile ? (
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  handleFileGet(
+                    params.row.outReachLetterFile.key,
+                    params.row.outReachLetterFile.name,
+                    params.row.outReachLetterFile.type,
+                  );
+                }}
+                component="label"
+                size="small"
+                style={{
+                  margin: 'auto',
+                  background: '#4EA0B3',
+                  height: '26px',
+                  marginRight: '20px',
+                }}
+                tabIndex={params.hasFocus ? 0 : -1}
+              >
+                get
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  handleFileDelete(params.row._id, 'outreachPDF');
+                }}
+                component="label"
+                size="small"
+                style={{
+                  margin: 'auto',
+                  height: '26px',
+                }}
+                tabIndex={params.hasFocus ? 0 : -1}
+              >
+                delete
+              </Button>
+            </div>
+          ) : (
+            <div>
+              <Button
+                variant="contained"
+                component="label"
+                size="small"
+                style={{
+                  margin: 'auto',
+                  background: '#4EA0B3',
+                  height: '26px',
+                }}
+                tabIndex={params.hasFocus ? 0 : -1}
+              >
+                Upload
+                <input
+                  type="file"
+                  hidden
+                  onChange={(e) => {
+                    handleFileUpload(e, params.row._id, 'outreachPDF');
+                  }}
+                />
+              </Button>
+            </div>
+          )}
         </div>
       ),
     },
     {
       field: 'followUpLetter',
       headerName: 'Follow-Up Letter Sent',
-      width: 150,
+      width: 200,
       renderCell: (params: GridRenderCellParams<Date>) => (
-        <div style={{ width: '100%', display: 'flex', alignItems: 'center' }}>
-          <Button
-            variant="contained"
-            component="label"
-            size="small"
-            style={{ margin: 'auto', background: '#4EA0B3', height: '26px' }}
-            tabIndex={params.hasFocus ? 0 : -1}
-          >
-            Upload
-            <input type="file" hidden />
-          </Button>
+        <div style={{ width: '100%', display: 'flex', alignItems: 'start' }}>
+          {params.row.followUpLetterFile ? (
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  handleFileGet(
+                    params.row.followUpLetterFile.key,
+                    params.row.followUpLetterFile.name,
+                    params.row.followUpLetterFile.type,
+                  );
+                }}
+                component="label"
+                size="small"
+                style={{
+                  margin: 'auto',
+                  background: '#4EA0B3',
+                  height: '26px',
+                  marginRight: '20px',
+                }}
+                tabIndex={params.hasFocus ? 0 : -1}
+              >
+                get
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  handleFileDelete(params.row._id, 'followUpPDF');
+                }}
+                component="label"
+                size="small"
+                style={{
+                  margin: 'auto',
+                  height: '26px',
+                }}
+                tabIndex={params.hasFocus ? 0 : -1}
+              >
+                delete
+              </Button>
+            </div>
+          ) : (
+            <div>
+              <Button
+                variant="contained"
+                component="label"
+                size="small"
+                style={{
+                  margin: 'auto',
+                  background: '#4EA0B3',
+                  height: '26px',
+                }}
+                tabIndex={params.hasFocus ? 0 : -1}
+              >
+                Upload
+                <input
+                  type="file"
+                  hidden
+                  onChange={(e) => {
+                    handleFileUpload(e, params.row._id, 'followUpPDF');
+                  }}
+                />
+              </Button>
+            </div>
+          )}
         </div>
       ),
     },
@@ -533,19 +703,72 @@ export default function DataGrid() {
     {
       field: 'referralPDF',
       headerName: 'Referral PDF',
-      width: 150,
+      width: 200,
       renderCell: (params: GridRenderCellParams<Date>) => (
-        <div style={{ width: '100%', display: 'flex', alignItems: 'center' }}>
-          <Button
-            variant="contained"
-            component="label"
-            size="small"
-            style={{ margin: 'auto', background: '#4EA0B3', height: '26px' }}
-            tabIndex={params.hasFocus ? 0 : -1}
-          >
-            Upload
-            <input type="file" hidden />
-          </Button>
+        <div style={{ width: '100%', display: 'flex', alignItems: 'start' }}>
+          {params.row.referralFile ? (
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  handleFileGet(
+                    params.row.referralFile.key,
+                    params.row.referralFile.name,
+                    params.row.referralFile.type,
+                  );
+                }}
+                component="label"
+                size="small"
+                style={{
+                  margin: 'auto',
+                  background: '#4EA0B3',
+                  height: '26px',
+                  marginRight: '20px',
+                }}
+                tabIndex={params.hasFocus ? 0 : -1}
+              >
+                get
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  handleFileDelete(params.row._id, 'referralPDF');
+                }}
+                component="label"
+                size="small"
+                style={{
+                  margin: 'auto',
+                  height: '26px',
+                }}
+                tabIndex={params.hasFocus ? 0 : -1}
+              >
+                delete
+              </Button>
+            </div>
+          ) : (
+            <div>
+              <Button
+                variant="contained"
+                component="label"
+                size="small"
+                style={{
+                  margin: 'auto',
+                  background: '#4EA0B3',
+                  height: '26px',
+                }}
+                tabIndex={params.hasFocus ? 0 : -1}
+              >
+                Upload
+                <input
+                  type="file"
+                  hidden
+                  onChange={(e) => {
+                    handleFileUpload(e, params.row._id, 'referralPDF');
+                  }}
+                />
+              </Button>
+            </div>
+          )}
         </div>
       ),
     },
