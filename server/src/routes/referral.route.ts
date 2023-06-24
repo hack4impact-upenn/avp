@@ -19,7 +19,9 @@ import {
   updateVictimServicesOutcome,
   updateCounsellingServicesOutcome,
   updateYouthServicesOutcome,
+  uploadReferral,
 } from '../controllers/referral.controller';
+import upload from '../controllers/referral.middleware';
 
 const router = express.Router();
 
@@ -69,5 +71,7 @@ router.get('/:referral_id/youthServicesOutcome', getYouthServicesOutcome);
 router.post('/:referral_id/youthServicesOutcome', createYouthServicesOutcome);
 
 router.put('/:referral_id/youthServicesOutcome', updateYouthServicesOutcome);
+
+router.post('/upload', upload.single('file'), uploadReferral);
 
 export default router;
