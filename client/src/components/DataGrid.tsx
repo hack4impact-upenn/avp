@@ -707,7 +707,7 @@ export default function DataGrid() {
   }
 
   return (
-    <Box sx={{ height: 520, width: '100%' }}>
+    <Box sx={{ height: 700, width: '100%' }}>
       <DataGridPremium
         rows={referralList}
         columns={columns}

@@ -27,12 +27,10 @@ import DatabasePage from './Database/DatabasePage';
 import FormPage from './FormPage/FormPage';
 import './index.css';
 import ReferralViewPage from './ReferralView/ReferralViewPage';
-import Header from './components/Header';
 
 function App() {
   return (
     <div className="App">
-      <Header />
       <BrowserRouter>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
@@ -44,6 +42,7 @@ function App() {
                   <Route element={<UnauthenticatedRoutesWrapper />}>
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
+                    <Route path="/form" element={<FormPage />} />
                     <Route
                       path="/verify-account/:token"
                       element={<VerifyAccountPage />}
@@ -85,6 +84,7 @@ function App() {
 
                   {/* Route which is accessed if no other route is matched */}
                   <Route path="*" element={<NotFoundPage />} />
+                  <Route path="/form" element={<FormPage />} />
                 </Routes>
               </CssBaseline>
             </ThemeProvider>
