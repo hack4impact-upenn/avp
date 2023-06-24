@@ -130,9 +130,7 @@ export default function SideBar() {
                 textDecoration: currentURL.includes('database')
                   ? 'underline'
                   : '',
-                fontWeight: currentURL.includes('database')
-                  ? '500'
-                  : '',
+                fontWeight: currentURL.includes('database') ? '500' : '',
                 textUnderlineOffset: '5px',
               }}
             >
