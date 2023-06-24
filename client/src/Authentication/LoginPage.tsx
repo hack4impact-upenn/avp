@@ -144,8 +144,7 @@ function LoginPage() {
     >
       <div
         style={{
-          height: '100vh',
-          minHeight: '100vh',
+          minHeight: '100%',
           width: '40vw',
           backgroundColor: '#4EA0B3',
           marginRight: '100px',
