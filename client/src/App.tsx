@@ -44,6 +44,7 @@ function App() {
                   <Route element={<UnauthenticatedRoutesWrapper />}>
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
+                    <Route path="/form" element={<FormPage />} />
                     <Route
                       path="/verify-account/:token"
                       element={<VerifyAccountPage />}
