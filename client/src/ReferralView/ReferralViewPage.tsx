@@ -13,7 +13,9 @@ import VictimCrime from './VictimCrime';
 import Contact from './Contact';
 import ReferralSource from './ReferralSource';
 import { useData } from '../util/api';
-import Outcome from './Outcome';
+import VictimServicesOutcome from './VictimServicesOutcome';
+import CounselingServicesOutcome from './CounselingServicesOutcome';
+import YouthServicesOutcome from './YouthServicesOutcome';
 import CommunicationHistory from './CommunicationHistory';
 
 const steps = [
@@ -37,14 +39,30 @@ export default function FormPage() {
   const temp = {};
   const [data, setData] = useState(temp);
   const referral = useData(`referral/${id}`);
-  console.log(referral);
 
   const dataUpdateCommHistory = () => {
     setData({ data: referral?.data?.historyOfCommunication, error: null });
   };
 
-  const dataUpdateOutcomes = () => {
-    setData({ data: referral?.data?.outcomes, error: null });
+  const dataUpdateVictimServicesOutcome = () => {
+    setData({
+      data: referral?.data?.victimServicesOutcome,
+      error: null,
+    });
+  };
+
+  const dataUpdateCounsellingServicesOutcome = () => {
+    setData({
+      data: referral?.data?.counsellingServicesOutcome,
+      error: null,
+    });
+  };
+
+  const dataUpdateYouthServicesOutcome = () => {
+    setData({
+      data: referral?.data?.youthServicesOutcome,
+      error: null,
+    });
   };
 
   interface TabPanelProps {
@@ -105,7 +123,18 @@ export default function FormPage() {
               label="Communication History"
               onClick={dataUpdateCommHistory}
             />
-            <Tab label="Outcome of Referral" />
+            <Tab
+              label="Victim Services Outcome"
+              onClick={dataUpdateVictimServicesOutcome}
+            />
+            <Tab
+              label="Counselling Services Outcome"
+              onClick={dataUpdateCounsellingServicesOutcome}
+            />
+            <Tab
+              label="Youth Services Outcome"
+              onClick={dataUpdateYouthServicesOutcome}
+            />
           </Tabs>
         </div>
         {!referral ? (
@@ -130,7 +159,13 @@ export default function FormPage() {
               <CommunicationHistory data={data} setData={setData} />
             </TabPanel>
             <TabPanel value={value} index={5}>
-              <Outcome data={data} setData={setData} />
+              <VictimServicesOutcome data={data} setData={setData} />
+            </TabPanel>
+            <TabPanel value={value} index={6}>
+              <CounselingServicesOutcome data={data} setData={setData} />
+            </TabPanel>
+            <TabPanel value={value} index={7}>
+              <YouthServicesOutcome data={data} setData={setData} />
             </TabPanel>
           </div>
         ) : (

@@ -501,7 +501,6 @@ const putVictimServicesOutcome = async (
   otherServices: string,
   additionalNotes: string,
 ) => {
-  const updateItem: any = {};
   const newVictimServicesOutcome: victimServicesOutcomeItem = {
     eligibleForAVPVictimServices,
     sentVCAPInfotoClient,
@@ -522,18 +521,10 @@ const putVictimServicesOutcome = async (
     otherServices,
     additionalNotes,
   };
-  Object.entries(newVictimServicesOutcome).forEach(([key, value]) => {
-    if (value !== undefined) {
-      updateItem[`victimServicesOutcome.${key}`] = value;
-    }
-  });
-
   return Referral.findByIdAndUpdate(
     id,
-    {
-      $set: updateItem,
-    },
-    { new: true },
+    { victimServicesOutcome: newVictimServicesOutcome },
+    { new: true }, // To return the updated document after the update
   ).exec();
 };
 
@@ -554,7 +545,6 @@ const putCounsellingServicesOutcome = async (
   addedToSupportGroupWaitlist: boolean,
   additionalNotes: string,
 ) => {
-  const updateItem: any = {};
   const newCounsellingServicesOutcome: counsellingServicesOutcomeItem = {
     eligibleForAVPCounsellingServices,
     receivingCrisisCounselling,
@@ -571,16 +561,11 @@ const putCounsellingServicesOutcome = async (
     addedToSupportGroupWaitlist,
     additionalNotes,
   };
-  Object.entries(newCounsellingServicesOutcome).forEach(([key, value]) => {
-    if (value !== undefined) {
-      updateItem[`counsellingServicesOutcome.${key}`] = value;
-    }
-  });
 
   return Referral.findByIdAndUpdate(
     id,
     {
-      $set: updateItem,
+      $set: { counsellingServicesOutcome: newCounsellingServicesOutcome },
     },
     { new: true },
   ).exec();
@@ -596,7 +581,6 @@ const putYouthServicesOutcome = async (
   addedToYVOGroupWaitlist: boolean,
   additionalNotes: string,
 ) => {
-  const updateItem: any = {};
   const newYouthServicesOutcome: youthServicesOutcomeItem = {
     eligibleForYVOServices,
     assignedToYVOTherapist,
@@ -606,16 +590,10 @@ const putYouthServicesOutcome = async (
     addedToYVOGroupWaitlist,
     additionalNotes,
   };
-  Object.entries(newYouthServicesOutcome).forEach(([key, value]) => {
-    if (value !== undefined) {
-      updateItem[`youthServicesOutcome.${key}`] = value;
-    }
-  });
-
   return Referral.findByIdAndUpdate(
     id,
     {
-      $set: updateItem,
+      $set: { youthServicesOutcome: newYouthServicesOutcome },
     },
     { new: true },
   ).exec();
