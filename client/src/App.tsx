@@ -44,7 +44,6 @@ function App() {
                   <Route element={<UnauthenticatedRoutesWrapper />}>
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
-                    <Route path="/form" element={<FormPage />} />
                     <Route
                       path="/verify-account/:token"
                       element={<VerifyAccountPage />}
@@ -86,6 +85,7 @@ function App() {
 
                   {/* Route which is accessed if no other route is matched */}
                   <Route path="*" element={<NotFoundPage />} />
+                  <Route path="/form" element={<FormPage />} />
                 </Routes>
               </CssBaseline>
             </ThemeProvider>
