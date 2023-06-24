@@ -46,13 +46,11 @@ export default function PageSix({ data, setData }: Props) {
   const [historyItems, setHistoryItems] = useState<ICommunicationItem[]>([]);
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-  const communications = useData(`referral/${id}/communication/all`);
-  console.log(communications);
+  const communications = data;
   useEffect(() => {
     // clean communications and put in communication list
     setHistoryItems(
       communications?.data?.map((comm: ICommunicationItem) => {
-        console.log(comm);
         return comm;
       }),
     );

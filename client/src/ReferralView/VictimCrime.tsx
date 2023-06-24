@@ -117,9 +117,9 @@ export default function PageTwo({ data, setData }: Props) {
           labelId="demo-simple-select-label"
           id="demo-simple-select-label"
           label="Type Of Crime / Victimization"
-          onChange={(event) =>
-            setData({ ...data, crimeType: event.target.value })
-          }
+          onChange={(event) => {
+            setData({ ...data, crimeType: event.target.value });
+          }}
         >
           {crimeType.map((val) => (
             <MenuItem
