@@ -13,6 +13,7 @@ import PrimaryButton from '../components/buttons/PrimaryButton';
 import ScreenGrid from '../components/ScreenGrid';
 import DataGrid from '../components/DataGrid';
 import avpLogo from '../assets/avpLogo.svg';
+import COLORS from '../assets/colors';
 
 /**
  * A page allowing users to input their email and password to login. The default
@@ -111,6 +112,10 @@ function LoginPage() {
     return isValid;
   };
 
+  const navigateToForm = () => {
+    navigate('/form', { replace: true });
+  };
+
   async function handleSubmit() {
     if (validateInputs()) {
       loginUser(values.email, values.password)
@@ -170,9 +175,70 @@ function LoginPage() {
       </div>
       <FormGrid>
         <FormCol>
+          <div style={{ color: 'black', display: 'flex' }}>
+            <img
+              src={avpLogo}
+              alt="logo"
+              style={{ marginTop: '70px', marginLeft: '10px' }}
+            />
+            <div
+              style={{
+                marginTop: '70px',
+                marginLeft: '10px',
+                fontWeight: 'bold',
+                fontSize: '1.2rem',
+              }}
+            >
+              Anti-Violence <br /> Partnership of Philadelphia
+            </div>
+          </div>
           <Grid item container justifyContent="center">
-            <Typography variant="h2" textAlign="center" marginTop="200px">
-              Login to AVP&apos;s Outreach Database
+            <Typography
+              variant="h2"
+              textAlign="center"
+              marginTop="50px"
+              style={{ color: COLORS.primaryAVPColor }}
+            >
+              Are you an AVP Partner?
+            </Typography>
+          </Grid>
+          <Grid item container justifyContent="center">
+            <PrimaryButton
+              fullWidth
+              style={{ margin: '1rem' }}
+              onClick={() => navigateToForm()}
+              variant="contained"
+            >
+              Submit a referral
+            </PrimaryButton>
+          </Grid>
+        </FormCol>
+        <FormCol>
+          <div style={{ color: 'black', display: 'flex' }}>
+            <img
+              src={avpLogo}
+              alt="logo"
+              style={{ marginTop: '200px', marginLeft: '10px' }}
+            />
+            <div
+              style={{
+                marginTop: '200px',
+                marginLeft: '10px',
+                fontWeight: 'bold',
+                fontSize: '1.2rem',
+              }}
+            >
+              Anti-Violence <br /> Partnership of Philadelphia
+            </div>
+          </div>
+          <Grid item container justifyContent="center">
+            <Typography
+              variant="h2"
+              textAlign="center"
+              marginTop="20px"
+              style={{ color: COLORS.primaryAVPColor }}
+            >
+              For AVP Staff - Login to Outreach Database
             </Typography>
           </Grid>
           <Grid item width="1">
