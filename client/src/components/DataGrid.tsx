@@ -294,6 +294,7 @@ export default function DataGrid() {
             size="small"
             style={{ margin: 'auto', background: '#4EA0B3', height: '26px' }}
             tabIndex={params.hasFocus ? 0 : -1}
+            href={`/referral/${params.row.id}`}
           >
             View
           </Button>
