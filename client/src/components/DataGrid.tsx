@@ -30,6 +30,48 @@ export default function DataGrid() {
   const referrals = useData('referral/all');
   const emptyStringArray: string[] = [''];
 
+  /* For saving datagrid state */
+//Todo: edit backend to actually save and retrieve userProfile
+// const userProfile = {
+//   id: 'user123', // unique identifier for the user
+//   name: 'John Doe', // user's name
+//   email: 'john.doe@example.com', // user's email
+//   columnState: { // user's saved column state
+//     order: ['id', 'name', 'email', 'address', 'phone'], // order of columns
+//     visibility: { // visibility of columns
+//       'id': true,
+//       'name': true,
+//       'email': false, // user has hidden the email column
+//       'address': true,
+//       'phone': true,
+//     },
+//   },
+  // ... other user profile properties
+// }
+  // const [columnState, setColumnState] = useState(null);
+
+  // useEffect(() => {
+  //   // Fetch user's column state from profile and set it to state
+  //   const userColumnState = userProfile.columnState;
+  //   setColumnState(userColumnState);
+  // }, [userProfile]);
+
+  // const handleColumnOrderChange = (newColumnOrder) => {
+  //   // Update state
+  //   setColumnState({
+  //     ...columnState,
+  //     order: newColumnOrder,
+  //   });
+  //   // Update user profile
+  //   updateUserProfile({
+  //     ...userProfile,
+  //     columnState: {
+  //       ...userProfile.columnState,
+  //       order: newColumnOrder,
+  //     }
+  //   });
+    ////////////////////////////////
+
   function CustomEditComponent(props: {
     api: any;
     id: GridRowId;
