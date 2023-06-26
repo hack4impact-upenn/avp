@@ -307,7 +307,8 @@ const uploadReferral = async (
 
   // Check if a file was provided
   if (!file) {
-    return next(ApiError.internal('No file provided'));
+    next(ApiError.internal('No file provided'));
+    return;
   }
   // parse file
   if (file.mimetype === 'text/csv') {
@@ -419,7 +420,7 @@ const uploadReferral = async (
           newReferral.followUpLetterSent === undefined ||
           newReferral.transferredToETO === undefined
         ) {
-          return next(
+          next(
             ApiError.missingFields([
               'timestamp',
               'status',
@@ -442,6 +443,7 @@ const uploadReferral = async (
               'transferredToETO',
             ]),
           );
+          return;
         }
 
         promises.push(
@@ -504,14 +506,13 @@ const uploadReferral = async (
           ),
         );
         console.log('here');
-        return promises;
       })
       .on('end', async () => {
         try {
           await Promise.all(promises); // Await all promises from each row
-          return res.sendStatus(StatusCode.CREATED);
+          res.sendStatus(StatusCode.CREATED);
         } catch (error) {
-          return next(
+          next(
             ApiError.internal(
               `Unable to create referral due to the following error: ${error}`,
             ),
@@ -520,7 +521,7 @@ const uploadReferral = async (
       });
   } else {
     // Unsupported file type
-    return next(ApiError.internal('Unsupported file type'));
+    next(ApiError.internal('Unsupported file type'));
   }
 };
 

@@ -30,8 +30,9 @@ function UploadModal({ isModalOpen, handleModalClose }: UploadModalProps) {
       return upload(file);
     });
     const results = await Promise.all(res);
+    console.log(results);
     const newFiles = files.filter((file, index) => {
-      return !results[index].data;
+      return results[index] !== 'Created';
     });
     setFiles(newFiles);
   };
@@ -43,10 +44,11 @@ function UploadModal({ isModalOpen, handleModalClose }: UploadModalProps) {
     [files],
   );
 
-  const removeFile = (file: File) => () => {
+  const removeFile = (file: File) => {
     console.log(file);
     const newFiles = [...files];
     newFiles.splice(newFiles.indexOf(file), 1);
+    console.log(newFiles);
     setFiles(newFiles);
   };
 

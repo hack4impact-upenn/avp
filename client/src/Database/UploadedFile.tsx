@@ -34,6 +34,7 @@ function UploadedFile({ file, removeFile }: UploadedFileProps) {
             edge="end"
             aria-label="delete"
             onClick={() => {
+              console.log(file);
               removeFile(file);
             }}
           >
