@@ -83,7 +83,7 @@ export default function PageTwo({ data, setData }: Props) {
   if (data.crimeType == 'Homicide') {
     homicideFields = (
       <div>
-        <FormControl required sx={{ marginRight: 2, minWidth: 420 }}>
+        <FormControl required sx={{ m: 1, minWidth: 420 }}>
           <TextField
             id="outlined-number"
             label="M#/S#/AID#"
@@ -109,7 +109,7 @@ export default function PageTwo({ data, setData }: Props) {
 
   return (
     <div>
-      <FormControl sx={{ marginBottom: 2, minWidth: 600 }}>
+      <FormControl sx={{ m: 1, minWidth: 600 }}>
         <InputLabel id="demo-simple-select-label">
           Type Of Crime / Victimization
         </InputLabel>
@@ -135,7 +135,7 @@ export default function PageTwo({ data, setData }: Props) {
 
       <br />
 
-      <FormControl sx={{ marginRight: 2, marginBottom: 2 }}>
+      <FormControl sx={{ m: 1 }}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DesktopDatePicker
             label="Date of Incident"
@@ -147,7 +147,7 @@ export default function PageTwo({ data, setData }: Props) {
         </LocalizationProvider>
       </FormControl>
 
-      <FormControl sx={{ marginBottom: 2, marginRight: 2, minWidth: 240 }}>
+      <FormControl sx={{ m: 1, minWidth: 240 }}>
         <InputLabel id="demo-simple-select-label">Gun Violence?</InputLabel>
         <Select
           labelId="demo-simple-select-label"
@@ -165,10 +165,7 @@ export default function PageTwo({ data, setData }: Props) {
 
       <br />
 
-      <FormControl
-        required
-        sx={{ marginBottom: 2, marginRight: 2, minWidth: 420 }}
-      >
+      <FormControl required sx={{ m: 1, minWidth: 420 }}>
         <TextField
           id="outlined-basic"
           label="Street Address of Incident"
@@ -179,7 +176,7 @@ export default function PageTwo({ data, setData }: Props) {
         />
       </FormControl>
 
-      <FormControl required sx={{ marginBottom: 2, minWidth: 240 }}>
+      <FormControl required sx={{ m: 1, minWidth: 240 }}>
         <TextField
           id="outlined-basic"
           label="Zip Code of Incident"
@@ -192,10 +189,7 @@ export default function PageTwo({ data, setData }: Props) {
 
       <br />
 
-      <FormControl
-        required
-        sx={{ marginBottom: 2, marginRight: 2, minWidth: 360 }}
-      >
+      <FormControl required sx={{ m: 1, minWidth: 360 }}>
         <TextField
           id="outlined-number"
           label="Police Incident # (DC#)"
@@ -206,7 +200,7 @@ export default function PageTwo({ data, setData }: Props) {
         />
       </FormControl>
 
-      <FormControl sx={{ marginBottom: 2, minWidth: 420 }}>
+      <FormControl sx={{ m: 1, minWidth: 420 }}>
         <InputLabel id="demo-simple-select-label">
           Police District of Incident
         </InputLabel>
@@ -234,7 +228,7 @@ export default function PageTwo({ data, setData }: Props) {
 
       <br />
 
-      <FormControl required sx={{ minWidth: 540 }}>
+      <FormControl required sx={{ m: 1, minWidth: 540 }}>
         <TextField
           id="outlined-number"
           label="How Many People Are Being Referred For This Victimization/Crime?"

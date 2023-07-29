@@ -142,14 +142,138 @@ export default function PageThree({ data, setData }: Props) {
     dayjs('2000-01-01T00:00:00'),
   );
 
+  let otherGenderInput;
+  if (data.survivorGender && data.survivorGender.indexOf('Other') >= 0) {
+    otherGenderInput = (
+      <span>
+        <FormControl required sx={{ m: 1, minWidth: 240 }}>
+          <TextField
+            id="outlined-basic"
+            variant="outlined"
+            label="Please Specify Gender"
+            onChange={(event) =>
+              setData({
+                ...data,
+                survivorGenderOther: event.target.value,
+              })
+            }
+          />
+        </FormControl>
+      </span>
+    );
+  }
+
+  let otherRaceInput;
+  if (data.survivorRace && data.survivorRace.indexOf('Other') >= 0) {
+    otherRaceInput = (
+      <span>
+        <FormControl required sx={{ m: 1, minWidth: 240 }}>
+          <TextField
+            id="outlined-basic"
+            variant="outlined"
+            label="Please Specify Race"
+            onChange={(event) =>
+              setData({
+                ...data,
+                survivorRaceOther: event.target.value,
+              })
+            }
+          />
+        </FormControl>
+      </span>
+    );
+  }
+
+  let relationshipToVictimExplained;
+  if (
+    data.relationshipToVictim &&
+    data.relationshipToVictim.indexOf('Other') >= 0
+  ) {
+    relationshipToVictimExplained = (
+      <div>
+        <FormControl required sx={{ m: 1, minWidth: 860 }}>
+          <TextField
+            id="outlined-basic"
+            variant="outlined"
+            label="Please Specify Relationship to Victim"
+            onChange={(event) =>
+              setData({
+                ...data,
+                relationshipToVictimOther: event.target.value,
+              })
+            }
+          />
+        </FormControl>
+      </div>
+    );
+  }
+
+  let guardianRelationshipExplained;
+  if (
+    data.guardianRelationship &&
+    data.guardianRelationship.indexOf('Other') >= 0
+  ) {
+    guardianRelationshipExplained = (
+      <div>
+        <FormControl required sx={{ m: 1, minWidth: 860 }}>
+          <TextField
+            id="outlined-basic"
+            variant="outlined"
+            label="Please Specify Relationship of Adult to Youth"
+            onChange={(event) =>
+              setData({
+                ...data,
+                guardianRelationshipOther: event.target.value,
+              })
+            }
+          />
+        </FormControl>
+      </div>
+    );
+  }
+
+  let youthGradeInput;
+  if (data.survivorSchoolOrCommunitySite) {
+    youthGradeInput = (
+      <span>
+        <FormControl sx={{ m: 1, minWidth: 240 }}>
+          <InputLabel id="demo-simple-select-label">
+            Grade Survivor/Victim Is In
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select-label"
+            label="Grade Youth Is In"
+            onChange={(event) =>
+              setData({
+                ...data,
+                survivorGrade: event.target.value,
+              })
+            }
+          >
+            {youthGrade.map((val) => (
+              <MenuItem
+                key={val}
+                value={val}
+                style={getStyles(val, youthGrade, theme)}
+              >
+                {val}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </span>
+    );
+  }
+
   let youthQuestions;
   if (data.survivorAge <= 22) {
     youthQuestions = (
       <div>
         {/* What School Or Community Based Site does Survivor Attend? */}
-        <FormControl sx={{ marginBottom: 2, marginRight: 2, minWidth: 480 }}>
+        <FormControl sx={{ m: 1, minWidth: 480 }}>
           <InputLabel id="demo-simple-select-label">
-            School/Community-Based Site Youth Attends
+            School or Community-Based Site Survivor/Victim Attends
           </InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -174,42 +298,16 @@ export default function PageThree({ data, setData }: Props) {
           </Select>
         </FormControl>
 
-        {/* What Grade is the Surivor In? */}
-        <FormControl sx={{ marginBottom: 2, minWidth: 240 }}>
-          <InputLabel id="demo-simple-select-label">
-            Grade Youth Is In
-          </InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select-label"
-            label="Grade Youth Is In"
-            onChange={(event) =>
-              setData({
-                ...data,
-                survivorGrade: event.target.value,
-              })
-            }
-          >
-            {youthGrade.map((val) => (
-              <MenuItem
-                key={val}
-                value={val}
-                style={getStyles(val, youthGrade, theme)}
-              >
-                {val}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        {youthGradeInput}
       </div>
     );
   }
 
-  let notSelfQuestions;
-  if (data.relationshipToVictim !== 'Self') {
-    notSelfQuestions = (
+  let homicideQuestions;
+  if (data.crime === 'Homicide') {
+    homicideQuestions = (
       <div>
-        <FormControl sx={{ marginBottom: 2, marginRight: 2, minWidth: 420 }}>
+        <FormControl sx={{ m: 1, minWidth: 420 }}>
           <TextField
             id="outlined-basic"
             variant="outlined"
@@ -219,20 +317,8 @@ export default function PageThree({ data, setData }: Props) {
             }
           />
         </FormControl>
-        <FormControl sx={{ marginBottom: 2, marginRight: 2, minWidth: 420 }}>
-          <TextField
-            id="outlined-basic"
-            variant="outlined"
-            label="Age of Victim"
-            onChange={(event) =>
-              setData({ ...data, survivorAddress: event.target.value })
-            }
-          />
-        </FormControl>
-        <FormControl sx={{ marginBottom: 2, minWidth: 240 }}>
-          <InputLabel id="demo-simple-select-label">
-            Gender of Victim
-          </InputLabel>
+        <FormControl sx={{ m: 1, minWidth: 240 }}>
+          <InputLabel id="demo-simple-select-label">Gender</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select-label"
@@ -253,46 +339,29 @@ export default function PageThree({ data, setData }: Props) {
                 {val}
               </MenuItem>
             ))}
-            {/* TODO: add new textbox for input for 'Other' option */}
           </Select>
         </FormControl>
       </div>
     );
   }
 
-  let youthContactQuestions;
-  if (data.survivorAge <= 18) {
-    youthContactQuestions = (
+  let contactQuestions;
+  if (data.isGuardianResponsible === 'Yes') {
+    contactQuestions = (
       <div>
         <div>
-          <FormControl sx={{ marginBottom: 2, marginRight: 2, minWidth: 240 }}>
-            <InputLabel id="demo-simple-select-label">
-              Is Adult The Main Contact For The Youth?
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select-label"
-              label="Is Adult The Main Contact For The Youth? "
+          <FormControl sx={{ m: 1, minWidth: 420 }}>
+            <TextField
+              id="outlined-basic"
+              variant="outlined"
+              label="Name of Adult"
               onChange={(event) =>
-                setData({
-                  ...data,
-                  isGuardianResponsible: event.target.value,
-                })
+                setData({ ...data, guardianName: event.target.value })
               }
-            >
-              {guardianMainContact.map((val) => (
-                <MenuItem
-                  key={val}
-                  value={val}
-                  style={getStyles(val, guardianMainContact, theme)}
-                >
-                  {val}
-                </MenuItem>
-              ))}
-            </Select>
+            />
           </FormControl>
 
-          <FormControl sx={{ marginBottom: 2, minWidth: 420 }}>
+          <FormControl sx={{ m: 1, minWidth: 420 }}>
             <InputLabel id="demo-simple-select-label">
               Relationship of Adult to Youth Being Referred
             </InputLabel>
@@ -318,28 +387,15 @@ export default function PageThree({ data, setData }: Props) {
                     {val}
                   </MenuItem>
                 ))}
-              {/* TODO: add new textbox for input for 'Other' option */}
             </Select>
           </FormControl>
-        </div>
-        <div>
-          <FormControl sx={{ marginBottom: 2, marginRight: 2, minWidth: 420 }}>
-            <TextField
-              id="outlined-basic"
-              variant="outlined"
-              label="Name of Adult"
-              onChange={(event) =>
-                setData({ ...data, guardianName: event.target.value })
-              }
-            />
-          </FormControl>
+
+          {/* guardianRelationshipExplained */}
+          {guardianRelationshipExplained}
         </div>
         <div>
           {/* survivorAddress */}
-          <FormControl
-            required
-            sx={{ marginBottom: 2, marginRight: 2, minWidth: 420 }}
-          >
+          <FormControl required sx={{ m: 1, minWidth: 420 }}>
             <TextField
               id="outlined-basic"
               variant="outlined"
@@ -350,10 +406,7 @@ export default function PageThree({ data, setData }: Props) {
             />
           </FormControl>
 
-          <FormControl
-            required
-            sx={{ marginBottom: 2, marginRight: 2, minWidth: 240 }}
-          >
+          <FormControl required sx={{ m: 1, minWidth: 240 }}>
             <TextField
               id="outlined-basic"
               variant="outlined"
@@ -364,10 +417,7 @@ export default function PageThree({ data, setData }: Props) {
             />
           </FormControl>
 
-          <FormControl
-            required
-            sx={{ marginBottom: 2, marginRight: 2, minWidth: 30 }}
-          >
+          <FormControl required sx={{ m: 1, minWidth: 30 }}>
             <TextField
               id="outlined-basic"
               variant="outlined"
@@ -378,10 +428,7 @@ export default function PageThree({ data, setData }: Props) {
             />
           </FormControl>
 
-          <FormControl
-            required
-            sx={{ marginBottom: 2, marginRight: 2, minWidth: 60 }}
-          >
+          <FormControl required sx={{ m: 1, minWidth: 60 }}>
             <TextField
               id="outlined-number"
               label="Zip Code (Adult)"
@@ -394,10 +441,7 @@ export default function PageThree({ data, setData }: Props) {
 
           <div>
             {/* guardianPhone */}
-            <FormControl
-              required
-              sx={{ marginBottom: 2, marginRight: 2, minWidth: 240 }}
-            >
+            <FormControl required sx={{ m: 1, minWidth: 240 }}>
               <TextField
                 id="outlined-number"
                 label="Phone Number (Adult)"
@@ -409,10 +453,7 @@ export default function PageThree({ data, setData }: Props) {
             </FormControl>
 
             {/* guardianEmail */}
-            <FormControl
-              required
-              sx={{ marginBottom: 2, marginRight: 2, minWidth: 360 }}
-            >
+            <FormControl required sx={{ m: 1, minWidth: 360 }}>
               <TextField
                 id="outlined-basic"
                 variant="outlined"
@@ -424,7 +465,7 @@ export default function PageThree({ data, setData }: Props) {
             </FormControl>
 
             {/* guardianPreferredContactMethod */}
-            <FormControl sx={{ width: 240 }}>
+            <FormControl sx={{ m: 1, width: 240 }}>
               <InputLabel id="demo-multiple-name-label">
                 Preferred Contact Method
               </InputLabel>
@@ -465,188 +506,11 @@ export default function PageThree({ data, setData }: Props) {
         </div>
       </div>
     );
-  }
-
-  return (
-    <div>
-      {/* survivorName */}
-      <FormControl sx={{ marginBottom: 2, marginRight: 2, minWidth: 420 }}>
-        <TextField
-          id="outlined-basic"
-          variant="outlined"
-          label="Name of Person Being Referred"
-          onChange={(event) =>
-            setData({ ...data, survivorName: event.target.value })
-          }
-        />
-      </FormControl>
-
-      <br />
-
-      {/* survivorDOB */}
-      <FormControl sx={{ marginRight: 2, marginBottom: 2 }}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DesktopDatePicker
-            label="Date of Birth"
-            value={survivorDOB}
-            onChange={(newValue: Dayjs | null) => {
-              setsurvivorDOB(newValue);
-            }}
-          />
-        </LocalizationProvider>
-      </FormControl>
-
-      {/* survivorAge */}
-      <FormControl
-        required
-        sx={{ marginBottom: 2, marginRight: 2, minWidth: 60 }}
-      >
-        <TextField
-          id="outlined-number"
-          label="Age"
-          type="number"
-          onChange={(event) =>
-            setData({ ...data, survivorAge: event.target.value })
-          }
-        />
-      </FormControl>
-
-      {/* primaryLanguage */}
-      <FormControl
-        required
-        sx={{ marginBottom: 2, marginRight: 2, minWidth: 420 }}
-      >
-        <TextField
-          id="outlined-basic"
-          variant="outlined"
-          label="Primary Language"
-          onChange={(event) =>
-            setData({ ...data, primaryLanguage: event.target.value })
-          }
-        />
-      </FormControl>
-
-      {youthQuestions}
-
-      <div>
-        {/* survivorGender */}
-        <FormControl sx={{ marginBottom: 2, marginRight: 2, minWidth: 180 }}>
-          <InputLabel id="demo-simple-select-label">Gender</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select-label"
-            label="Gender"
-            onChange={(event) =>
-              setData({
-                ...data,
-                survivorGender: event.target.value,
-              })
-            }
-          >
-            {survivorGender.map((val) => (
-              <MenuItem
-                key={val}
-                value={val}
-                style={getStyles(val, survivorGender, theme)}
-              >
-                {val}
-              </MenuItem>
-            ))}
-            {/* TODO: add new textbox for input for 'Other' option */}
-          </Select>
-        </FormControl>
-
-        {/* survivorRace */}
-        <FormControl sx={{ marginBottom: 2, minWidth: 180 }}>
-          <InputLabel id="demo-simple-select-label">Race/Ethnicity</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select-label"
-            label="Race/Ethnicity"
-            onChange={(event) =>
-              setData({
-                ...data,
-                survivorRace: event.target.value,
-              })
-            }
-          >
-            {survivorRace.map((val) => (
-              <MenuItem
-                key={val}
-                value={val}
-                style={getStyles(val, survivorRace, theme)}
-              >
-                {val}
-              </MenuItem>
-            ))}
-            {/* TODO: add new textbox for input for 'Other' option */}
-          </Select>
-        </FormControl>
-      </div>
-
-      {/* survivorAddress */}
-      <FormControl
-        required
-        sx={{ marginBottom: 2, marginRight: 2, minWidth: 420 }}
-      >
-        <TextField
-          id="outlined-basic"
-          variant="outlined"
-          label="Street Address"
-          onChange={(event) =>
-            setData({ ...data, survivorAddress: event.target.value })
-          }
-        />
-      </FormControl>
-
-      <FormControl
-        required
-        sx={{ marginBottom: 2, marginRight: 2, minWidth: 240 }}
-      >
-        <TextField
-          id="outlined-basic"
-          variant="outlined"
-          label="City"
-          onChange={(event) =>
-            setData({ ...data, survivorAddress: event.target.value })
-          }
-        />
-      </FormControl>
-
-      <FormControl
-        required
-        sx={{ marginBottom: 2, marginRight: 2, minWidth: 30 }}
-      >
-        <TextField
-          id="outlined-basic"
-          variant="outlined"
-          label="State"
-          onChange={(event) =>
-            setData({ ...data, survivorAddress: event.target.value })
-          }
-        />
-      </FormControl>
-
-      <FormControl
-        required
-        sx={{ marginBottom: 2, marginRight: 2, minWidth: 60 }}
-      >
-        <TextField
-          id="outlined-number"
-          label="Zip Code"
-          type="number"
-          onChange={(event) =>
-            setData({ ...data, survivorAddress: event.target.value })
-          }
-        />
-      </FormControl>
-
+  } else if (data.isGuardianResponsible === 'No') {
+    contactQuestions = (
       <div>
         {/* survivorPhoneNumber */}
-        <FormControl
-          required
-          sx={{ marginBottom: 2, marginRight: 2, minWidth: 240 }}
-        >
+        <FormControl required sx={{ m: 1, minWidth: 240 }}>
           <TextField
             id="outlined-number"
             label="Phone Number"
@@ -658,10 +522,7 @@ export default function PageThree({ data, setData }: Props) {
         </FormControl>
 
         {/* survivorEmail */}
-        <FormControl
-          required
-          sx={{ marginBottom: 2, marginRight: 2, minWidth: 360 }}
-        >
+        <FormControl required sx={{ m: 1, minWidth: 360 }}>
           <TextField
             id="outlined-basic"
             variant="outlined"
@@ -673,7 +534,7 @@ export default function PageThree({ data, setData }: Props) {
         </FormControl>
 
         {/* survivorPreferredContactMethod */}
-        <FormControl sx={{ width: 240 }}>
+        <FormControl sx={{ m: 1, width: 240 }}>
           <InputLabel id="demo-multiple-name-label">
             Preferred Contact Method
           </InputLabel>
@@ -709,29 +570,224 @@ export default function PageThree({ data, setData }: Props) {
           </Select>
         </FormControl>
       </div>
+    );
+  }
+
+  return (
+    <div>
+      {/* survivorName */}
+      <FormControl sx={{ m: 1, minWidth: 420 }}>
+        <TextField
+          id="outlined-basic"
+          variant="outlined"
+          label="Name of Person Being Referred"
+          onChange={(event) =>
+            setData({ ...data, survivorName: event.target.value })
+          }
+        />
+      </FormControl>
+
+      {/* relationship to victim of crime/violence */}
+      <FormControl sx={{ m: 1, minWidth: 420 }}>
+        <InputLabel id="demo-simple-select-label">
+          Relationship To Victim
+        </InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select-label"
+          label="Relationship to Victim"
+          onChange={(event) =>
+            setData({
+              ...data,
+              relationshipToVictim: event.target.value,
+            })
+          }
+        >
+          {relationshipToVictim.map((val) => (
+            <MenuItem
+              key={val}
+              value={val}
+              style={getStyles(val, relationshipToVictim, theme)}
+            >
+              {val}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      {/* relationshipToVictimExplained */}
+      {relationshipToVictimExplained}
 
       <div>
-        {/* Relationship to Victim */}
-        <FormControl required sx={{ marginBottom: 2, minWidth: 420 }}>
-          <InputLabel id="demo-simple-select-required-label">
-            Relationship to Victim
-          </InputLabel>
+        {/* survivorDOB */}
+        <FormControl sx={{ m: 1 }}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DesktopDatePicker
+              label="Date of Birth"
+              value={survivorDOB}
+              onChange={(newValue: Dayjs | null) => {
+                setsurvivorDOB(newValue);
+              }}
+            />
+          </LocalizationProvider>
+        </FormControl>
+
+        {/* survivorAge */}
+        <FormControl required sx={{ m: 1, minWidth: 60 }}>
+          <TextField
+            id="outlined-number"
+            label="Age"
+            type="number"
+            onChange={(event) =>
+              setData({ ...data, survivorAge: event.target.value })
+            }
+          />
+        </FormControl>
+      </div>
+
+      {/* youthQuestions */}
+      {youthQuestions}
+
+      {/* preferredLanguage */}
+      <FormControl required sx={{ m: 1, minWidth: 420 }}>
+        <TextField
+          id="outlined-basic"
+          variant="outlined"
+          label="Preferred Language"
+          onChange={(event) =>
+            setData({ ...data, primaryLanguage: event.target.value })
+          }
+        />
+      </FormControl>
+
+      <div>
+        {/* survivorGender */}
+        <FormControl sx={{ m: 1, minWidth: 180 }}>
+          <InputLabel id="demo-simple-select-label">Gender</InputLabel>
           <Select
-            labelId="demo-simple-select-required-label"
-            id="demo-simple-select-required-label"
-            label="Relationship to Victim"
+            labelId="demo-simple-select-label"
+            id="demo-simple-select-label"
+            label="Gender"
             onChange={(event) =>
               setData({
                 ...data,
-                relationshipToVictim: event.target.value,
+                survivorGender: event.target.value,
               })
             }
           >
-            {relationshipToVictim.map((val) => (
+            {survivorGender.map((val) => (
               <MenuItem
                 key={val}
                 value={val}
-                style={getStyles(val, relationshipToVictim, theme)}
+                style={getStyles(val, survivorGender, theme)}
+              >
+                {val}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        {/* otherGenderInput */}
+        {otherGenderInput}
+
+        {/* survivorRace */}
+        <FormControl sx={{ m: 1, minWidth: 180 }}>
+          <InputLabel id="demo-simple-select-label">Race/Ethnicity</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select-label"
+            label="Race/Ethnicity"
+            onChange={(event) =>
+              setData({
+                ...data,
+                survivorRace: event.target.value,
+              })
+            }
+          >
+            {survivorRace.map((val) => (
+              <MenuItem
+                key={val}
+                value={val}
+                style={getStyles(val, survivorRace, theme)}
+              >
+                {val}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        {/* otherRaceInput */}
+        {otherRaceInput}
+      </div>
+
+      {/* survivorAddress */}
+      <FormControl required sx={{ m: 1, minWidth: 420 }}>
+        <TextField
+          id="outlined-basic"
+          variant="outlined"
+          label="Street Address"
+          onChange={(event) =>
+            setData({ ...data, survivorAddress: event.target.value })
+          }
+        />
+      </FormControl>
+
+      <FormControl required sx={{ m: 1, minWidth: 240 }}>
+        <TextField
+          id="outlined-basic"
+          variant="outlined"
+          label="City"
+          onChange={(event) =>
+            setData({ ...data, survivorAddress: event.target.value })
+          }
+        />
+      </FormControl>
+
+      <FormControl required sx={{ m: 1, minWidth: 30 }}>
+        <TextField
+          id="outlined-basic"
+          variant="outlined"
+          label="State"
+          onChange={(event) =>
+            setData({ ...data, survivorAddress: event.target.value })
+          }
+        />
+      </FormControl>
+
+      <FormControl required sx={{ m: 1, minWidth: 60 }}>
+        <TextField
+          id="outlined-number"
+          label="Zip Code"
+          type="number"
+          onChange={(event) =>
+            setData({ ...data, survivorAddress: event.target.value })
+          }
+        />
+      </FormControl>
+
+      {/* is parent/responsible adult the main contact */}
+      <div>
+        <FormControl sx={{ m: 1, minWidth: 600 }}>
+          <InputLabel id="demo-simple-select-label">
+            Is a parent/responsible adult the main contact for the
+            survivor/victim?
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select-label"
+            label="Is Adult The Main Contact For The Youth? "
+            onChange={(event) =>
+              setData({
+                ...data,
+                isGuardianResponsible: event.target.value,
+              })
+            }
+          >
+            {guardianMainContact.map((val) => (
+              <MenuItem
+                key={val}
+                value={val}
+                style={getStyles(val, guardianMainContact, theme)}
               >
                 {val}
               </MenuItem>
@@ -740,24 +796,21 @@ export default function PageThree({ data, setData }: Props) {
         </FormControl>
       </div>
 
-      {notSelfQuestions}
+      {contactQuestions}
+
+      {homicideQuestions}
 
       {/* additional info */}
-      <FormControl
-        required
-        sx={{ marginBottom: 2, marginRight: 2, minWidth: 1000 }}
-      >
+      <FormControl required sx={{ m: 1, minWidth: 1000 }}>
         <TextField
           id="outlined-basic"
           variant="outlined"
-          label="Additional Info We Should Know About"
+          label="Any additional information we should know about?"
           onChange={(event) =>
             setData({ ...data, additionalInfo: event.target.value })
           }
         />
       </FormControl>
-
-      {youthContactQuestions}
     </div>
   );
 }

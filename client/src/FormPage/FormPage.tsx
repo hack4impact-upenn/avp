@@ -30,6 +30,8 @@ export default function FormPage() {
   const [data, setData] = useState(temp);
 
   const handleNext = () => {
+    // make sure all the form segments are filled ? idunno
+    console.log(activeStep);
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
