@@ -9,6 +9,7 @@ import PageTwo from './PageTwo';
 import PageThree from './PageThree';
 import PageFour from './PageFour';
 import Header from '../components/Header';
+import { postData } from '../util/api';
 
 const steps = [
   'Type of Service Requested',
@@ -28,11 +29,40 @@ export default function FormPage() {
   const [activeStep, setActiveStep] = useState(0);
   const temp = {};
   const [data, setData] = useState(temp);
+  const [missingFields, setMissingFields] = useState(temp);
+
+  const validateSubmit = () => {
+    return true;
+    // 1.  Pass to the backend - the backend should tell us which fields are missing / invalid
+    // 2. If all fields are valid, then submit the form
+    // 3. Else display which fields are missing / invalid
+  };
 
   const handleNext = () => {
     // make sure all the form segments are filled ? idunno
     console.log(activeStep);
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if (validateSubmit()) {
+      console.log('Next page');
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      if (activeStep === steps.length - 1) {
+        console.log('Last page - Try submit');
+        setData({ ...data, isReferral: true });
+        console.log('data');
+        console.log(data);
+        postData(`referral/create`, data).then((res) => {
+          if (res.error) {
+            // TODO PRINT WHICH FIELDS ARE MISSING
+            console.log(res.error.data.fields);
+            setMissingFields(res.error.data.fields);
+          } else {
+            const referral = res.data;
+            console.log('Successfully pushed!');
+          }
+        });
+      }
+    } else {
+      console.log('invalid, try again');
+    }
   };
 
   const handleBack = () => {
@@ -48,6 +78,7 @@ export default function FormPage() {
         </div>
       );
       break;
+
     case 1:
       targetPage = (
         <div>
@@ -85,6 +116,8 @@ export default function FormPage() {
           steps={steps}
           activeStep={activeStep}
           setActiveStep={setActiveStep}
+          missingFields={missingFields}
+          setMissingFields={setMissingFields}
         />
         {activeStep === steps.length ? <div /> : targetPage}
         <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>

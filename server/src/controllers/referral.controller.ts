@@ -88,6 +88,7 @@ const createReferral = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
+  console.log('HIT ENDPOINT - CREATE REFFERRAL')
   const {
     departmentInCharge,
     program,
@@ -144,47 +145,27 @@ const createReferral = async (
     transferredToETO,
   } = req.body;
 
-  if (
-    isReferral === undefined ||
-    !survivorName ||
-    !serviceRequested ||
-    !agencyThatReferred ||
-    !agencyRepName ||
-    !agencyRepEmail ||
-    !agencyRepPhone ||
-    !survivorEmailAddress ||
-    !survivorPhoneNumber ||
-    !relationshipToVictim ||
-    !crimeType ||
-    !survivorPreferredContactMethod ||
-    isGunViolence === undefined ||
-    outreachLetterSent === undefined ||
-    transferredToCCWaitlist === undefined ||
-    followUpLetterSent === undefined ||
-    transferredToETO === undefined
-  ) {
-    next(
-      ApiError.missingFields([
-        'isReferral',
-        'survivorName',
-        'serviceRequested',
-        'agencyThatReferred',
-        'agencyRepName',
-        'agencyRepEmail',
-        'agencyRepPhone',
-        'survivorEmailAddress',
-        'survivorPhoneNumber',
-        'relationshipToVictim',
-        'crimeType',
-        'survivorPreferredContactMethod',
-        'isGunViolence',
-        'outreachLetterSent',
-        'transferredToCCWaitlist',
-        'followUpLetterSent',
-        'transferredToETO',
-      ]),
-    );
-    return;
+  const missingFields = [];
+  if (isReferral === undefined) missingFields.push('isReferral');
+  if (!survivorName) missingFields.push('survivorName');
+  if (!serviceRequested) missingFields.push('serviceRequested');
+  if (!agencyThatReferred) missingFields.push('agencyThatReferred');
+  if (!agencyRepName) missingFields.push('agencyRepName');
+  if (!agencyRepEmail) missingFields.push('agencyRepEmail');
+  if (!agencyRepPhone) missingFields.push('agencyRepPhone');
+  if (!survivorEmailAddress) missingFields.push('survivorEmailAddress');
+  if (!survivorPhoneNumber) missingFields.push('survivorPhoneNumber');
+  if (!relationshipToVictim) missingFields.push('relationshipToVictim');
+  if (!crimeType) missingFields.push('crimeType');
+  if (!survivorPreferredContactMethod) missingFields.push('survivorPreferredContactMethod');
+  if (isGunViolence === undefined) missingFields.push('isGunViolence');
+  if (outreachLetterSent === undefined) missingFields.push('outreachLetterSent');
+  if (transferredToCCWaitlist === undefined) missingFields.push('transferredToCCWaitlist');
+  if (followUpLetterSent === undefined) missingFields.push('followUpLetterSent');
+  if (transferredToETO === undefined) missingFields.push('transferredToETO');
+
+  if (missingFields.length > 0) {
+    return res.status(400).json({ error: 'Missing fields in the request body', fields: missingFields });
   }
 
   try {
