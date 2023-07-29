@@ -14,6 +14,54 @@ interface ICommunicationItem {
   dateOfNextCommunication: Date;
 }
 
+interface IVictimServicesOutcomeItem {
+  eligibleForAVPVictimServices: boolean;
+  sentVCAPInfotoClient: boolean;
+  avpAdvocateAssistingWithVCAP: boolean;
+  referredToOtherVSAgencyForVCAP: boolean;
+  vsAgencyName: string;
+  avpAdvocateProvidingCourtSupport: boolean;
+  clientWorkingWithFMV: boolean;
+  fmvNumber: boolean;
+  referredToOtherAgencyForCourt: boolean;
+  courtSupportAgencyName: string;
+  avpAdvocateContactedADA: boolean;
+  avpAdvocateContactedDetective: boolean;
+  needsRelocationAssistance: boolean;
+  relocationReferralWasSubmitted: boolean;
+  referredToAgencyForOtherServices: boolean;
+  otherAgencyNames: string;
+  otherServices: string;
+  additionalNotes: string;
+}
+
+interface ICounsellingServicesOutcomeItem {
+  eligibleForAVPCounsellingServices: boolean;
+  receivingCrisisCounselling: boolean;
+  scheduledIntakeApptForIndividualTherapy: boolean;
+  intakeAppointmentOutcome: boolean;
+  receivingIndividualTherapy: boolean;
+  therapistName: string;
+  addedToIndividualTherapyWaitlist: boolean;
+  referredForCounsellingServices: boolean;
+  counsellingAgency: boolean;
+  sentAVPSupportGroupInfo: boolean;
+  attendingSupportGroup: boolean;
+  supportGroupName: string;
+  addedToSupportGroupWaitlist: boolean;
+  additionalNotes: string;
+}
+
+interface IYouthServicesOutcomeItem {
+  eligibleForYVOServices: boolean;
+  assignedToYVOTherapist: boolean;
+  yvoStaffName: string;
+  addedToYVOIndividualTherapyWaitlist: boolean;
+  assignedToYVOGroup: boolean;
+  addedToYVOGroupWaitlist: boolean;
+  additionalNotes: string;
+}
+
 export default interface IReferral extends mongoose.Document {
   staffName: string;
   _id: string;
@@ -72,4 +120,10 @@ export default interface IReferral extends mongoose.Document {
   transferredToETO: boolean;
 }
 
-export type { ICommunicationItem, IReferral };
+export type {
+  ICommunicationItem,
+  IVictimServicesOutcomeItem,
+  ICounsellingServicesOutcomeItem,
+  IYouthServicesOutcomeItem,
+  IReferral,
+};

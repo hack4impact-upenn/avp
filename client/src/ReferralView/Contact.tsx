@@ -136,7 +136,7 @@ const relationshipToVictim = [
 
 const guardianMainContact = ['Yes', 'No'];
 
-export default function PageThree({ data, setData }: Props) {
+export default function Contact({ data, setData }: Props) {
   const theme = useTheme();
   const [survivorDOB, setsurvivorDOB] = React.useState<Dayjs | null>(
     dayjs('2000-01-01T00:00:00'),

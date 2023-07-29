@@ -8,6 +8,7 @@ import PageOne from './PageOne';
 import PageTwo from './PageTwo';
 import PageThree from './PageThree';
 import PageFour from './PageFour';
+import Header from '../components/Header';
 
 const steps = [
   'Type of Service Requested',
@@ -77,13 +78,14 @@ export default function FormPage() {
   }
 
   return (
-    <div style={styles.main}>
-      <FormStepper
-        steps={steps}
-        activeStep={activeStep}
-        setActiveStep={setActiveStep}
-      />
-      <Box component="form">
+    <>
+      <Header />
+      <div style={styles.main}>
+        <FormStepper
+          steps={steps}
+          activeStep={activeStep}
+          setActiveStep={setActiveStep}
+        />
         {activeStep === steps.length ? <div /> : targetPage}
         <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
           <Button
@@ -103,7 +105,7 @@ export default function FormPage() {
             {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
           </Button>
         </Box>
-      </Box>
-    </div>
+      </div>
+    </>
   );
 }

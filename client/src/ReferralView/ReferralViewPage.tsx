@@ -13,7 +13,9 @@ import VictimCrime from './VictimCrime';
 import Contact from './Contact';
 import ReferralSource from './ReferralSource';
 import { useData } from '../util/api';
-import Outcome from './Outcome';
+import VictimServicesOutcome from './VictimServicesOutcome';
+import CounselingServicesOutcome from './CounselingServicesOutcome';
+import YouthServicesOutcome from './YouthServicesOutcome';
 import CommunicationHistory from './CommunicationHistory';
 
 const steps = [
@@ -34,23 +36,33 @@ const styles = {
 
 export default function FormPage() {
   const { id } = useParams();
-  const [activeStep, setActiveStep] = useState(0);
   const temp = {};
   const [data, setData] = useState(temp);
-  // const [referralItem, setReferralItem] = useState<IReferral>([]);
-  // const [error, setError] = useState(<null>);
   const referral = useData(`referral/${id}`);
 
-  // eslint-disable-next-line no-console
-  console.log(id);
-  console.log(referral);
-
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  const dataUpdateCommHistory = () => {
+    setData({ data: referral?.data?.historyOfCommunication, error: null });
   };
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  const dataUpdateVictimServicesOutcome = () => {
+    setData({
+      data: referral?.data?.victimServicesOutcome,
+      error: null,
+    });
+  };
+
+  const dataUpdateCounsellingServicesOutcome = () => {
+    setData({
+      data: referral?.data?.counsellingServicesOutcome,
+      error: null,
+    });
+  };
+
+  const dataUpdateYouthServicesOutcome = () => {
+    setData({
+      data: referral?.data?.youthServicesOutcome,
+      error: null,
+    });
   };
 
   interface TabPanelProps {
@@ -76,58 +88,6 @@ export default function FormPage() {
         )}
       </div>
     );
-  }
-
-  let targetPage;
-  switch (activeStep) {
-    case 0:
-      targetPage = (
-        <div>
-          <ServiceReq data={data} setData={setData} />
-        </div>
-      );
-      break;
-    case 1:
-      targetPage = (
-        <div>
-          <VictimCrime data={data} setData={setData} />
-        </div>
-      );
-      break;
-    case 2:
-      targetPage = (
-        <div>
-          <Contact data={data} setData={setData} />
-        </div>
-      );
-      break;
-    case 3:
-      targetPage = (
-        <div>
-          <ReferralSource data={data} setData={setData} />
-        </div>
-      );
-      break;
-    case 4:
-      targetPage = (
-        <div>
-          <CommunicationHistory data={data} setData={setData} />
-        </div>
-      );
-      break;
-    case 5:
-      targetPage = (
-        <div>
-          <Outcome data={data} setData={setData} />
-        </div>
-      );
-      break;
-    default:
-      targetPage = (
-        <div>
-          <ServiceReq data={data} setData={setData} />
-        </div>
-      );
   }
 
   const [value, setValue] = useState(0);
@@ -158,8 +118,23 @@ export default function FormPage() {
             <Tab sx={{ fontSize: '13px' }} label="Victimization / Crime Info" />
             <Tab label="Contact Info" />
             <Tab label="Referral Source Info" />
-            <Tab sx={{ fontSize: '13px' }} label="Communication History" />
-            <Tab label="Outcome of Referral" />
+            <Tab
+              sx={{ fontSize: '13px' }}
+              label="Communication History"
+              onClick={dataUpdateCommHistory}
+            />
+            <Tab
+              label="Victim Services Outcome"
+              onClick={dataUpdateVictimServicesOutcome}
+            />
+            <Tab
+              label="Counselling Services Outcome"
+              onClick={dataUpdateCounsellingServicesOutcome}
+            />
+            <Tab
+              label="Youth Services Outcome"
+              onClick={dataUpdateYouthServicesOutcome}
+            />
           </Tabs>
         </div>
         {!referral ? (
@@ -184,7 +159,13 @@ export default function FormPage() {
               <CommunicationHistory data={data} setData={setData} />
             </TabPanel>
             <TabPanel value={value} index={5}>
-              <Outcome data={data} setData={setData} />
+              <VictimServicesOutcome data={data} setData={setData} />
+            </TabPanel>
+            <TabPanel value={value} index={6}>
+              <CounselingServicesOutcome data={data} setData={setData} />
+            </TabPanel>
+            <TabPanel value={value} index={7}>
+              <YouthServicesOutcome data={data} setData={setData} />
             </TabPanel>
           </div>
         ) : (
@@ -193,30 +174,6 @@ export default function FormPage() {
           </div>
         )}
       </Box>
-      {/* <FormStepper
-        steps={steps}
-        activeStep={activeStep}
-        setActiveStep={setActiveStep}
-      />
-      {activeStep === steps.length ? <div /> : targetPage}
-      <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-        <Button
-          variant="contained"
-          disabled={activeStep === 0}
-          onClick={handleBack}
-          sx={{ mr: 1, color: 'white' }}
-        >
-          Back
-        </Button>
-        <Box sx={{ flex: '1 1 auto' }} />
-        <Button
-          variant="contained"
-          onClick={handleNext}
-          sx={{ color: 'white' }}
-        >
-          {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-        </Button>
-      </Box> */}
     </div>
   );
 }

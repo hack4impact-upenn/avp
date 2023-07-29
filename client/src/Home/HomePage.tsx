@@ -69,16 +69,25 @@ function HomePage() {
     }
   };
 
-  const message = `Welcome to the Boilerplate, ${user.firstName} ${user.lastName}!`;
+  const message = `Welcome, ${user.firstName} ${user.lastName}!`;
   return (
     <ScreenGrid>
       <Typography variant="h2">{message}</Typography>
       <Grid item container justifyContent="center">
-        <PromoteButton
-          admin={admin}
-          handleSelfPromote={handleSelfPromote}
-          navigator={navigator}
-        />
+        <PrimaryButton
+          style={{ margin: '1rem' }}
+          onClick={() => navigator('/database', { replace: true })}
+          variant="contained"
+        >
+          View Referrals
+        </PrimaryButton>
+        {/* <PrimaryButton
+          style={{ margin: '1rem' }}
+          onClick={() => navigator('/users', { replace: true })}
+          variant="contained"
+        >
+          View all users
+        </PrimaryButton> */}
       </Grid>
       <Grid item container justifyContent="center">
         <Button onClick={handleLogout}>Logout</Button>

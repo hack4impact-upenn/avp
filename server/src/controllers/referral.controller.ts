@@ -1009,8 +1009,8 @@ const updateVictimServicesOutcome = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const { id } = req.params;
   const {
+    id,
     eligibleForAVPVictimServices,
     sentVCAPInfotoClient,
     avpAdvocateAssistingWithVCAP,
@@ -1179,8 +1179,8 @@ const updateCounsellingServicesOutcome = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const { id } = req.params;
   const {
+    id,
     eligibleForAVPCounsellingServices,
     receivingCrisisCounselling,
     scheduledIntakeApptForIndividualTherapy,
@@ -1306,8 +1306,8 @@ const updateYouthServicesOutcome = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const { id } = req.params;
   const {
+    id,
     eligibleForYVOServices,
     assignedToYVOTherapist,
     yvoStaffName,
