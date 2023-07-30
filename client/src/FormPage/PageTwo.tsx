@@ -238,7 +238,7 @@ export default function PageTwo({ data, setData }: Props) {
 
       <br />
 
-      <FormControl required sx={{ m: 1, minWidth: 540 }}>
+      {/* <FormControl required sx={{ m: 1, minWidth: 540 }}>
         <TextField
           id="outlined-number"
           label="How Many People Are Being Referred For This Victimization/Crime?"
@@ -247,7 +247,7 @@ export default function PageTwo({ data, setData }: Props) {
             setData({ ...data, noReferred: event.target.value })
           }
         />
-      </FormControl>
+      </FormControl> */}
     </div>
   );
 }

@@ -29,10 +29,9 @@ const styles = {
 
 export default function FormPage() {
   const [activeStep, setActiveStep] = useState(0);
+  const [didSubmit, setDidSubmit] = useState(false);
   const temp = {};
-
-  // const [data, setData] = useState(temp);
-  const [data, setData] = useState<IReferral>({
+  const emptyReferral = {
     id: '',
     _id: '',
     staffName: '',
@@ -41,7 +40,7 @@ export default function FormPage() {
     program: '',
     staffAssigned: null,
     therapistAssigned: '',
-    isReferral: null,
+    isReferral: true,
     survivorName: '',
     serviceRequested: '',
     agencyThatReferred: '',
@@ -106,9 +105,13 @@ export default function FormPage() {
     relationshipToVictimOther: '',
     guardianRelationshipOther: '',
     victimGender: '',
-  });
+  };
+
+  // const [data, setData] = useState(temp);
+  const [data, setData] = useState<IReferral>(emptyReferral);
   const [missingFields, setMissingFields] = useState(temp);
 
+  // Todo: Should check if the contents of this page are valid before moving onto the next one
   const validateSubmit = () => {
     return true;
     // 1.  Pass to the backend - the backend should tell us which fields are missing / invalid
@@ -116,22 +119,74 @@ export default function FormPage() {
     // 3. Else display which fields are missing / invalid
   };
 
+  const handleNewReferral = () => {
+    setDidSubmit(false);
+    setActiveStep(0);
+    setData(emptyReferral);
+  };
+
+  const handleNewReferralSameCrime = () => {
+    setDidSubmit(false);
+    setActiveStep(0);
+    setData({
+      ...data,
+      staffName: '',
+      status: '',
+      departmentInCharge: '',
+      program: '',
+      staffAssigned: null,
+      therapistAssigned: '',
+      isReferral: true,
+      survivorName: '',
+      serviceRequested: '',
+      survivorGender: '',
+      survivorRace: '',
+      survivorDOB: null,
+      survivorAge: null,
+      survivorSchoolOrCommunitySite: '',
+      survivorGrade: '',
+      isGuardianResponsible: null,
+      guardianName: '',
+      guardianRelationship: '',
+      guardianAddress: '',
+      guardianPhone: '',
+      guardianEmail: '',
+      guardianPreferredContactMethod: '',
+      survivorEmailAddress: '',
+      survivorAddress: '',
+      survivorPhoneNumber: '',
+      survivorPreferredContactMethod: '',
+      notesFromOrg: '',
+      historyOfCommunication: null,
+      victimServicesOutcome: null,
+      counsellingServicesOutcome: null,
+      youthServicesOutcome: null,
+      outreachLetterSent: null,
+      transferredToCCWaitlist: null,
+      followUpLetterSent: null,
+      transferredToETO: null,
+      serviceRequestedVictim: '',
+      otherServiceRequestedVictim: '',
+      survivorGenderOther: '',
+      survivorRaceOther: '',
+      relationshipToVictimOther: '',
+      guardianRelationshipOther: '',
+    });
+  };
+
   const handleNext = () => {
     // make sure all the form segments are filled ? idunno
     console.log(activeStep);
+    if (activeStep >= steps.length) {
+      // Check if we are trying to resubmit
+    }
     if (validateSubmit()) {
       console.log('Next page');
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      // Attempt to submit:
       if (activeStep === steps.length - 1) {
         console.log('Last page - Try submit');
         setData({ ...data, isReferral: true });
-        // const combinedServiceRequested = [
-        //   ...data?.serviceRequested,
-        //   ...data?.otherServiceRequestedVictim,
-        //   ...data?.serviceRequestedVictim,
-        // ];
-        // setData({ ...data, serviceRequested: combinedServiceRequested });
-
         if (data.isGuardianResponsible) {
           console.log('guardian responsible');
           setData({
@@ -149,6 +204,7 @@ export default function FormPage() {
             setMissingFields(res.error.data.fields);
           } else {
             const referral = res.data;
+            setDidSubmit(true);
             console.log('Successfully pushed!');
           }
         });
@@ -212,7 +268,7 @@ export default function FormPage() {
           missingFields={missingFields}
           setMissingFields={setMissingFields}
         />
-        {activeStep === steps.length ? <div /> : targetPage}
+        {activeStep >= steps.length ? <div /> : targetPage}
         <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
           <Button
             variant="contained"
@@ -223,14 +279,46 @@ export default function FormPage() {
             Back
           </Button>
           <Box sx={{ flex: '1 1 auto' }} />
-          <Button
-            variant="contained"
-            onClick={handleNext}
-            sx={{ color: 'white' }}
-          >
-            {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-          </Button>
+          {didSubmit && activeStep >= steps.length - 1 ? (
+            <Button
+              variant="contained"
+              onClick={handleNewReferralSameCrime}
+              sx={{ color: 'white' }}
+            >
+              Submit Another Referral (Same Crime)
+            </Button>
+          ) : (
+            <Button
+              disabled={activeStep >= steps.length}
+              variant="contained"
+              onClick={handleNext}
+              sx={{ color: 'white' }}
+            >
+              {activeStep >= steps.length - 1 ? 'Finish' : 'Next'}
+            </Button>
+          )}
         </Box>
+
+        {didSubmit && activeStep >= steps.length - 1 ? (
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              flexDirection: 'row',
+              pt: 2,
+            }}
+          >
+            <Button
+              variant="contained"
+              onClick={handleNewReferral}
+              sx={{ color: 'white' }}
+            >
+              New Referral (Different Crime)
+            </Button>
+          </Box>
+        ) : (
+          <div />
+        )}
       </div>
     </>
   );
