@@ -8,6 +8,7 @@ import {
 import React from 'react';
 import { Theme, useTheme } from '@mui/material/styles';
 import OutlinedInput from '@mui/material/OutlinedInput';
+import { IReferral } from '../util/types/referral';
 
 function getStyles(val: string, valArr: string[], theme: Theme) {
   return {
@@ -19,8 +20,8 @@ function getStyles(val: string, valArr: string[], theme: Theme) {
 }
 
 interface Props {
-  data: any;
-  setData: React.Dispatch<React.SetStateAction<any>>;
+  data: IReferral;
+  setData: React.Dispatch<React.SetStateAction<IReferral>>;
 }
 
 export default function PageFour({ data, setData }: Props) {
@@ -32,6 +33,7 @@ export default function PageFour({ data, setData }: Props) {
         <div>
           <FormControl required sx={{ m: 1, minWidth: 360 }}>
             <TextField
+              value={data.agencyRepName}
               id="outlined-basic"
               variant="outlined"
               label="Name of Staff Making Referral"
@@ -45,6 +47,7 @@ export default function PageFour({ data, setData }: Props) {
         <div>
           <FormControl required sx={{ m: 1, minWidth: 420 }}>
             <TextField
+              value={data.agencyThatReferred}
               id="outlined-basic"
               variant="outlined"
               label="Agency/Organizaton"
@@ -56,12 +59,13 @@ export default function PageFour({ data, setData }: Props) {
           </FormControl>
           <FormControl required sx={{ m: 1, minWidth: 420 }}>
             <TextField
+              value={data.departmentInCharge}
               id="outlined-basic"
               variant="outlined"
               label="Department"
               required
               onChange={(event) =>
-                setData({ ...data, agencyThatReferred: event.target.value })
+                setData({ ...data, departmentInCharge: event.target.value })
               }
             />
           </FormControl>
@@ -69,6 +73,7 @@ export default function PageFour({ data, setData }: Props) {
         <div>
           <FormControl required sx={{ m: 1, minWidth: 240 }}>
             <TextField
+              value={data.agencyRepPhone}
               id="outlined-number"
               label="Phone Number"
               type="number"
@@ -80,6 +85,7 @@ export default function PageFour({ data, setData }: Props) {
           </FormControl>
           <FormControl required sx={{ m: 1, minWidth: 360 }}>
             <TextField
+              value={data.agencyRepEmail}
               id="outlined-basic"
               variant="outlined"
               label="Email Address"

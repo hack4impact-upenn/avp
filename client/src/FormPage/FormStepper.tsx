@@ -45,10 +45,8 @@ export default function FormStepper({
         <>
           <Typography sx={{ mt: 2, mb: 1 }}>
             {!missingFields
-              ? `All steps completed - you&apos;re finished`
-              : `Please fill out the following fields: ${missingFields.join(
-                  `, `,
-                )}`}
+              ? `All steps completed - you're finished`
+              : `Please fill out the following fields: ${missingFields}`}
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Box sx={{ flex: '1 1 auto' }} />

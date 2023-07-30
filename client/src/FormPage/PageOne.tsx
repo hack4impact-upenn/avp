@@ -10,6 +10,7 @@ import {
 import React from 'react';
 import { Theme, useTheme } from '@mui/material/styles';
 import OutlinedInput from '@mui/material/OutlinedInput';
+import { IReferral } from '../util/types/referral';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -32,8 +33,8 @@ function getStyles(val: string, valArr: string[], theme: Theme) {
 }
 
 interface Props {
-  data: any;
-  setData: React.Dispatch<React.SetStateAction<any>>;
+  data: IReferral;
+  setData: React.Dispatch<React.SetStateAction<IReferral>>;
 }
 
 const counselingServices = [

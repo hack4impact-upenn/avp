@@ -62,14 +62,16 @@ interface IYouthServicesOutcomeItem {
   additionalNotes: string;
 }
 
-export default interface IReferral extends mongoose.Document {
-  staffName: string;
+export default interface IReferral {
+  id: string;
   _id: string;
+  staffName: string;
+  status: string;
   departmentInCharge: string;
   program: string;
-  staffAssigned: IUser;
+  staffAssigned: IUser | null;
   therapistAssigned: string;
-  isReferral: boolean;
+  isReferral: boolean | null;
   survivorName: string;
   serviceRequested: string;
   agencyThatReferred: string;
@@ -78,34 +80,36 @@ export default interface IReferral extends mongoose.Document {
   agencyRepPhone: string;
   survivorGender: string;
   survivorRace: string;
-  survivorDOB: Date;
-  survivorAge: number;
+  survivorDOB: Date | null;
+  survivorAge: number | null;
   survivorSchoolOrCommunitySite: string;
-  survivorGrade: number;
-  isGuardianResponsible: boolean;
+  survivorGrade: string;
+  isGuardianResponsible: boolean | null;
   guardianName: string;
   guardianRelationship: string;
   guardianAddress: string;
   guardianPhone: string;
   guardianEmail: string;
   guardianPreferredContactMethod: string;
+  survivorEmailAddress: string;
   survivorAddress: string;
   survivorPhoneNumber: string;
   survivorPreferredContactMethod: string;
   notesFromOrg: string;
+  primaryLanguage: string;
   relationshipToVictim: string;
   crimeDCNum: string;
   crimeDistrict: string;
-  crimeDate: Date;
+  crimeDate: Date | null;
   crimeType: string;
-  isGunViolence: boolean;
+  isGunViolence: boolean | null;
   homDecedent: string;
-  homDateOfDeath: Date;
+  homDateOfDeath: Date | null;
   homType: string;
   homLocation: string;
   homAddress: string;
   homZipCode: string;
-  homDecedentAge: number;
+  homDecedentAge: number | null;
   homDecendentSex: string;
   homDecedentRace: string;
   homDecedentEthnicity: string;
@@ -113,11 +117,29 @@ export default interface IReferral extends mongoose.Document {
   homMEONum: string;
   homeMNum: string;
   homCaseInformation: string;
-  historyOfCommunication: Array<ICommunicationItem>;
-  outreachLetterSent: boolean;
-  transferredToCCWaitlist: boolean;
-  followUpLetterSent: boolean;
-  transferredToETO: boolean;
+  historyOfCommunication: Array<ICommunicationItem> | null;
+  victimServicesOutcome: IVictimServicesOutcomeItem | null;
+  counsellingServicesOutcome: ICounsellingServicesOutcomeItem | null;
+  youthServicesOutcome: IYouthServicesOutcomeItem | null;
+  outreachLetterSent: boolean | null;
+  transferredToCCWaitlist: boolean | null;
+  followUpLetterSent: boolean | null;
+  transferredToETO: boolean | null;
+  incidentAddress: string;
+  incidentAddressZip: string;
+  incidentAddressCity: string;
+  incidentAddressState: string;
+
+  // These fields are not in the database, but are used for the frontend
+  // Page One
+  serviceRequestedVictim: string;
+  otherServiceRequestedVictim: string;
+  // Page Three
+  survivorGenderOther: string;
+  survivorRaceOther: string;
+  relationshipToVictimOther: string;
+  guardianRelationshipOther: string;
+  victimGender: string;
 }
 
 export type {

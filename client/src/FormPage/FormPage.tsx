@@ -10,6 +10,8 @@ import PageThree from './PageThree';
 import PageFour from './PageFour';
 import Header from '../components/Header';
 import { postData } from '../util/api';
+import { IReferral } from '../util/types/referral';
+import IUser from '../util/types/user';
 
 const steps = [
   'Type of Service Requested',
@@ -28,7 +30,83 @@ const styles = {
 export default function FormPage() {
   const [activeStep, setActiveStep] = useState(0);
   const temp = {};
-  const [data, setData] = useState(temp);
+
+  // const [data, setData] = useState(temp);
+  const [data, setData] = useState<IReferral>({
+    id: '',
+    _id: '',
+    staffName: '',
+    status: '',
+    departmentInCharge: '',
+    program: '',
+    staffAssigned: null,
+    therapistAssigned: '',
+    isReferral: null,
+    survivorName: '',
+    serviceRequested: '',
+    agencyThatReferred: '',
+    agencyRepName: '',
+    agencyRepEmail: '',
+    agencyRepPhone: '',
+    survivorGender: '',
+    survivorRace: '',
+    survivorDOB: null,
+    survivorAge: null,
+    survivorSchoolOrCommunitySite: '',
+    survivorGrade: '',
+    isGuardianResponsible: null,
+    guardianName: '',
+    guardianRelationship: '',
+    guardianAddress: '',
+    guardianPhone: '',
+    guardianEmail: '',
+    guardianPreferredContactMethod: '',
+    survivorEmailAddress: '',
+    survivorAddress: '',
+    survivorPhoneNumber: '',
+    survivorPreferredContactMethod: '',
+    notesFromOrg: '',
+    primaryLanguage: '',
+    relationshipToVictim: '',
+    crimeDCNum: '',
+    crimeDistrict: '',
+    crimeDate: null,
+    crimeType: '',
+    isGunViolence: null,
+    homDecedent: '',
+    homDateOfDeath: null,
+    homType: '',
+    homLocation: '',
+    homAddress: '',
+    homZipCode: '',
+    homDecedentAge: null,
+    homDecendentSex: '',
+    homDecedentRace: '',
+    homDecedentEthnicity: '',
+    homFMVNum: '',
+    homMEONum: '',
+    homeMNum: '',
+    homCaseInformation: '',
+    historyOfCommunication: null,
+    victimServicesOutcome: null,
+    counsellingServicesOutcome: null,
+    youthServicesOutcome: null,
+    outreachLetterSent: null,
+    transferredToCCWaitlist: null,
+    followUpLetterSent: null,
+    transferredToETO: null,
+    incidentAddress: '',
+    incidentAddressZip: '',
+    incidentAddressCity: '',
+    incidentAddressState: '',
+    serviceRequestedVictim: '',
+    otherServiceRequestedVictim: '',
+    survivorGenderOther: '',
+    survivorRaceOther: '',
+    relationshipToVictimOther: '',
+    guardianRelationshipOther: '',
+    victimGender: '',
+  });
   const [missingFields, setMissingFields] = useState(temp);
 
   const validateSubmit = () => {
@@ -47,11 +125,26 @@ export default function FormPage() {
       if (activeStep === steps.length - 1) {
         console.log('Last page - Try submit');
         setData({ ...data, isReferral: true });
+        // const combinedServiceRequested = [
+        //   ...data?.serviceRequested,
+        //   ...data?.otherServiceRequestedVictim,
+        //   ...data?.serviceRequestedVictim,
+        // ];
+        // setData({ ...data, serviceRequested: combinedServiceRequested });
+
+        if (data.isGuardianResponsible) {
+          console.log('guardian responsible');
+          setData({
+            ...data,
+            survivorEmailAddress: data.guardianEmail,
+            survivorPhoneNumber: data.guardianPhone,
+            survivorPreferredContactMethod: data.guardianPreferredContactMethod,
+          });
+        }
         console.log('data');
         console.log(data);
         postData(`referral/create`, data).then((res) => {
           if (res.error) {
-            // TODO PRINT WHICH FIELDS ARE MISSING
             console.log(res.error.data.fields);
             setMissingFields(res.error.data.fields);
           } else {

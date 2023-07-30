@@ -83,13 +83,25 @@ const setReferralStatus = async (
   return status;
 };
 
+function isValidEmail(email: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+function isValidPhoneNumber(phoneNumber: string): boolean {
+  const phoneRegex = /^\+?1?\s*\(?(\d{3})\)?[-.\s]?(\d{3})[-.\s]?(\d{4})$/;
+  return phoneRegex.test(phoneNumber);
+}
+
 const createReferral = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction,
 ) => {
   console.log('HIT ENDPOINT - CREATE REFFERRAL')
-  const {
+  var {
+    staffName,
+    status,
     departmentInCharge,
     program,
     staffAssigned,
@@ -107,7 +119,6 @@ const createReferral = async (
     survivorAge,
     survivorSchoolOrCommunitySite,
     survivorGrade,
-    survivorPreferredContactMethod,
     isGuardianResponsible,
     guardianName,
     guardianRelationship,
@@ -115,10 +126,12 @@ const createReferral = async (
     guardianPhone,
     guardianEmail,
     guardianPreferredContactMethod,
-    survivorAddress,
     survivorEmailAddress,
+    survivorAddress,
     survivorPhoneNumber,
+    survivorPreferredContactMethod,
     notesFromOrg,
+    primaryLanguage,
     relationshipToVictim,
     crimeDCNum,
     crimeDistrict,
@@ -138,12 +151,29 @@ const createReferral = async (
     homFMVNum,
     homMEONum,
     homeMNum,
+    homCaseInformation,
     historyOfCommunication,
+    victimServicesOutcome,
+    counsellingServicesOutcome,
+    youthServicesOutcome,
     outreachLetterSent,
     transferredToCCWaitlist,
     followUpLetterSent,
     transferredToETO,
+    incidentAddress,
+    incidentAddressZip,
+    incidentAddressCity,
+    incidentAddressState,
+    serviceRequestedVictim,
+    otherServiceRequestedVictim,
   } = req.body;
+  if (serviceRequestedVictim) {
+    serviceRequested = serviceRequested + ", " + serviceRequestedVictim
+  }
+  if (otherServiceRequestedVictim) {
+    serviceRequested = serviceRequested + ", " + otherServiceRequestedVictim
+  }
+
 
   const missingFields = [];
   if (isReferral === undefined) missingFields.push('isReferral');
@@ -151,10 +181,11 @@ const createReferral = async (
   if (!serviceRequested) missingFields.push('serviceRequested');
   if (!agencyThatReferred) missingFields.push('agencyThatReferred');
   if (!agencyRepName) missingFields.push('agencyRepName');
-  if (!agencyRepEmail) missingFields.push('agencyRepEmail');
+  if (!agencyRepEmail || !isValidEmail(agencyRepEmail)) missingFields.push('agencyRepEmail');
   if (!agencyRepPhone) missingFields.push('agencyRepPhone');
-  if (!survivorEmailAddress) missingFields.push('survivorEmailAddress');
-  if (!survivorPhoneNumber) missingFields.push('survivorPhoneNumber');
+  if (!survivorEmailAddress || !isValidEmail(survivorEmailAddress)) missingFields.push('survivorEmailAddress');
+  if (!survivorPhoneNumber || !isValidPhoneNumber(survivorPhoneNumber)) missingFields.push('survivorPhoneNumber');
+  if (!primaryLanguage) missingFields.push('primaryLanguage');
   if (!relationshipToVictim) missingFields.push('relationshipToVictim');
   if (!crimeType) missingFields.push('crimeType');
   if (!survivorPreferredContactMethod) missingFields.push('survivorPreferredContactMethod');
@@ -177,6 +208,7 @@ const createReferral = async (
       followUpLetterSent,
     );
     await createNewReferral(
+      staffName,
       status,
       departmentInCharge,
       program,
@@ -195,7 +227,6 @@ const createReferral = async (
       survivorAge,
       survivorSchoolOrCommunitySite,
       survivorGrade,
-      survivorPreferredContactMethod,
       isGuardianResponsible,
       guardianName,
       guardianRelationship,
@@ -203,10 +234,12 @@ const createReferral = async (
       guardianPhone,
       guardianEmail,
       guardianPreferredContactMethod,
-      survivorAddress,
       survivorEmailAddress,
+      survivorAddress,
       survivorPhoneNumber,
+      survivorPreferredContactMethod,
       notesFromOrg,
+      primaryLanguage,
       relationshipToVictim,
       crimeDCNum,
       crimeDistrict,
@@ -226,11 +259,19 @@ const createReferral = async (
       homFMVNum,
       homMEONum,
       homeMNum,
+      homCaseInformation,
       historyOfCommunication,
+      victimServicesOutcome,
+      counsellingServicesOutcome,
+      youthServicesOutcome,
       outreachLetterSent,
       transferredToCCWaitlist,
       followUpLetterSent,
       transferredToETO,
+      incidentAddress,
+      incidentAddressZip,
+      incidentAddressCity,
+      incidentAddressState,
     );
 
     const nameArr = survivorName.split(' ');
@@ -406,6 +447,7 @@ const updateReferral = async (
     survivorEmailAddress,
     survivorPhoneNumber,
     notesFromOrg,
+    primaryLanguage,
     relationshipToVictim,
     crimeDCNum,
     crimeDistrict,
@@ -425,6 +467,7 @@ const updateReferral = async (
     homFMVNum,
     homMEONum,
     homeMNum,
+    homCaseInformation,
     historyOfCommunication,
     outreachLetterSent,
     transferredToCCWaitlist,
@@ -519,6 +562,7 @@ const updateReferral = async (
       survivorEmailAddress,
       survivorPhoneNumber,
       notesFromOrg,
+      primaryLanguage,
       relationshipToVictim,
       crimeDCNum,
       crimeDistrict,
@@ -538,6 +582,7 @@ const updateReferral = async (
       homFMVNum,
       homMEONum,
       homeMNum,
+      homCaseInformation,
       historyOfCommunication,
       outreachLetterSent,
       transferredToCCWaitlist,
