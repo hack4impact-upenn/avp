@@ -87,6 +87,7 @@ export default function PageTwo({ data, setData }: Props) {
       <div>
         <FormControl required sx={{ m: 1, minWidth: 420 }}>
           <TextField
+            value={data.homeMNum}
             id="outlined-number"
             label="M#/S#/AID#"
             type="number"
@@ -116,10 +117,11 @@ export default function PageTwo({ data, setData }: Props) {
           Type Of Crime / Victimization
         </InputLabel>
         <Select
+          value={data.crimeType}
           labelId="demo-simple-select-label"
           id="demo-simple-select-label"
           label="Type Of Crime / Victimization"
-          onChange={(event: SelectChangeEvent<HTMLSelectElement>) =>
+          onChange={(event) =>
             setData({ ...data, crimeType: event.target.value as string })
           }
         >
@@ -152,6 +154,13 @@ export default function PageTwo({ data, setData }: Props) {
       <FormControl sx={{ m: 1, minWidth: 240 }}>
         <InputLabel id="demo-simple-select-label">Gun Violence?</InputLabel>
         <Select
+          value={
+            data.isGunViolence
+              ? 'Yes'
+              : data.isGunViolence === false
+              ? 'No'
+              : 'Unknown'
+          }
           labelId="demo-simple-select-label"
           id="demo-simple-select-label"
           label="Gun Violence?"
@@ -177,6 +186,7 @@ export default function PageTwo({ data, setData }: Props) {
 
       <FormControl required sx={{ m: 1, minWidth: 420 }}>
         <TextField
+          value={data.incidentAddress}
           id="outlined-basic"
           label="Street Address of Incident"
           variant="outlined"
@@ -188,6 +198,7 @@ export default function PageTwo({ data, setData }: Props) {
 
       <FormControl required sx={{ m: 1, minWidth: 240 }}>
         <TextField
+          value={data.incidentAddressZip}
           id="outlined-basic"
           label="Zip Code of Incident"
           variant="outlined"
@@ -201,6 +212,7 @@ export default function PageTwo({ data, setData }: Props) {
 
       <FormControl required sx={{ m: 1, minWidth: 360 }}>
         <TextField
+          value={data.crimeDCNum}
           id="outlined-number"
           label="Police Incident # (DC#)"
           type="number"
@@ -215,6 +227,7 @@ export default function PageTwo({ data, setData }: Props) {
           Police District of Incident
         </InputLabel>
         <Select
+          value={data.crimeDistrict}
           labelId="demo-simple-select-label"
           id="demo-simple-select-label"
           label="Police District of Incident"
