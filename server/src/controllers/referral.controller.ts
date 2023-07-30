@@ -176,6 +176,21 @@ const createReferral = async (
 
 
   const missingFields = [];
+  // if (isGuardianResponsible == undefined) missingFields.push('isGuardianResponsible');
+  if (isGuardianResponsible) {
+    if (!guardianName) missingFields.push('guardianName'); 
+    if (!guardianRelationship) missingFields.push('guardianRelationship');
+    if (!guardianAddress) missingFields.push('guardianAddress')
+    ; 
+    if (!guardianPhone) {missingFields.push('guardianPhone');}
+    else if(!survivorPhoneNumber || !isValidPhoneNumber(survivorPhoneNumber)) {survivorPhoneNumber = guardianPhone;}
+
+    if (!guardianEmail || !isValidEmail(guardianEmail)) {missingFields.push('guardianEmail');}
+    else if(!survivorEmailAddress || !isValidEmail(survivorEmailAddress)) {survivorEmailAddress = guardianEmail;}
+
+    if (!guardianPreferredContactMethod) missingFields.push('guardianPreferredContactMethod');
+    else if (!survivorPreferredContactMethod) survivorPreferredContactMethod = guardianPreferredContactMethod;
+  } 
   if (isReferral === undefined) missingFields.push('isReferral');
   if (!survivorName) missingFields.push('survivorName');
   if (!serviceRequested) missingFields.push('serviceRequested');

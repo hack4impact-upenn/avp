@@ -477,7 +477,6 @@ export default function PageThree({ data, setData }: Props) {
                 label="Email Address (Adult)"
                 onChange={(event) => {
                   setData({ ...data, guardianEmail: event.target.value });
-                  setData({ ...data, survivorAddress: data.guardianEmail });
                 }}
               />
             </FormControl>
