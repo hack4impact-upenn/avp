@@ -10,7 +10,7 @@ import PageThree from './PageThree';
 import PageFour from './PageFour';
 import Header from '../components/Header';
 import { postData } from '../util/api';
-import { IReferral } from '../util/types/referral';
+import { IReferral, emptyReferral } from '../util/types/referral';
 import IUser from '../util/types/user';
 
 const steps = [
@@ -31,81 +31,6 @@ export default function FormPage() {
   const [activeStep, setActiveStep] = useState(0);
   const [didSubmit, setDidSubmit] = useState(false);
   const temp = {};
-  const emptyReferral = {
-    id: '',
-    _id: '',
-    staffName: '',
-    status: '',
-    departmentInCharge: '',
-    program: '',
-    staffAssigned: null,
-    therapistAssigned: '',
-    isReferral: true,
-    survivorName: '',
-    serviceRequested: '',
-    agencyThatReferred: '',
-    agencyRepName: '',
-    agencyRepEmail: '',
-    agencyRepPhone: '',
-    survivorGender: '',
-    survivorRace: '',
-    survivorDOB: null,
-    survivorAge: null,
-    survivorSchoolOrCommunitySite: '',
-    survivorGrade: '',
-    isGuardianResponsible: null,
-    guardianName: '',
-    guardianRelationship: '',
-    guardianAddress: '',
-    guardianPhone: '',
-    guardianEmail: '',
-    guardianPreferredContactMethod: '',
-    survivorEmailAddress: '',
-    survivorAddress: '',
-    survivorPhoneNumber: '',
-    survivorPreferredContactMethod: '',
-    notesFromOrg: '',
-    primaryLanguage: '',
-    relationshipToVictim: '',
-    crimeDCNum: '',
-    crimeDistrict: '',
-    crimeDate: null,
-    crimeType: '',
-    isGunViolence: null,
-    homDecedent: '',
-    homDateOfDeath: null,
-    homType: '',
-    homLocation: '',
-    homAddress: '',
-    homZipCode: '',
-    homDecedentAge: null,
-    homDecendentSex: '',
-    homDecedentRace: '',
-    homDecedentEthnicity: '',
-    homFMVNum: '',
-    homMEONum: '',
-    homeMNum: '',
-    homCaseInformation: '',
-    historyOfCommunication: null,
-    victimServicesOutcome: null,
-    counsellingServicesOutcome: null,
-    youthServicesOutcome: null,
-    outreachLetterSent: null,
-    transferredToCCWaitlist: null,
-    followUpLetterSent: null,
-    transferredToETO: null,
-    incidentAddress: '',
-    incidentAddressZip: '',
-    incidentAddressCity: '',
-    incidentAddressState: '',
-    serviceRequestedVictim: '',
-    otherServiceRequestedVictim: '',
-    survivorGenderOther: '',
-    survivorRaceOther: '',
-    relationshipToVictimOther: '',
-    guardianRelationshipOther: '',
-    victimGender: '',
-  };
 
   // const [data, setData] = useState(temp);
   const [data, setData] = useState<IReferral>(emptyReferral);
@@ -201,7 +126,11 @@ export default function FormPage() {
         postData(`referral/create`, data).then((res) => {
           if (res.error) {
             console.log(res.error.data.fields);
-            setMissingFields(res.error.data.fields);
+            setMissingFields(
+              res.error.data.fields
+                ? res.error.data.fields
+                : ['Error: failed to upload try again'],
+            );
           } else {
             const referral = res.data;
             setDidSubmit(true);

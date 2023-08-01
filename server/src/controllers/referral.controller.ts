@@ -47,11 +47,14 @@ const setReferralStatus = async (
   }
 
   let establishedContact = false;
-  for (let i = 0; i < historyOfCommunication.length; i += 1) {
-    if (historyOfCommunication[i].didEstablishedContact) {
-      establishedContact = true;
+  if (historyOfCommunication) {
+    for (let i = 0; i < historyOfCommunication.length; i += 1) {
+      if (historyOfCommunication[i].didEstablishedContact) {
+        establishedContact = true;
+      }
     }
   }
+
 
   if (establishedContact) {
     if (transferredToCCWaitlist) {
@@ -60,18 +63,18 @@ const setReferralStatus = async (
       status = 'Completed';
     }
   } else if (
-    historyOfCommunication.length === 1 &&
-    !historyOfCommunication[0].didEstablishedContact
+    historyOfCommunication?.length === 1 &&
+    !historyOfCommunication[0]?.didEstablishedContact
   ) {
     status = '1st unsuccessful attempt';
   } else if (
-    historyOfCommunication.length === 2 &&
-    !historyOfCommunication[1].didEstablishedContact
+    historyOfCommunication?.length === 2 &&
+    !historyOfCommunication[1]?.didEstablishedContact
   ) {
     status = '2nd unsuccessful attempt';
   } else if (
-    historyOfCommunication.length === 3 &&
-    !historyOfCommunication[2].didEstablishedContact
+    historyOfCommunication?.length === 3 &&
+    !historyOfCommunication[2]?.didEstablishedContact
   ) {
     status = '3rd unsuccessful attempt';
   }
@@ -173,6 +176,11 @@ const createReferral = async (
   if (otherServiceRequestedVictim) {
     serviceRequested = serviceRequested + ", " + otherServiceRequestedVictim
   }
+  if (outreachLetterSent == undefined) outreachLetterSent = false;
+  if (transferredToCCWaitlist == undefined) transferredToCCWaitlist = false;
+  if (followUpLetterSent == undefined) followUpLetterSent = false;
+  if (transferredToETO == undefined) transferredToETO = false;
+  if (isReferral == undefined) isReferral = false;
 
 
   const missingFields = [];

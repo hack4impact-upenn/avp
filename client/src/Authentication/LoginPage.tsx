@@ -129,8 +129,13 @@ function LoginPage() {
           navigate('/home');
         })
         .catch((e) => {
-          setShowError('alert', true);
-          setErrorMessage('alert', e.message);
+          if (e.message.includes('Already logged in')) {
+            console.log('go home');
+            navigate('/home');
+          } else {
+            setShowError('alert', true);
+            setErrorMessage('alert', e.message);
+          }
         });
     }
   }

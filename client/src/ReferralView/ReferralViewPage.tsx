@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -17,6 +17,7 @@ import VictimServicesOutcome from './VictimServicesOutcome';
 import CounselingServicesOutcome from './CounselingServicesOutcome';
 import YouthServicesOutcome from './YouthServicesOutcome';
 import CommunicationHistory from './CommunicationHistory';
+import { IReferral, emptyReferral } from '../util/types/referral';
 
 const steps = [
   'Type of Service Requested',
@@ -38,10 +39,32 @@ export default function FormPage() {
   const { id } = useParams();
   const temp = {};
   const [data, setData] = useState(temp);
+  // const [data, setData] = useState<{
+  //   ref: IReferral;
+  //   data: any;
+  //   error: any;
+  // }>({
+  //   ref: emptyReferral,
+  //   data: null,
+  //   error: null,
+  // });
   const referral = useData(`referral/${id}`);
+  console.log(referral);
+  // const referralData = referral?.data as IReferral;
+  const dataUpdateForm = () => {
+    setData({
+      data: referral?.data,
+      error: null,
+    });
+  };
 
   const dataUpdateCommHistory = () => {
     setData({ data: referral?.data?.historyOfCommunication, error: null });
+    // setData({
+    //   ...data,
+    //   data: referral?.data?.historyOfCommunication,
+    //   error: null,
+    // });
   };
 
   const dataUpdateVictimServicesOutcome = () => {
@@ -91,7 +114,12 @@ export default function FormPage() {
   }
 
   const [value, setValue] = useState(0);
-
+  useEffect(() => {
+    // dataUpdateForm();
+    console.log('change referral');
+    console.log(referral);
+    setData({ referral });
+  }, [referral]);
   return (
     <div style={styles.main}>
       <Box sx={{ width: '100%' }}>
@@ -114,7 +142,7 @@ export default function FormPage() {
             onChange={(event, newValue) => setValue(newValue)}
             aria-label="basic tabs example"
           >
-            <Tab label="Service Requested" />
+            <Tab label="Service Requested" onClick={dataUpdateCommHistory} />
             <Tab sx={{ fontSize: '13px' }} label="Victimization / Crime Info" />
             <Tab label="Contact Info" />
             <Tab label="Referral Source Info" />
@@ -144,16 +172,16 @@ export default function FormPage() {
         ) : referral?.error == null ? (
           <div>
             <TabPanel value={value} index={0}>
-              <ServiceReq data={data} setData={setData} />
+              <ServiceReq referral={data} setReferral={setData} />
             </TabPanel>
             <TabPanel value={value} index={1}>
-              <VictimCrime data={data} setData={setData} />
+              <VictimCrime referral={data} setReferral={setData} />
             </TabPanel>
             <TabPanel value={value} index={2}>
-              <Contact data={data} setData={setData} />
+              <Contact referral={data} setReferral={setData} />
             </TabPanel>
             <TabPanel value={value} index={3}>
-              <ReferralSource data={data} setData={setData} />
+              <ReferralSource referral={data} setReferral={setData} />
             </TabPanel>
             <TabPanel value={value} index={4}>
               <CommunicationHistory data={data} setData={setData} />
