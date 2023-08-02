@@ -103,11 +103,15 @@ export default function PageFive({ data, setData }: Props) {
       additionalNotes: '',
     });
 
+  console.log(victimServicesOutcome);
+
   const [loading, setLoading] = React.useState(false);
   const [updateStatus, setUpdateStatus] = React.useState('');
 
   useEffect(() => {
-    setVictimServicesOutcome(data.data);
+    const outcomeObj = data?.victimServicesOutcome;
+    console.log(data);
+    if (outcomeObj) setVictimServicesOutcome(outcomeObj);
   }, [data]);
 
   const handleUpdate = async () => {

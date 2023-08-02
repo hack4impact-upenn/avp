@@ -121,7 +121,6 @@ export default function FormPage() {
   useEffect(() => {
     // dataUpdateForm();
     console.log('change referral');
-    console.log(referral);
     setData({ referral });
   }, [referral]);
   return (

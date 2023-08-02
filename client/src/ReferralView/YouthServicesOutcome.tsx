@@ -75,7 +75,9 @@ export default function PageFive({ data, setData }: Props) {
   const [updateStatus, setUpdateStatus] = React.useState('');
 
   useEffect(() => {
-    setYouthServicesOutcome(data.data);
+    const outcomeObj = data?.youthServicesOutcome;
+    console.log(data);
+    if (outcomeObj) setYouthServicesOutcome(outcomeObj);
   }, [data]);
 
   const handleUpdate = async () => {

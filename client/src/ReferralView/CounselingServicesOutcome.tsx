@@ -95,8 +95,13 @@ export default function PageFive({ data, setData }: Props) {
   const [loading, setLoading] = React.useState(false);
   const [updateStatus, setUpdateStatus] = React.useState('');
 
+  // useEffect(() => {
+  //   setCounsellingServicesOutcome(data.data);
+  // }, [data]);
   useEffect(() => {
-    setCounsellingServicesOutcome(data.data);
+    const outcomeObj = data?.counsellingServicesOutcome;
+    console.log(data);
+    if (outcomeObj) setCounsellingServicesOutcome(outcomeObj);
   }, [data]);
 
   const handleUpdate = async () => {
