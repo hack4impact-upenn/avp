@@ -84,7 +84,7 @@ function App() {
                       />
                       {/* Routes accessed only if user is authenticated */}
                       <Route element={<ProtectedRoutesWrapper />}>
-                        <Route path="/form" element={<FormPage />} />
+                        <Route path="/form-add" element={<FormPage />} />
                         <Route
                           path="/referral/:id"
                           element={
@@ -122,7 +122,6 @@ function App() {
 
                       {/* Route which is accessed if no other route is matched */}
                       <Route path="*" element={<NotFoundPage />} />
-                      <Route path="/form" element={<FormPage />} />
                     </Routes>
                   </CssBaseline>
                 </ThemeProvider>

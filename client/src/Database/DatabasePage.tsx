@@ -47,7 +47,9 @@ export default function DatabasePage({
             <Typography sx={{ mb: 2 }} color="text.secondary">
               See all referrals here
             </Typography>
-            <Button variant="contained">ADD NEW REFERRAL</Button>
+            <Button variant="contained" href="/form-add">
+              ADD NEW REFERRAL
+            </Button>
           </CardContent>
         </Card>
         <Box sx={{ height: '50px' }} />
