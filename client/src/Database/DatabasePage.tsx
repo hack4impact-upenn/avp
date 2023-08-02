@@ -19,6 +19,7 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
+import { GlobalProps } from '../util/types/generic';
 
 const styles = {
   main: {
@@ -27,7 +28,10 @@ const styles = {
   },
 };
 
-export default function DatabasePage() {
+export default function DatabasePage({
+  globalProps,
+  setGlobalProps,
+}: GlobalProps) {
   const drawerWidth = 230;
   return (
     <Box sx={{ display: 'flex' }}>
@@ -47,7 +51,7 @@ export default function DatabasePage() {
           </CardContent>
         </Card>
         <Box sx={{ height: '50px' }} />
-        <DataGrid />
+        <DataGrid globalProps={globalProps} setGlobalProps={setGlobalProps} />
       </Box>
     </Box>
   );

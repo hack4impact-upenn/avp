@@ -5,8 +5,9 @@ import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import { useParams } from 'react-router-dom';
-import { CircularProgress, Tab, Tabs } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useNavigate, useParams } from 'react-router-dom';
+import { CircularProgress, Tab, Tabs, TextField } from '@mui/material';
 import FormStepper from './FormStepper';
 import ServiceReq from './ServiceReq';
 import VictimCrime from './VictimCrime';
@@ -18,6 +19,7 @@ import CounselingServicesOutcome from './CounselingServicesOutcome';
 import YouthServicesOutcome from './YouthServicesOutcome';
 import CommunicationHistory from './CommunicationHistory';
 import { IReferral, emptyReferral } from '../util/types/referral';
+import { GlobalProps } from '../util/types/generic';
 
 const steps = [
   'Type of Service Requested',
@@ -35,8 +37,9 @@ const styles = {
   },
 };
 
-export default function FormPage() {
+export default function FormPage({ globalProps, setGlobalProps }: GlobalProps) {
   const { id } = useParams();
+  const navigate = useNavigate();
   const temp = {};
   const [data, setData] = useState(temp);
   const referral = useData(`referral/${id}`);
@@ -75,6 +78,26 @@ export default function FormPage() {
   }, [referral]);
   return (
     <div style={styles.main}>
+      <Button
+        startIcon={<ArrowBackIcon />}
+        variant="contained"
+        color="primary"
+        onClick={(e) => {
+          setGlobalProps({
+            ...globalProps,
+            filter: [
+              {
+                columnField: 'id',
+                operatorValue: 'contains',
+                value: id,
+              },
+            ],
+          });
+          navigate('/database');
+        }}
+      >
+        View in Database
+      </Button>
       <Box sx={{ width: '100%' }}>
         <div
           style={{

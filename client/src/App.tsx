@@ -32,6 +32,7 @@ import { useData } from './util/api';
 
 function App() {
   const authData = useData('auth/authstatus');
+  const [globalProps, setGlobalProps] = useState<any>();
   const [loggedIn, setLoggedIn] = useState<boolean>(
     // eslint-disable-next-line  no-unneeded-ternary
     authData && !authData?.error ? true : false,
@@ -86,9 +87,22 @@ function App() {
                         <Route path="/form" element={<FormPage />} />
                         <Route
                           path="/referral/:id"
-                          element={<ReferralViewPage />}
+                          element={
+                            <ReferralViewPage
+                              globalProps={globalProps}
+                              setGlobalProps={setGlobalProps}
+                            />
+                          }
                         />
-                        <Route path="/database" element={<DatabasePage />} />
+                        <Route
+                          path="/database"
+                          element={
+                            <DatabasePage
+                              globalProps={globalProps}
+                              setGlobalProps={setGlobalProps}
+                            />
+                          }
+                        />
                         <Route path="/home" element={<HomePage />} />
                       </Route>
                       <Route element={<AdminRoutesWrapper />}>

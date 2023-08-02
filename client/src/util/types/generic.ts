@@ -9,3 +9,8 @@
 export interface AnyChildren {
   children: React.ReactNode;
 }
+
+export interface GlobalProps {
+  globalProps: any;
+  setGlobalProps: React.Dispatch<React.SetStateAction<any>>;
+}
