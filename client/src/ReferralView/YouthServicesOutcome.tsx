@@ -75,7 +75,7 @@ export default function PageFive({ data, setData }: Props) {
   const [updateStatus, setUpdateStatus] = React.useState('');
 
   useEffect(() => {
-    const outcomeObj = data?.youthServicesOutcome;
+    const outcomeObj = data?.referral?.data?.youthServicesOutcome;
     console.log(data);
     if (outcomeObj) setYouthServicesOutcome(outcomeObj);
   }, [data]);
@@ -93,8 +93,11 @@ export default function PageFive({ data, setData }: Props) {
       );
 
       if (response.error === null) {
+        console.log('successfully post youth outcome');
+        setData({ ...data, referral: response });
         setUpdateStatus('success');
       } else {
+        console.log('fail to post youth outcome');
         setUpdateStatus('error');
       }
     } catch (error) {

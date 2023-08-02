@@ -5,10 +5,17 @@ import {
   MenuItem,
   Select,
   Box,
+  Button,
+  CircularProgress,
+  Grid,
 } from '@mui/material';
 import React, { useState } from 'react';
 import { Theme, useTheme } from '@mui/material/styles';
 import OutlinedInput from '@mui/material/OutlinedInput';
+import { CheckCircleOutline, ErrorOutline } from '@material-ui/icons';
+import { green } from '@mui/material/colors';
+import { useParams } from 'react-router-dom';
+import { putData } from '../util/api';
 
 function getStyles(val: string, valArr: string[], theme: Theme) {
   return {
@@ -25,8 +32,36 @@ interface Props {
 }
 
 export default function PageFour({ referral, setReferral }: Props) {
+  const { id } = useParams();
+  const [loading, setLoading] = React.useState(false);
+  const [updateStatus, setUpdateStatus] = React.useState('');
   const theme = useTheme();
   const [data, setData] = useState(referral?.referral?.data);
+
+  const handleUpdate = async () => {
+    // setLoading(true);
+    // setUpdateStatus('');
+
+    try {
+      const body = data;
+      body.id = id;
+      const response = await putData(`referral/${id}`, body);
+
+      if (response.error === null) {
+        console.log('post success');
+        console.log(response);
+        setReferral({ ...data, referral: response });
+        setUpdateStatus('success');
+      } else {
+        console.log('post error');
+        setUpdateStatus('error');
+      }
+    } catch (error) {
+      setUpdateStatus('error');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div>
@@ -98,6 +133,29 @@ export default function PageFour({ referral, setReferral }: Props) {
           </FormControl>
         </div>
       </Box>
+      <Grid item xs={12} paddingTop={10}>
+        <Grid container justifyContent="end">
+          {
+            // eslint-disable-next-line no-nested-ternary
+            loading ? (
+              <CircularProgress />
+            ) : // eslint-disable-next-line no-nested-ternary
+            updateStatus === 'success' ? (
+              <CheckCircleOutline style={{ color: green[500] }} />
+            ) : updateStatus === 'error' ? (
+              <ErrorOutline color="error" />
+            ) : (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleUpdate}
+              >
+                Update
+              </Button>
+            )
+          }
+        </Grid>
+      </Grid>
     </div>
   );
 }

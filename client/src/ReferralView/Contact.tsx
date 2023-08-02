@@ -5,6 +5,9 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Button,
+  CircularProgress,
+  Grid,
 } from '@mui/material';
 import React, { useState } from 'react';
 import { Theme, useTheme } from '@mui/material/styles';
@@ -14,6 +17,10 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { CheckCircleOutline, ErrorOutline } from '@material-ui/icons';
+import { green } from '@mui/material/colors';
+import { useParams } from 'react-router-dom';
+import { putData } from '../util/api';
 
 function getStyles(val: string, valArr: string[], theme: Theme) {
   return {
@@ -137,11 +144,39 @@ const relationshipToVictim = [
 const guardianMainContact = ['Yes', 'No'];
 
 export default function Contact({ referral, setReferral }: Props) {
+  const { id } = useParams();
+  const [loading, setLoading] = React.useState(false);
+  const [updateStatus, setUpdateStatus] = React.useState('');
   const theme = useTheme();
   const [data, setData] = useState(referral?.referral?.data);
   const [survivorDOB, setsurvivorDOB] = React.useState<Dayjs | null>(
     dayjs('2000-01-01T00:00:00'),
   );
+
+  const handleUpdate = async () => {
+    // setLoading(true);
+    // setUpdateStatus('');
+
+    try {
+      const body = data;
+      body.id = id;
+      const response = await putData(`referral/${id}`, body);
+
+      if (response.error === null) {
+        console.log('post success');
+        console.log(response);
+        setReferral({ ...data, referral: response });
+        setUpdateStatus('success');
+      } else {
+        console.log('post error');
+        setUpdateStatus('error');
+      }
+    } catch (error) {
+      setUpdateStatus('error');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   let otherGenderInput;
   if (data.survivorGender && data.survivorGender.indexOf('Other') >= 0) {
@@ -847,6 +882,30 @@ export default function Contact({ referral, setReferral }: Props) {
           }
         />
       </FormControl>
+
+      <Grid item xs={12} paddingTop={10}>
+        <Grid container justifyContent="end">
+          {
+            // eslint-disable-next-line no-nested-ternary
+            loading ? (
+              <CircularProgress />
+            ) : // eslint-disable-next-line no-nested-ternary
+            updateStatus === 'success' ? (
+              <CheckCircleOutline style={{ color: green[500] }} />
+            ) : updateStatus === 'error' ? (
+              <ErrorOutline color="error" />
+            ) : (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleUpdate}
+              >
+                Update
+              </Button>
+            )
+          }
+        </Grid>
+      </Grid>
     </div>
   );
 }

@@ -99,7 +99,7 @@ export default function PageFive({ data, setData }: Props) {
   //   setCounsellingServicesOutcome(data.data);
   // }, [data]);
   useEffect(() => {
-    const outcomeObj = data?.counsellingServicesOutcome;
+    const outcomeObj = data?.referral?.data?.counsellingServicesOutcome;
     console.log(data);
     if (outcomeObj) setCounsellingServicesOutcome(outcomeObj);
   }, [data]);
@@ -117,8 +117,11 @@ export default function PageFive({ data, setData }: Props) {
       );
 
       if (response.error === null) {
+        console.log('successfully post counseling outcome');
+        setData({ ...data, referral: response });
         setUpdateStatus('success');
       } else {
+        console.log('fail to post youth outcome');
         setUpdateStatus('error');
       }
     } catch (error) {

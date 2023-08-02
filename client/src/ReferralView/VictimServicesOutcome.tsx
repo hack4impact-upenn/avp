@@ -103,14 +103,14 @@ export default function PageFive({ data, setData }: Props) {
       additionalNotes: '',
     });
 
-  console.log(victimServicesOutcome);
+  console.log(data?.victimServicesOutcome);
 
   const [loading, setLoading] = React.useState(false);
   const [updateStatus, setUpdateStatus] = React.useState('');
 
   useEffect(() => {
-    const outcomeObj = data?.victimServicesOutcome;
-    console.log(data);
+    const outcomeObj = data?.referral?.data?.victimServicesOutcome;
+    console.log(outcomeObj);
     if (outcomeObj) setVictimServicesOutcome(outcomeObj);
   }, [data]);
 
@@ -127,8 +127,11 @@ export default function PageFive({ data, setData }: Props) {
       );
 
       if (response.error === null) {
+        console.log('post success');
+        setData({ ...data, referral: response });
         setUpdateStatus('success');
       } else {
+        console.log('post error');
         setUpdateStatus('error');
       }
     } catch (error) {
