@@ -39,58 +39,8 @@ export default function FormPage() {
   const { id } = useParams();
   const temp = {};
   const [data, setData] = useState(temp);
-  // const [data, setData] = useState<{
-  //   ref: IReferral;
-  //   data: any;
-  //   error: any;
-  // }>({
-  //   ref: emptyReferral,
-  //   data: null,
-  //   error: null,
-  // });
   const referral = useData(`referral/${id}`);
   console.log(referral);
-  // const referralData = referral?.data as IReferral;
-  const dataUpdateForm = () => {
-    setData({
-      data: referral?.data,
-      error: null,
-    });
-  };
-
-  const dataUpdateCommHistory = () => {
-    return;
-    setData({ data: referral?.data?.historyOfCommunication, error: null });
-    // setData({
-    //   ...data,
-    //   data: referral?.data?.historyOfCommunication,
-    //   error: null,
-    // });
-  };
-
-  const dataUpdateVictimServicesOutcome = () => {
-    return;
-    setData({
-      data: referral?.data?.victimServicesOutcome,
-      error: null,
-    });
-  };
-
-  const dataUpdateCounsellingServicesOutcome = () => {
-    return;
-    setData({
-      data: referral?.data?.counsellingServicesOutcome,
-      error: null,
-    });
-  };
-
-  const dataUpdateYouthServicesOutcome = () => {
-    return;
-    setData({
-      data: referral?.data?.youthServicesOutcome,
-      error: null,
-    });
-  };
 
   interface TabPanelProps {
     children?: React.ReactNode;
@@ -145,27 +95,14 @@ export default function FormPage() {
             onChange={(event, newValue) => setValue(newValue)}
             aria-label="basic tabs example"
           >
-            <Tab label="Service Requested" onClick={dataUpdateCommHistory} />
+            <Tab label="Service Requested" />
             <Tab sx={{ fontSize: '13px' }} label="Victimization / Crime Info" />
             <Tab label="Contact Info" />
             <Tab label="Referral Source Info" />
-            <Tab
-              sx={{ fontSize: '13px' }}
-              label="Communication History"
-              onClick={dataUpdateCommHistory}
-            />
-            <Tab
-              label="Victim Services Outcome"
-              onClick={dataUpdateVictimServicesOutcome}
-            />
-            <Tab
-              label="Counselling Services Outcome"
-              onClick={dataUpdateCounsellingServicesOutcome}
-            />
-            <Tab
-              label="Youth Services Outcome"
-              onClick={dataUpdateYouthServicesOutcome}
-            />
+            <Tab sx={{ fontSize: '13px' }} label="Communication History" />
+            <Tab label="Victim Services Outcome" />
+            <Tab label="Counselling Services Outcome" />
+            <Tab label="Youth Services Outcome" />
           </Tabs>
         </div>
         {!referral ? (
