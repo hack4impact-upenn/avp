@@ -299,6 +299,7 @@ const addToCommunicationHistory = async (
     didEstablishedContact,
     dateOfNextCommunication,
   };
+  // if (!Referral.find({ historyOfCommunication: null }).exec())
   return Referral.findByIdAndUpdate(
     id,
     {

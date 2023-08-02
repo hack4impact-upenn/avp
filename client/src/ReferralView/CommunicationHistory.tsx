@@ -37,25 +37,29 @@ function getStyles(val: string, valArr: string[], theme: Theme) {
 }
 
 interface Props {
-  data: any;
-  setData: React.Dispatch<React.SetStateAction<any>>;
+  referral: any;
+  setReferral: React.Dispatch<React.SetStateAction<any>>;
 }
 
-export default function PageSix({ data, setData }: Props) {
+export default function PageSix({ referral, setReferral }: Props) {
+  const [data, setData] = useState(
+    referral?.referral?.data?.historyOfCommunication,
+  );
+  console.log(data);
   const { id } = useParams();
   const [historyItems, setHistoryItems] = useState<ICommunicationItem[]>([]);
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-  const communications = data;
+  const [didPost, setDidPost] = useState(false);
   useEffect(() => {
     // clean communications and put in communication list
     setHistoryItems(
-      communications?.data?.map((comm: ICommunicationItem) => {
+      data?.map((comm: ICommunicationItem) => {
         return comm;
       }),
     );
-  }, [communications]);
-  if (!historyItems) {
+  }, [data]);
+  if (!referral) {
     return (
       <div style={{ width: '0', margin: 'auto' }}>
         <CircularProgress size={80} />
@@ -72,7 +76,7 @@ export default function PageSix({ data, setData }: Props) {
             {historyItems.map((item) => (
               <TimelineItem sx={{ color: '#4EA0B3' }}>
                 <TimelineOppositeContent sx={{ color: 'rgba(0,0,0,0.7)' }}>
-                  {item.dateOfCommunication.toLocaleString()}
+                  {new Date(item.dateOfCommunication).toLocaleDateString()}
                 </TimelineOppositeContent>
                 <TimelineSeparator>
                   <TimelineDot
@@ -109,27 +113,21 @@ export default function PageSix({ data, setData }: Props) {
           handleClose={() => setOpen(false)}
           handleSubmit={async (info: any) => {
             const reqBody = {
-              dateOfCommunication: new Date().toLocaleDateString(),
+              dateOfCommunication: new Date(),
               method: info.title,
               notes: info.description,
               didEstablishedContact: info.hasResponded,
               dateOfNextCommunication: new Date(
                 Date.now() + 7 * 24 * 60 * 60 * 1000,
-              ).toLocaleDateString(),
+              ),
             };
             console.log(reqBody);
             postData(`referral/${id}/communication`, reqBody).then((res) => {
               if (res.error) {
-                throw Error(res.error.message);
+                console.log(res.error.message);
               } else {
-                const referral = res.data;
-                historyItems.push(
-                  referral.historyOfCommunication[
-                    referral.historyOfCommunication.length - 1
-                  ],
-                );
-                console.log('Successfully pushed!');
-                console.log(historyItems);
+                const referralPost = res.data;
+                setData(referralPost?.historyOfCommunication);
                 setOpen(false);
               }
             });
@@ -160,27 +158,21 @@ export default function PageSix({ data, setData }: Props) {
         handleClose={() => setOpen(false)}
         handleSubmit={async (info: any) => {
           const reqBody = {
-            dateOfCommunication: new Date().toLocaleDateString(),
+            dateOfCommunication: new Date(),
             method: info.title,
             notes: info.description,
             didEstablishedContact: info.hasResponded,
             dateOfNextCommunication: new Date(
               Date.now() + 7 * 24 * 60 * 60 * 1000,
-            ).toLocaleDateString(),
+            ),
           };
           console.log(reqBody);
           postData(`referral/${id}/communication`, reqBody).then((res) => {
             if (res.error) {
               throw Error(res.error.message);
             } else {
-              const referral = res.data;
-              historyItems.push(
-                referral.historyOfCommunication[
-                  referral.historyOfCommunication.length - 1
-                ],
-              );
-              console.log('Successfully pushed!');
-              console.log(historyItems);
+              const referralPost = res.data;
+              setData(referralPost?.historyOfCommunication);
               setOpen(false);
             }
           });

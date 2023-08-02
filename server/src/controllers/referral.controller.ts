@@ -181,9 +181,14 @@ const createReferral = async (
   if (followUpLetterSent == undefined) followUpLetterSent = false;
   if (transferredToETO == undefined) transferredToETO = false;
   if (isReferral == undefined) isReferral = false;
+  if (!historyOfCommunication) {
+    historyOfCommunication = [];
+    console.log(historyOfCommunication);
+  }
 
 
   const missingFields = [];
+  if (isGunViolence === null) isGunViolence = false;
   // if (isGuardianResponsible == undefined) missingFields.push('isGuardianResponsible');
   if (isGuardianResponsible) {
     if (!guardianName) missingFields.push('guardianName'); 
@@ -199,7 +204,7 @@ const createReferral = async (
     if (!guardianPreferredContactMethod) missingFields.push('guardianPreferredContactMethod');
     else if (!survivorPreferredContactMethod) survivorPreferredContactMethod = guardianPreferredContactMethod;
   } 
-  if (isReferral === undefined) missingFields.push('isReferral');
+  if (isReferral === undefined || isReferral === null) missingFields.push('isReferral');
   if (!survivorName) missingFields.push('survivorName');
   if (!serviceRequested) missingFields.push('serviceRequested');
   if (!agencyThatReferred) missingFields.push('agencyThatReferred');
@@ -331,6 +336,7 @@ const createReferral = async (
       });
     res.sendStatus(StatusCode.CREATED);
   } catch (err) {
+    console.log(err);
     next(
       ApiError.internal(
         `Unable to create referral due to the following error: ${err}`,

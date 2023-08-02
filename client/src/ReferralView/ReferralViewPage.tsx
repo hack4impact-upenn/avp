@@ -59,6 +59,7 @@ export default function FormPage() {
   };
 
   const dataUpdateCommHistory = () => {
+    return;
     setData({ data: referral?.data?.historyOfCommunication, error: null });
     // setData({
     //   ...data,
@@ -68,6 +69,7 @@ export default function FormPage() {
   };
 
   const dataUpdateVictimServicesOutcome = () => {
+    return;
     setData({
       data: referral?.data?.victimServicesOutcome,
       error: null,
@@ -75,6 +77,7 @@ export default function FormPage() {
   };
 
   const dataUpdateCounsellingServicesOutcome = () => {
+    return;
     setData({
       data: referral?.data?.counsellingServicesOutcome,
       error: null,
@@ -82,6 +85,7 @@ export default function FormPage() {
   };
 
   const dataUpdateYouthServicesOutcome = () => {
+    return;
     setData({
       data: referral?.data?.youthServicesOutcome,
       error: null,
@@ -184,7 +188,7 @@ export default function FormPage() {
               <ReferralSource referral={data} setReferral={setData} />
             </TabPanel>
             <TabPanel value={value} index={4}>
-              <CommunicationHistory data={data} setData={setData} />
+              <CommunicationHistory referral={data} setReferral={setData} />
             </TabPanel>
             <TabPanel value={value} index={5}>
               <VictimServicesOutcome data={data} setData={setData} />
