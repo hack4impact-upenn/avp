@@ -31,7 +31,6 @@ export default function DatabasePage() {
   const drawerWidth = 230;
   return (
     <Box sx={{ display: 'flex' }}>
-      <SideBar />
       <Box
         component="main"
         sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}

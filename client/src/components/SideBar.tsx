@@ -12,8 +12,15 @@ import Typography from '@mui/material/Typography';
 import DatasetIcon from '@mui/icons-material/Dataset';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import { useData } from '../util/api';
 
-export default function SideBar() {
+interface Props {
+  isLoggedIn: boolean;
+}
+
+export default function SideBar({ isLoggedIn }: Props) {
+  // const data = useData('auth/authstatus');
+  if (!isLoggedIn) return <div />;
   const drawerWidth = 230;
   const currentURL = window.location.href;
   return (
