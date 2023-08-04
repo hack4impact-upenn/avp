@@ -1,13 +1,16 @@
 import {
-  Button,
   FormControl,
   InputLabel,
   MenuItem,
   Select,
+  TextField,
+  Box,
+  Button,
 } from '@mui/material';
 import React from 'react';
 import { Theme, useTheme } from '@mui/material/styles';
 import OutlinedInput from '@mui/material/OutlinedInput';
+import { IReferral } from '../util/types/referral';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -30,8 +33,8 @@ function getStyles(val: string, valArr: string[], theme: Theme) {
 }
 
 interface Props {
-  data: any;
-  setData: React.Dispatch<React.SetStateAction<any>>;
+  data: IReferral;
+  setData: React.Dispatch<React.SetStateAction<IReferral>>;
 }
 
 const counselingServices = [
@@ -46,7 +49,7 @@ const victimServices = [
   'Court Support',
   'Detective Updates',
   'Victims Compensation Assistance Program (VCAP)',
-  'Other: text box',
+  'Other: Specify Below',
 ];
 
 export default function PageOne({ data, setData }: Props) {
@@ -70,6 +73,32 @@ export default function PageOne({ data, setData }: Props) {
       serviceRequestedVictim: value.join(', '),
     });
   };
+
+  let otherVictimServices;
+  if (
+    data.serviceRequestedVictim &&
+    data.serviceRequestedVictim.indexOf('Other') >= 0
+  ) {
+    otherVictimServices = (
+      <div>
+        <FormControl required sx={{ m: 1, minWidth: 600 }}>
+          <TextField
+            value={data.otherServiceRequestedVictim}
+            id="outlined-basic"
+            variant="outlined"
+            label="Please Specify Other Requested Victim Services"
+            required
+            onChange={(event) =>
+              setData({
+                ...data,
+                otherServiceRequestedVictim: event.target.value,
+              })
+            }
+          />
+        </FormControl>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -132,6 +161,7 @@ export default function PageOne({ data, setData }: Props) {
           onChange={handleChange}
           input={<OutlinedInput label="Counseling & Therapy" />}
           MenuProps={MenuProps}
+          required
         >
           {counselingServices.map((val) => (
             <MenuItem
@@ -145,7 +175,7 @@ export default function PageOne({ data, setData }: Props) {
         </Select>
       </FormControl>
       <br />
-      <FormControl sx={{ m: 1, width: 600 }}>
+      <FormControl required sx={{ m: 1, width: 600 }}>
         <InputLabel id="demo-multiple-name-label">Victim Services</InputLabel>
         <Select
           labelId="demo-multiple-name-label"
@@ -159,6 +189,7 @@ export default function PageOne({ data, setData }: Props) {
           onChange={handleChangeVictim}
           input={<OutlinedInput label="Victim Services" />}
           MenuProps={MenuProps}
+          required
         >
           {victimServices.map((val) => (
             <MenuItem
@@ -171,6 +202,9 @@ export default function PageOne({ data, setData }: Props) {
           ))}
         </Select>
       </FormControl>
+
+      {/* otherVictimServices */}
+      {otherVictimServices}
     </div>
   );
 }

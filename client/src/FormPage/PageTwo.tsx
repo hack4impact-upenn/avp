@@ -14,6 +14,8 @@ import dayjs, { Dayjs } from 'dayjs';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { Theme, useTheme } from '@mui/material/styles';
+import IReferral from '../util/types/referral';
+import { ChangeEvent } from 'react';
 
 function getStyles(val: string, valArr: string[], theme: Theme) {
   return {
@@ -25,8 +27,8 @@ function getStyles(val: string, valArr: string[], theme: Theme) {
 }
 
 interface Props {
-  data: any;
-  setData: React.Dispatch<React.SetStateAction<string>>;
+  data: IReferral;
+  setData: React.Dispatch<React.SetStateAction<IReferral>>;
 }
 
 const crimeType = [
@@ -83,13 +85,14 @@ export default function PageTwo({ data, setData }: Props) {
   if (data.crimeType == 'Homicide') {
     homicideFields = (
       <div>
-        <FormControl required sx={{ marginRight: 2, minWidth: 420 }}>
+        <FormControl required sx={{ m: 1, minWidth: 420 }}>
           <TextField
+            value={data.homeMNum}
             id="outlined-number"
             label="M#/S#/AID#"
             type="number"
             onChange={(event) =>
-              setData({ ...data, homMNum: event.target.value })
+              setData({ ...data, homeMNum: event.target.value })
             }
           />
         </FormControl>
@@ -109,16 +112,17 @@ export default function PageTwo({ data, setData }: Props) {
 
   return (
     <div>
-      <FormControl sx={{ marginBottom: 2, minWidth: 600 }}>
+      <FormControl sx={{ m: 1, minWidth: 600 }}>
         <InputLabel id="demo-simple-select-label">
           Type Of Crime / Victimization
         </InputLabel>
         <Select
+          value={data.crimeType}
           labelId="demo-simple-select-label"
           id="demo-simple-select-label"
           label="Type Of Crime / Victimization"
           onChange={(event) =>
-            setData({ ...data, crimeType: event.target.value })
+            setData({ ...data, crimeType: event.target.value as string })
           }
         >
           {crimeType.map((val) => (
@@ -135,7 +139,7 @@ export default function PageTwo({ data, setData }: Props) {
 
       <br />
 
-      <FormControl sx={{ marginRight: 2, marginBottom: 2 }}>
+      <FormControl sx={{ m: 1 }}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DesktopDatePicker
             label="Date of Incident"
@@ -147,15 +151,30 @@ export default function PageTwo({ data, setData }: Props) {
         </LocalizationProvider>
       </FormControl>
 
-      <FormControl sx={{ marginBottom: 2, marginRight: 2, minWidth: 240 }}>
+      <FormControl sx={{ m: 1, minWidth: 240 }}>
         <InputLabel id="demo-simple-select-label">Gun Violence?</InputLabel>
         <Select
+          value={
+            data.isGunViolence
+              ? 'Yes'
+              : data.isGunViolence === false
+              ? 'No'
+              : 'Unknown'
+          }
           labelId="demo-simple-select-label"
           id="demo-simple-select-label"
           label="Gun Violence?"
-          onChange={(event) =>
-            setData({ ...data, isGunViolence: event.target.value })
-          }
+          onChange={(event) => {
+            const val: string = event.target.value as string;
+            setData({
+              ...data,
+              isGunViolence: val.includes('Yes')
+                ? true
+                : val.includes('No')
+                ? false
+                : null,
+            });
+          }}
         >
           <MenuItem value="Yes">Yes</MenuItem>
           <MenuItem value="No">No</MenuItem>
@@ -165,11 +184,9 @@ export default function PageTwo({ data, setData }: Props) {
 
       <br />
 
-      <FormControl
-        required
-        sx={{ marginBottom: 2, marginRight: 2, minWidth: 420 }}
-      >
+      <FormControl required sx={{ m: 1, minWidth: 420 }}>
         <TextField
+          value={data.incidentAddress}
           id="outlined-basic"
           label="Street Address of Incident"
           variant="outlined"
@@ -179,8 +196,9 @@ export default function PageTwo({ data, setData }: Props) {
         />
       </FormControl>
 
-      <FormControl required sx={{ marginBottom: 2, minWidth: 240 }}>
+      <FormControl required sx={{ m: 1, minWidth: 240 }}>
         <TextField
+          value={data.incidentAddressZip}
           id="outlined-basic"
           label="Zip Code of Incident"
           variant="outlined"
@@ -192,30 +210,29 @@ export default function PageTwo({ data, setData }: Props) {
 
       <br />
 
-      <FormControl
-        required
-        sx={{ marginBottom: 2, marginRight: 2, minWidth: 360 }}
-      >
+      <FormControl required sx={{ m: 1, minWidth: 360 }}>
         <TextField
+          value={data.crimeDCNum}
           id="outlined-number"
           label="Police Incident # (DC#)"
           type="number"
           onChange={(event) =>
-            setData({ ...data, policeIncidentNo: event.target.value })
+            setData({ ...data, crimeDCNum: event.target.value })
           }
         />
       </FormControl>
 
-      <FormControl sx={{ marginBottom: 2, minWidth: 420 }}>
+      <FormControl sx={{ m: 1, minWidth: 420 }}>
         <InputLabel id="demo-simple-select-label">
           Police District of Incident
         </InputLabel>
         <Select
+          value={data.crimeDistrict}
           labelId="demo-simple-select-label"
           id="demo-simple-select-label"
           label="Police District of Incident"
           onChange={(event) =>
-            setData({ ...data, crimeDistrict: event.target.value })
+            setData({ ...data, crimeDistrict: event.target.value as string })
           }
         >
           {policeDistrictOfCrime.map((val) => (
@@ -234,7 +251,7 @@ export default function PageTwo({ data, setData }: Props) {
 
       <br />
 
-      <FormControl required sx={{ minWidth: 540 }}>
+      {/* <FormControl required sx={{ m: 1, minWidth: 540 }}>
         <TextField
           id="outlined-number"
           label="How Many People Are Being Referred For This Victimization/Crime?"
@@ -243,7 +260,7 @@ export default function PageTwo({ data, setData }: Props) {
             setData({ ...data, noReferred: event.target.value })
           }
         />
-      </FormControl>
+      </FormControl> */}
     </div>
   );
 }

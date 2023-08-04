@@ -43,6 +43,20 @@ class ApiError extends Error {
     return new ApiError(
       StatusCode.BAD_REQUEST,
       `Request body needs the following fields: ${requiredFields.join(', ')}.`,
+      requiredFields,
+    );
+  }
+
+  /**
+   * Creates a 400 Bad Request Error with a messsage specifying the
+   * required fields in the request body and which ones in specific are missing.
+   * @param requiredFields The list of required fields
+   * @returns An {@link ApiError} with the appropriate status code and message
+   */
+  static missingFieldsSpecific(requiredFields: string[]) {
+    return new ApiError(
+      StatusCode.BAD_REQUEST,
+      `Request body needs the following fields: ${requiredFields.join(', ')}.`,
     );
   }
 

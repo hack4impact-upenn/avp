@@ -1,20 +1,25 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import { useParams } from 'react-router-dom';
-import { CircularProgress, Tab, Tabs } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useNavigate, useParams } from 'react-router-dom';
+import { CircularProgress, Tab, Tabs, TextField } from '@mui/material';
 import FormStepper from './FormStepper';
 import ServiceReq from './ServiceReq';
 import VictimCrime from './VictimCrime';
 import Contact from './Contact';
 import ReferralSource from './ReferralSource';
 import { useData } from '../util/api';
-import Outcome from './Outcome';
+import VictimServicesOutcome from './VictimServicesOutcome';
+import CounselingServicesOutcome from './CounselingServicesOutcome';
+import YouthServicesOutcome from './YouthServicesOutcome';
 import CommunicationHistory from './CommunicationHistory';
+import { IReferral, emptyReferral } from '../util/types/referral';
+import { GlobalProps } from '../util/types/generic';
 
 const steps = [
   'Type of Service Requested',
@@ -32,26 +37,13 @@ const styles = {
   },
 };
 
-export default function FormPage() {
+export default function FormPage({ globalProps, setGlobalProps }: GlobalProps) {
   const { id } = useParams();
-  const [activeStep, setActiveStep] = useState(0);
+  const navigate = useNavigate();
   const temp = {};
   const [data, setData] = useState(temp);
-  // const [referralItem, setReferralItem] = useState<IReferral>([]);
-  // const [error, setError] = useState(<null>);
   const referral = useData(`referral/${id}`);
-
-  // eslint-disable-next-line no-console
-  console.log(id);
   console.log(referral);
-
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
 
   interface TabPanelProps {
     children?: React.ReactNode;
@@ -78,62 +70,34 @@ export default function FormPage() {
     );
   }
 
-  let targetPage;
-  switch (activeStep) {
-    case 0:
-      targetPage = (
-        <div>
-          <ServiceReq data={data} setData={setData} />
-        </div>
-      );
-      break;
-    case 1:
-      targetPage = (
-        <div>
-          <VictimCrime data={data} setData={setData} />
-        </div>
-      );
-      break;
-    case 2:
-      targetPage = (
-        <div>
-          <Contact data={data} setData={setData} />
-        </div>
-      );
-      break;
-    case 3:
-      targetPage = (
-        <div>
-          <ReferralSource data={data} setData={setData} />
-        </div>
-      );
-      break;
-    case 4:
-      targetPage = (
-        <div>
-          <CommunicationHistory data={data} setData={setData} />
-        </div>
-      );
-      break;
-    case 5:
-      targetPage = (
-        <div>
-          <Outcome data={data} setData={setData} />
-        </div>
-      );
-      break;
-    default:
-      targetPage = (
-        <div>
-          <ServiceReq data={data} setData={setData} />
-        </div>
-      );
-  }
-
   const [value, setValue] = useState(0);
-
+  useEffect(() => {
+    // dataUpdateForm();
+    console.log('change referral');
+    setData({ referral });
+  }, [referral]);
   return (
     <div style={styles.main}>
+      <Button
+        startIcon={<ArrowBackIcon />}
+        variant="contained"
+        color="primary"
+        onClick={(e) => {
+          setGlobalProps({
+            ...globalProps,
+            filter: [
+              {
+                columnField: 'id',
+                operatorValue: 'contains',
+                value: id,
+              },
+            ],
+          });
+          navigate('/database');
+        }}
+      >
+        View in Database
+      </Button>
       <Box sx={{ width: '100%' }}>
         <div
           style={{
@@ -159,7 +123,9 @@ export default function FormPage() {
             <Tab label="Contact Info" />
             <Tab label="Referral Source Info" />
             <Tab sx={{ fontSize: '13px' }} label="Communication History" />
-            <Tab label="Outcome of Referral" />
+            <Tab label="Victim Services Outcome" />
+            <Tab label="Counselling Services Outcome" />
+            <Tab label="Youth Services Outcome" />
           </Tabs>
         </div>
         {!referral ? (
@@ -169,22 +135,28 @@ export default function FormPage() {
         ) : referral?.error == null ? (
           <div>
             <TabPanel value={value} index={0}>
-              <ServiceReq data={data} setData={setData} />
+              <ServiceReq referral={data} setReferral={setData} />
             </TabPanel>
             <TabPanel value={value} index={1}>
-              <VictimCrime data={data} setData={setData} />
+              <VictimCrime referral={data} setReferral={setData} />
             </TabPanel>
             <TabPanel value={value} index={2}>
-              <Contact data={data} setData={setData} />
+              <Contact referral={data} setReferral={setData} />
             </TabPanel>
             <TabPanel value={value} index={3}>
-              <ReferralSource data={data} setData={setData} />
+              <ReferralSource referral={data} setReferral={setData} />
             </TabPanel>
             <TabPanel value={value} index={4}>
-              <CommunicationHistory data={data} setData={setData} />
+              <CommunicationHistory referral={data} setReferral={setData} />
             </TabPanel>
             <TabPanel value={value} index={5}>
-              <Outcome data={data} setData={setData} />
+              <VictimServicesOutcome data={data} setData={setData} />
+            </TabPanel>
+            <TabPanel value={value} index={6}>
+              <CounselingServicesOutcome data={data} setData={setData} />
+            </TabPanel>
+            <TabPanel value={value} index={7}>
+              <YouthServicesOutcome data={data} setData={setData} />
             </TabPanel>
           </div>
         ) : (
@@ -193,30 +165,6 @@ export default function FormPage() {
           </div>
         )}
       </Box>
-      {/* <FormStepper
-        steps={steps}
-        activeStep={activeStep}
-        setActiveStep={setActiveStep}
-      />
-      {activeStep === steps.length ? <div /> : targetPage}
-      <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-        <Button
-          variant="contained"
-          disabled={activeStep === 0}
-          onClick={handleBack}
-          sx={{ mr: 1, color: 'white' }}
-        >
-          Back
-        </Button>
-        <Box sx={{ flex: '1 1 auto' }} />
-        <Button
-          variant="contained"
-          onClick={handleNext}
-          sx={{ color: 'white' }}
-        >
-          {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-        </Button>
-      </Box> */}
     </div>
   );
 }

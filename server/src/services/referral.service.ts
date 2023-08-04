@@ -10,12 +10,13 @@ import {
 import { IUser } from '../models/user.model';
 
 const createNewReferral = async (
+  staffName: string,
   status: string,
   departmentInCharge: string,
   program: string,
-  staffAssigned: IUser,
+  staffAssigned: IUser | null,
   therapistAssigned: string,
-  isReferral: boolean,
+  isReferral: boolean | null,
   survivorName: string,
   serviceRequested: string,
   agencyThatReferred: string,
@@ -24,102 +25,121 @@ const createNewReferral = async (
   agencyRepPhone: string,
   survivorGender: string,
   survivorRace: string,
-  survivorDOB: Date,
-  survivorAge: number,
+  survivorDOB: Date | null,
+  survivorAge: number | null,
   survivorSchoolOrCommunitySite: string,
-  survivorGrade: number,
-  survivorPreferredContactMethod: string,
-  isGuardianResponsible: boolean,
+  survivorGrade: number | null,
+  isGuardianResponsible: boolean | null,
   guardianName: string,
   guardianRelationship: string,
   guardianAddress: string,
   guardianPhone: string,
   guardianEmail: string,
   guardianPreferredContactMethod: string,
-  survivorAddress: string,
   survivorEmailAddress: string,
+  survivorAddress: string,
   survivorPhoneNumber: string,
+  survivorPreferredContactMethod: string,
   notesFromOrg: string,
+  primaryLanguage: string,
   relationshipToVictim: string,
   crimeDCNum: string,
   crimeDistrict: string,
-  crimeDate: Date,
+  crimeDate: Date | null,
   crimeType: string,
-  isGunViolence: boolean,
+  isGunViolence: boolean | null,
   homDecedent: string,
-  homDateOfDeath: Date,
+  homDateOfDeath: Date | null,
   homType: string,
   homLocation: string,
   homAddress: string,
   homZipCode: string,
-  homDecedentAge: number,
+  homDecedentAge: number | null,
   homDecendentSex: string,
   homDecedentRace: string,
   homDecedentEthnicity: string,
   homFMVNum: string,
   homMEONum: string,
   homeMNum: string,
-  historyOfCommunication: Array<communicationItem>,
-  outreachLetterSent: boolean,
-  transferredToCCWaitlist: boolean,
-  followUpLetterSent: boolean,
-  transferredToETO: boolean,
+  homCaseInformation: string,
+  historyOfCommunication: Array<communicationItem> | null,
+  victimServicesOutcome: victimServicesOutcomeItem | null,
+  counsellingServicesOutcome: counsellingServicesOutcomeItem | null,
+  youthServicesOutcome: youthServicesOutcomeItem | null,
+  outreachLetterSent: boolean | null,
+  transferredToCCWaitlist: boolean | null,
+  followUpLetterSent: boolean | null,
+  transferredToETO: boolean | null,
+  incidentAddress: string,
+  incidentAddressZip: string,
+  incidentAddressCity: string,
+  incidentAddressState: string,
 ) => {
   const newReferral = new Referral({
-    status,
-    departmentInCharge,
-    program,
-    staffAssigned,
-    therapistAssigned,
-    isReferral,
-    survivorName,
-    serviceRequested,
-    agencyThatReferred,
-    agencyRepName,
-    agencyRepEmail,
-    agencyRepPhone,
-    survivorGender,
-    survivorRace,
-    survivorDOB,
-    survivorAge,
-    survivorSchoolOrCommunitySite,
-    survivorGrade,
-    survivorPreferredContactMethod,
-    isGuardianResponsible,
-    guardianName,
-    guardianRelationship,
-    guardianAddress,
-    guardianPhone,
-    guardianEmail,
-    guardianPreferredContactMethod,
-    survivorAddress,
-    survivorEmailAddress,
-    survivorPhoneNumber,
-    notesFromOrg,
-    relationshipToVictim,
-    crimeDCNum,
-    crimeDistrict,
-    crimeDate,
-    crimeType,
-    isGunViolence,
-    homDecedent,
-    homDateOfDeath,
-    homType,
-    homLocation,
-    homAddress,
-    homZipCode,
-    homDecedentAge,
-    homDecendentSex,
-    homDecedentRace,
-    homDecedentEthnicity,
-    homFMVNum,
-    homMEONum,
-    homeMNum,
-    historyOfCommunication,
-    outreachLetterSent,
-    transferredToCCWaitlist,
-    followUpLetterSent,
-    transferredToETO,
+  staffName,
+  status,
+  departmentInCharge,
+  program,
+  staffAssigned,
+  therapistAssigned,
+  isReferral,
+  survivorName,
+  serviceRequested,
+  agencyThatReferred,
+  agencyRepName,
+  agencyRepEmail,
+  agencyRepPhone,
+  survivorGender,
+  survivorRace,
+  survivorDOB,
+  survivorAge,
+  survivorSchoolOrCommunitySite,
+  survivorGrade,
+  isGuardianResponsible,
+  guardianName,
+  guardianRelationship,
+  guardianAddress,
+  guardianPhone,
+  guardianEmail,
+  guardianPreferredContactMethod,
+  survivorEmailAddress,
+  survivorAddress,
+  survivorPhoneNumber,
+  survivorPreferredContactMethod,
+  notesFromOrg,
+  primaryLanguage,
+  relationshipToVictim,
+  crimeDCNum,
+  crimeDistrict,
+  crimeDate,
+  crimeType,
+  isGunViolence,
+  homDecedent,
+  homDateOfDeath,
+  homType,
+  homLocation,
+  homAddress,
+  homZipCode,
+  homDecedentAge,
+  homDecendentSex,
+  homDecedentRace,
+  homDecedentEthnicity,
+  homFMVNum,
+  homMEONum,
+  homeMNum,
+  homCaseInformation,
+  historyOfCommunication,
+  victimServicesOutcome,
+  counsellingServicesOutcome,
+  youthServicesOutcome,
+  outreachLetterSent,
+  transferredToCCWaitlist,
+  followUpLetterSent,
+  transferredToETO,
+  incidentAddress,
+  incidentAddressZip,
+  incidentAddressCity,
+  incidentAddressState,
   });
   const referral: IReferral = await newReferral.save();
   return referral;
@@ -169,6 +189,7 @@ const updateReferralById = async (
   survivorEmailAddress: string,
   survivorPhoneNumber: string,
   notesFromOrg: string,
+  primaryLanguage: string,
   relationshipToVictim: string,
   crimeDCNum: string,
   crimeDistrict: string,
@@ -188,6 +209,7 @@ const updateReferralById = async (
   homFMVNum: string,
   homMEONum: string,
   homeMNum: string,
+  homCaseInformation: string,
   historyOfCommunication: Array<communicationItem>,
   outreachLetterSent: boolean,
   transferredToCCWaitlist: boolean,
@@ -228,6 +250,7 @@ const updateReferralById = async (
     survivorEmailAddress,
     survivorPhoneNumber,
     notesFromOrg,
+    primaryLanguage,
     relationshipToVictim,
     crimeDCNum,
     crimeDistrict,
@@ -247,6 +270,7 @@ const updateReferralById = async (
     homFMVNum,
     homMEONum,
     homeMNum,
+    homCaseInformation,
     historyOfCommunication,
     outreachLetterSent,
     transferredToCCWaitlist,
@@ -276,6 +300,7 @@ const addToCommunicationHistory = async (
     didEstablishedContact,
     dateOfNextCommunication,
   };
+  // if (!Referral.find({ historyOfCommunication: null }).exec())
   return Referral.findByIdAndUpdate(
     id,
     {
@@ -502,7 +527,6 @@ const putVictimServicesOutcome = async (
   otherServices: string,
   additionalNotes: string,
 ) => {
-  const updateItem: any = {};
   const newVictimServicesOutcome: victimServicesOutcomeItem = {
     eligibleForAVPVictimServices,
     sentVCAPInfotoClient,
@@ -523,18 +547,10 @@ const putVictimServicesOutcome = async (
     otherServices,
     additionalNotes,
   };
-  Object.entries(newVictimServicesOutcome).forEach(([key, value]) => {
-    if (value !== undefined) {
-      updateItem[`victimServicesOutcome.${key}`] = value;
-    }
-  });
-
   return Referral.findByIdAndUpdate(
     id,
-    {
-      $set: updateItem,
-    },
-    { new: true },
+    { victimServicesOutcome: newVictimServicesOutcome },
+    { new: true }, // To return the updated document after the update
   ).exec();
 };
 
@@ -555,7 +571,6 @@ const putCounsellingServicesOutcome = async (
   addedToSupportGroupWaitlist: boolean,
   additionalNotes: string,
 ) => {
-  const updateItem: any = {};
   const newCounsellingServicesOutcome: counsellingServicesOutcomeItem = {
     eligibleForAVPCounsellingServices,
     receivingCrisisCounselling,
@@ -572,16 +587,11 @@ const putCounsellingServicesOutcome = async (
     addedToSupportGroupWaitlist,
     additionalNotes,
   };
-  Object.entries(newCounsellingServicesOutcome).forEach(([key, value]) => {
-    if (value !== undefined) {
-      updateItem[`counsellingServicesOutcome.${key}`] = value;
-    }
-  });
 
   return Referral.findByIdAndUpdate(
     id,
     {
-      $set: updateItem,
+      $set: { counsellingServicesOutcome: newCounsellingServicesOutcome },
     },
     { new: true },
   ).exec();
@@ -597,7 +607,6 @@ const putYouthServicesOutcome = async (
   addedToYVOGroupWaitlist: boolean,
   additionalNotes: string,
 ) => {
-  const updateItem: any = {};
   const newYouthServicesOutcome: youthServicesOutcomeItem = {
     eligibleForYVOServices,
     assignedToYVOTherapist,
@@ -607,16 +616,10 @@ const putYouthServicesOutcome = async (
     addedToYVOGroupWaitlist,
     additionalNotes,
   };
-  Object.entries(newYouthServicesOutcome).forEach(([key, value]) => {
-    if (value !== undefined) {
-      updateItem[`youthServicesOutcome.${key}`] = value;
-    }
-  });
-
   return Referral.findByIdAndUpdate(
     id,
     {
-      $set: updateItem,
+      $set: { youthServicesOutcome: newYouthServicesOutcome },
     },
     { new: true },
   ).exec();

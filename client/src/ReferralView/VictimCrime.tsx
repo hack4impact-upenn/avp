@@ -1,12 +1,15 @@
 /* eslint-disable */
 import {
+  Button,
+  CircularProgress,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
   Select,
   TextField,
 } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import { SelectChangeEvent } from '@mui/material/Select';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -14,6 +17,10 @@ import dayjs, { Dayjs } from 'dayjs';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { Theme, useTheme } from '@mui/material/styles';
+import { CheckCircleOutline, ErrorOutline } from '@material-ui/icons';
+import { green } from '@mui/material/colors';
+import { useParams } from 'react-router-dom';
+import { putData } from '../util/api';
 
 function getStyles(val: string, valArr: string[], theme: Theme) {
   return {
@@ -25,8 +32,8 @@ function getStyles(val: string, valArr: string[], theme: Theme) {
 }
 
 interface Props {
-  data: any;
-  setData: React.Dispatch<React.SetStateAction<string>>;
+  referral: any;
+  setReferral: React.Dispatch<React.SetStateAction<any>>;
 }
 
 const crimeType = [
@@ -70,8 +77,12 @@ const policeDistrictOfCrime = [
   'Not Philadelphia',
 ];
 
-export default function PageTwo({ data, setData }: Props) {
+export default function PageTwo({ referral, setReferral }: Props) {
+  const { id } = useParams();
+  const [loading, setLoading] = React.useState(false);
+  const [updateStatus, setUpdateStatus] = React.useState('');
   const theme = useTheme();
+  const [data, setData] = useState(referral?.referral?.data);
   const [crimeDate, setCrimeDate] = React.useState<Dayjs | null>(
     dayjs('2000-01-01T00:00:00'),
   );
@@ -79,17 +90,43 @@ export default function PageTwo({ data, setData }: Props) {
     dayjs('2000-01-01T00:00:00'),
   );
 
+  const handleUpdate = async () => {
+    // setLoading(true);
+    // setUpdateStatus('');
+
+    try {
+      const body = data;
+      body.id = id;
+      const response = await putData(`referral/${id}`, body);
+
+      if (response.error === null) {
+        console.log('post success');
+        console.log(response);
+        setReferral({ ...data, referral: response });
+        setUpdateStatus('success');
+      } else {
+        console.log('post error');
+        setUpdateStatus('error');
+      }
+    } catch (error) {
+      setUpdateStatus('error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   let homicideFields;
   if (data.crimeType == 'Homicide') {
     homicideFields = (
       <div>
-        <FormControl required sx={{ marginRight: 2, minWidth: 420 }}>
+        <FormControl required sx={{ m: 1, minWidth: 420 }}>
           <TextField
+            value={data.homeMNum}
             id="outlined-number"
             label="M#/S#/AID#"
             type="number"
             onChange={(event) =>
-              setData({ ...data, homMNum: event.target.value })
+              setData({ ...data, homeMNum: event.target.value })
             }
           />
         </FormControl>
@@ -109,16 +146,17 @@ export default function PageTwo({ data, setData }: Props) {
 
   return (
     <div>
-      <FormControl sx={{ marginBottom: 2, minWidth: 600 }}>
+      <FormControl sx={{ m: 1, minWidth: 600 }}>
         <InputLabel id="demo-simple-select-label">
           Type Of Crime / Victimization
         </InputLabel>
         <Select
+          value={data.crimeType}
           labelId="demo-simple-select-label"
           id="demo-simple-select-label"
           label="Type Of Crime / Victimization"
           onChange={(event) =>
-            setData({ ...data, crimeType: event.target.value })
+            setData({ ...data, crimeType: event.target.value as string })
           }
         >
           {crimeType.map((val) => (
@@ -135,7 +173,7 @@ export default function PageTwo({ data, setData }: Props) {
 
       <br />
 
-      <FormControl sx={{ marginRight: 2, marginBottom: 2 }}>
+      <FormControl sx={{ m: 1 }}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DesktopDatePicker
             label="Date of Incident"
@@ -147,15 +185,30 @@ export default function PageTwo({ data, setData }: Props) {
         </LocalizationProvider>
       </FormControl>
 
-      <FormControl sx={{ marginBottom: 2, marginRight: 2, minWidth: 240 }}>
+      <FormControl sx={{ m: 1, minWidth: 240 }}>
         <InputLabel id="demo-simple-select-label">Gun Violence?</InputLabel>
         <Select
+          value={
+            data.isGunViolence
+              ? 'Yes'
+              : data.isGunViolence === false
+              ? 'No'
+              : 'Unknown'
+          }
           labelId="demo-simple-select-label"
           id="demo-simple-select-label"
           label="Gun Violence?"
-          onChange={(event) =>
-            setData({ ...data, isGunViolence: event.target.value })
-          }
+          onChange={(event) => {
+            const val: string = event.target.value as string;
+            setData({
+              ...data,
+              isGunViolence: val.includes('Yes')
+                ? true
+                : val.includes('No')
+                ? false
+                : null,
+            });
+          }}
         >
           <MenuItem value="Yes">Yes</MenuItem>
           <MenuItem value="No">No</MenuItem>
@@ -165,11 +218,9 @@ export default function PageTwo({ data, setData }: Props) {
 
       <br />
 
-      <FormControl
-        required
-        sx={{ marginBottom: 2, marginRight: 2, minWidth: 420 }}
-      >
+      <FormControl required sx={{ m: 1, minWidth: 420 }}>
         <TextField
+          value={data.incidentAddress}
           id="outlined-basic"
           label="Street Address of Incident"
           variant="outlined"
@@ -179,8 +230,9 @@ export default function PageTwo({ data, setData }: Props) {
         />
       </FormControl>
 
-      <FormControl required sx={{ marginBottom: 2, minWidth: 240 }}>
+      <FormControl required sx={{ m: 1, minWidth: 240 }}>
         <TextField
+          value={data.incidentAddressZip}
           id="outlined-basic"
           label="Zip Code of Incident"
           variant="outlined"
@@ -192,30 +244,29 @@ export default function PageTwo({ data, setData }: Props) {
 
       <br />
 
-      <FormControl
-        required
-        sx={{ marginBottom: 2, marginRight: 2, minWidth: 360 }}
-      >
+      <FormControl required sx={{ m: 1, minWidth: 360 }}>
         <TextField
+          value={data.crimeDCNum}
           id="outlined-number"
           label="Police Incident # (DC#)"
           type="number"
           onChange={(event) =>
-            setData({ ...data, policeIncidentNo: event.target.value })
+            setData({ ...data, crimeDCNum: event.target.value })
           }
         />
       </FormControl>
 
-      <FormControl sx={{ marginBottom: 2, minWidth: 420 }}>
+      <FormControl sx={{ m: 1, minWidth: 420 }}>
         <InputLabel id="demo-simple-select-label">
           Police District of Incident
         </InputLabel>
         <Select
+          value={data.crimeDistrict}
           labelId="demo-simple-select-label"
           id="demo-simple-select-label"
           label="Police District of Incident"
           onChange={(event) =>
-            setData({ ...data, crimeDistrict: event.target.value })
+            setData({ ...data, crimeDistrict: event.target.value as string })
           }
         >
           {policeDistrictOfCrime.map((val) => (
@@ -234,7 +285,7 @@ export default function PageTwo({ data, setData }: Props) {
 
       <br />
 
-      <FormControl required sx={{ minWidth: 540 }}>
+      {/* <FormControl required sx={{ m: 1, minWidth: 540 }}>
         <TextField
           id="outlined-number"
           label="How Many People Are Being Referred For This Victimization/Crime?"
@@ -243,7 +294,30 @@ export default function PageTwo({ data, setData }: Props) {
             setData({ ...data, noReferred: event.target.value })
           }
         />
-      </FormControl>
+      </FormControl> */}
+      <Grid item xs={12} paddingTop={10}>
+        <Grid container justifyContent="end">
+          {
+            // eslint-disable-next-line no-nested-ternary
+            loading ? (
+              <CircularProgress />
+            ) : // eslint-disable-next-line no-nested-ternary
+            updateStatus === 'success' ? (
+              <CheckCircleOutline style={{ color: green[500] }} />
+            ) : updateStatus === 'error' ? (
+              <ErrorOutline color="error" />
+            ) : (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleUpdate}
+              >
+                Update
+              </Button>
+            )
+          }
+        </Grid>
+      </Grid>
     </div>
   );
 }

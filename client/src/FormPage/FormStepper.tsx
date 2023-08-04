@@ -11,12 +11,16 @@ interface FormProps {
   steps: string[];
   activeStep: number;
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
+  missingFields: any;
+  setMissingFields: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export default function FormStepper({
   steps,
   activeStep,
   setActiveStep,
+  missingFields,
+  setMissingFields,
 }: FormProps) {
   const handleReset = () => {
     setActiveStep(0);
@@ -40,7 +44,9 @@ export default function FormStepper({
       {activeStep === steps.length ? (
         <>
           <Typography sx={{ mt: 2, mb: 1 }}>
-            All steps completed - you&apos;re finished
+            {!missingFields
+              ? `All steps completed - you're finished`
+              : `Please fill out the following fields: ${missingFields}`}
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Box sx={{ flex: '1 1 auto' }} />

@@ -24,12 +24,55 @@ import NoAccountsOutlinedIcon from '@mui/icons-material/NoAccountsOutlined';
 import { URLPREFIX, useDataFlexible, getData } from '../util/api';
 import IReferral from '../util/types/referral';
 import CircularProgress from '@mui/material/CircularProgress';
+import { GlobalProps } from '../util/types/generic';
 
 /* Wrapper Around DataGridPremium */
-export default function DataGrid() {
+export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
   const [referralList, setReferralList] = useState<IReferral[]>([]);
   const {data: referrals, setData: setReferrals} = useDataFlexible('referral/all');
   const emptyStringArray: string[] = [''];
+
+  /* For saving datagrid state */
+  //Todo: edit backend to actually save and retrieve userProfile
+  // const userProfile = {
+  //   id: 'user123', // unique identifier for the user
+  //   name: 'John Doe', // user's name
+  //   email: 'john.doe@example.com', // user's email
+  //   columnState: { // user's saved column state
+  //     order: ['id', 'name', 'email', 'address', 'phone'], // order of columns
+  //     visibility: { // visibility of columns
+  //       'id': true,
+  //       'name': true,
+  //       'email': false, // user has hidden the email column
+  //       'address': true,
+  //       'phone': true,
+  //     },
+  //   },
+  // ... other user profile properties
+  // }
+  // const [columnState, setColumnState] = useState(null);
+
+  // useEffect(() => {
+  //   // Fetch user's column state from profile and set it to state
+  //   const userColumnState = userProfile.columnState;
+  //   setColumnState(userColumnState);
+  // }, [userProfile]);
+
+  // const handleColumnOrderChange = (newColumnOrder) => {
+  //   // Update state
+  //   setColumnState({
+  //     ...columnState,
+  //     order: newColumnOrder,
+  //   });
+  //   // Update user profile
+  //   updateUserProfile({
+  //     ...userProfile,
+  //     columnState: {
+  //       ...userProfile.columnState,
+  //       order: newColumnOrder,
+  //     }
+  //   });
+  ////////////////////////////////
 
   function CustomEditComponent(props: {
     api: any;
@@ -358,6 +401,7 @@ export default function DataGrid() {
             size="small"
             style={{ margin: 'auto', background: '#4EA0B3', height: '26px' }}
             tabIndex={params.hasFocus ? 0 : -1}
+            href={`/referral/${params.row.id}`}
           >
             View
           </Button>
@@ -930,7 +974,7 @@ export default function DataGrid() {
   }
 
   return (
-    <Box sx={{ height: 520, width: '100%' }}>
+    <Box sx={{ height: 700, width: '100%' }}>
       <DataGridPremium
         rows={referralList}
         columns={columns}
@@ -940,6 +984,11 @@ export default function DataGrid() {
         initialState={{
           columns: { columnVisibilityModel: { id: false } },
           pinnedColumns: { left: ['survivorName'], right: ['view'] },
+          filter: {
+            filterModel: {
+              items: globalProps?.filter ? globalProps.filter : [],
+            },
+          },
         }}
         experimentalFeatures={{ newEditingApi: true }}
         components={{ Toolbar: GridToolbar }}

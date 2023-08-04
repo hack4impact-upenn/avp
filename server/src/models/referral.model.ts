@@ -346,7 +346,7 @@ const ReferralSchema = new mongoose.Schema({
     required: false,
   },
   survivorGrade: {
-    type: Number,
+    type: String,
     required: false,
   },
   isGuardianReponsible: {
@@ -529,6 +529,20 @@ const ReferralSchema = new mongoose.Schema({
   },
   referralFile: {
     type: FileObject,
+  incidentAddress: {
+    type: String,
+    required: false,
+  },
+  incidentAddressZip: {
+    type: String,
+    required: false,
+  },
+  incidentAddressCity: {
+    type: String,
+    required: false,
+  },
+  incidentAddressState: {
+    type: String,
     required: false,
   },
 });
@@ -552,7 +566,7 @@ interface IReferral extends mongoose.Document {
   survivorDOB: Date;
   survivorAge: number;
   survivorSchoolOrCommunitySite: string;
-  survivorGrade: number;
+  survivorGrade: string;
   isGuardianResponsible: boolean;
   guardianName: string;
   guardianRelationship: string;
@@ -565,6 +579,7 @@ interface IReferral extends mongoose.Document {
   survivorPhoneNumber: string;
   survivorPreferredContactMethod: string;
   notesFromOrg: string;
+  primaryLanguage: string;
   relationshipToVictim: string;
   crimeDCNum: string;
   crimeDistrict: string;
@@ -596,6 +611,10 @@ interface IReferral extends mongoose.Document {
   followUpLetterFile: fileObject;
   outReachLetterFile: fileObject;
   referralFile: fileObject;
+  incidentAddress: string;
+  incidentAddressZip: string;
+  incidentAddressCity: string;
+  incidentAddressState: string;
 }
 
 const Referral = mongoose.model<IReferral>('Referral', ReferralSchema);

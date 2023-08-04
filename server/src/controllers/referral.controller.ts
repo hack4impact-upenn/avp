@@ -57,11 +57,14 @@ const setReferralStatus = async (
   }
 
   let establishedContact = false;
-  for (let i = 0; i < historyOfCommunication.length; i += 1) {
-    if (historyOfCommunication[i].didEstablishedContact) {
-      establishedContact = true;
+  if (historyOfCommunication) {
+    for (let i = 0; i < historyOfCommunication.length; i += 1) {
+      if (historyOfCommunication[i].didEstablishedContact) {
+        establishedContact = true;
+      }
     }
   }
+
 
   if (establishedContact) {
     if (transferredToCCWaitlist) {
@@ -70,18 +73,18 @@ const setReferralStatus = async (
       status = 'Completed';
     }
   } else if (
-    historyOfCommunication.length === 1 &&
-    !historyOfCommunication[0].didEstablishedContact
+    historyOfCommunication?.length === 1 &&
+    !historyOfCommunication[0]?.didEstablishedContact
   ) {
     status = '1st unsuccessful attempt';
   } else if (
-    historyOfCommunication.length === 2 &&
-    !historyOfCommunication[1].didEstablishedContact
+    historyOfCommunication?.length === 2 &&
+    !historyOfCommunication[1]?.didEstablishedContact
   ) {
     status = '2nd unsuccessful attempt';
   } else if (
-    historyOfCommunication.length === 3 &&
-    !historyOfCommunication[2].didEstablishedContact
+    historyOfCommunication?.length === 3 &&
+    !historyOfCommunication[2]?.didEstablishedContact
   ) {
     status = '3rd unsuccessful attempt';
   }
@@ -93,12 +96,25 @@ const setReferralStatus = async (
   return status;
 };
 
+function isValidEmail(email: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+function isValidPhoneNumber(phoneNumber: string): boolean {
+  const phoneRegex = /^\+?1?\s*\(?(\d{3})\)?[-.\s]?(\d{3})[-.\s]?(\d{4})$/;
+  return phoneRegex.test(phoneNumber);
+}
+
 const createReferral = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const {
+  console.log('HIT ENDPOINT - CREATE REFFERRAL')
+  var {
+    staffName,
+    status,
     departmentInCharge,
     program,
     staffAssigned,
@@ -116,7 +132,6 @@ const createReferral = async (
     survivorAge,
     survivorSchoolOrCommunitySite,
     survivorGrade,
-    survivorPreferredContactMethod,
     isGuardianResponsible,
     guardianName,
     guardianRelationship,
@@ -124,10 +139,12 @@ const createReferral = async (
     guardianPhone,
     guardianEmail,
     guardianPreferredContactMethod,
-    survivorAddress,
     survivorEmailAddress,
+    survivorAddress,
     survivorPhoneNumber,
+    survivorPreferredContactMethod,
     notesFromOrg,
+    primaryLanguage,
     relationshipToVictim,
     crimeDCNum,
     crimeDistrict,
@@ -147,54 +164,77 @@ const createReferral = async (
     homFMVNum,
     homMEONum,
     homeMNum,
+    homCaseInformation,
     historyOfCommunication,
+    victimServicesOutcome,
+    counsellingServicesOutcome,
+    youthServicesOutcome,
     outreachLetterSent,
     transferredToCCWaitlist,
     followUpLetterSent,
     transferredToETO,
+    incidentAddress,
+    incidentAddressZip,
+    incidentAddressCity,
+    incidentAddressState,
+    serviceRequestedVictim,
+    otherServiceRequestedVictim,
   } = req.body;
+  if (serviceRequestedVictim) {
+    serviceRequested = serviceRequested + ", " + serviceRequestedVictim
+  }
+  if (otherServiceRequestedVictim) {
+    serviceRequested = serviceRequested + ", " + otherServiceRequestedVictim
+  }
+  if (outreachLetterSent == undefined) outreachLetterSent = false;
+  if (transferredToCCWaitlist == undefined) transferredToCCWaitlist = false;
+  if (followUpLetterSent == undefined) followUpLetterSent = false;
+  if (transferredToETO == undefined) transferredToETO = false;
+  if (isReferral == undefined) isReferral = false;
+  if (!historyOfCommunication) {
+    historyOfCommunication = [];
+    console.log(historyOfCommunication);
+  }
 
-  if (
-    isReferral === undefined ||
-    !survivorName ||
-    !serviceRequested ||
-    !agencyThatReferred ||
-    !agencyRepName ||
-    !agencyRepEmail ||
-    !agencyRepPhone ||
-    !survivorEmailAddress ||
-    !survivorPhoneNumber ||
-    !relationshipToVictim ||
-    !crimeType ||
-    !survivorPreferredContactMethod ||
-    isGunViolence === undefined ||
-    outreachLetterSent === undefined ||
-    transferredToCCWaitlist === undefined ||
-    followUpLetterSent === undefined ||
-    transferredToETO === undefined
-  ) {
-    next(
-      ApiError.missingFields([
-        'isReferral',
-        'survivorName',
-        'serviceRequested',
-        'agencyThatReferred',
-        'agencyRepName',
-        'agencyRepEmail',
-        'agencyRepPhone',
-        'survivorEmailAddress',
-        'survivorPhoneNumber',
-        'relationshipToVictim',
-        'crimeType',
-        'survivorPreferredContactMethod',
-        'isGunViolence',
-        'outreachLetterSent',
-        'transferredToCCWaitlist',
-        'followUpLetterSent',
-        'transferredToETO',
-      ]),
-    );
-    return;
+
+  const missingFields = [];
+  if (isGunViolence === null) isGunViolence = false;
+  // if (isGuardianResponsible == undefined) missingFields.push('isGuardianResponsible');
+  if (isGuardianResponsible) {
+    if (!guardianName) missingFields.push('guardianName'); 
+    if (!guardianRelationship) missingFields.push('guardianRelationship');
+    if (!guardianAddress) missingFields.push('guardianAddress')
+    ; 
+    if (!guardianPhone) {missingFields.push('guardianPhone');}
+    else if(!survivorPhoneNumber || !isValidPhoneNumber(survivorPhoneNumber)) {survivorPhoneNumber = guardianPhone;}
+
+    if (!guardianEmail || !isValidEmail(guardianEmail)) {missingFields.push('guardianEmail');}
+    else if(!survivorEmailAddress || !isValidEmail(survivorEmailAddress)) {survivorEmailAddress = guardianEmail;}
+
+    if (!guardianPreferredContactMethod) missingFields.push('guardianPreferredContactMethod');
+    else if (!survivorPreferredContactMethod) survivorPreferredContactMethod = guardianPreferredContactMethod;
+  } 
+  if (isReferral === undefined || isReferral === null) missingFields.push('isReferral');
+  if (!survivorName) missingFields.push('survivorName');
+  if (!serviceRequested) missingFields.push('serviceRequested');
+  if (!agencyThatReferred) missingFields.push('agencyThatReferred');
+  if (!agencyRepName) missingFields.push('agencyRepName');
+  if (!agencyRepEmail || !isValidEmail(agencyRepEmail)) missingFields.push('agencyRepEmail');
+  if (!agencyRepPhone) missingFields.push('agencyRepPhone');
+  if (!survivorEmailAddress || !isValidEmail(survivorEmailAddress)) missingFields.push('survivorEmailAddress');
+  if (!survivorPhoneNumber || !isValidPhoneNumber(survivorPhoneNumber)) missingFields.push('survivorPhoneNumber');
+  if (!primaryLanguage) missingFields.push('primaryLanguage');
+  if (!relationshipToVictim) missingFields.push('relationshipToVictim');
+  if (!crimeType) missingFields.push('crimeType');
+  if (!survivorPreferredContactMethod) missingFields.push('survivorPreferredContactMethod');
+  if (isGunViolence === undefined) missingFields.push('isGunViolence');
+  if (outreachLetterSent === undefined) missingFields.push('outreachLetterSent');
+  if (transferredToCCWaitlist === undefined) missingFields.push('transferredToCCWaitlist');
+  if (followUpLetterSent === undefined) missingFields.push('followUpLetterSent');
+  if (transferredToETO === undefined) missingFields.push('transferredToETO');
+
+  if (missingFields.length > 0) {
+    return res.status(400).json({ error: 'Missing fields in the request body', fields: missingFields });
   }
 
   try {
@@ -206,6 +246,7 @@ const createReferral = async (
       followUpLetterSent,
     );
     await createNewReferral(
+      staffName,
       status,
       departmentInCharge,
       program,
@@ -224,7 +265,6 @@ const createReferral = async (
       survivorAge,
       survivorSchoolOrCommunitySite,
       survivorGrade,
-      survivorPreferredContactMethod,
       isGuardianResponsible,
       guardianName,
       guardianRelationship,
@@ -232,10 +272,12 @@ const createReferral = async (
       guardianPhone,
       guardianEmail,
       guardianPreferredContactMethod,
-      survivorAddress,
       survivorEmailAddress,
+      survivorAddress,
       survivorPhoneNumber,
+      survivorPreferredContactMethod,
       notesFromOrg,
+      primaryLanguage,
       relationshipToVictim,
       crimeDCNum,
       crimeDistrict,
@@ -255,11 +297,19 @@ const createReferral = async (
       homFMVNum,
       homMEONum,
       homeMNum,
+      homCaseInformation,
       historyOfCommunication,
+      victimServicesOutcome,
+      counsellingServicesOutcome,
+      youthServicesOutcome,
       outreachLetterSent,
       transferredToCCWaitlist,
       followUpLetterSent,
       transferredToETO,
+      incidentAddress,
+      incidentAddressZip,
+      incidentAddressCity,
+      incidentAddressState,
     );
 
     const nameArr = survivorName.split(' ');
@@ -296,6 +346,7 @@ const createReferral = async (
       });
     res.sendStatus(StatusCode.CREATED);
   } catch (err) {
+    console.log(err);
     next(
       ApiError.internal(
         `Unable to create referral due to the following error: ${err}`,
@@ -435,6 +486,7 @@ const updateReferral = async (
     survivorEmailAddress,
     survivorPhoneNumber,
     notesFromOrg,
+    primaryLanguage,
     relationshipToVictim,
     crimeDCNum,
     crimeDistrict,
@@ -454,6 +506,7 @@ const updateReferral = async (
     homFMVNum,
     homMEONum,
     homeMNum,
+    homCaseInformation,
     historyOfCommunication,
     outreachLetterSent,
     transferredToCCWaitlist,
@@ -548,6 +601,7 @@ const updateReferral = async (
       survivorEmailAddress,
       survivorPhoneNumber,
       notesFromOrg,
+      primaryLanguage,
       relationshipToVictim,
       crimeDCNum,
       crimeDistrict,
@@ -567,6 +621,7 @@ const updateReferral = async (
       homFMVNum,
       homMEONum,
       homeMNum,
+      homCaseInformation,
       historyOfCommunication,
       outreachLetterSent,
       transferredToCCWaitlist,
@@ -1019,8 +1074,8 @@ const updateVictimServicesOutcome = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const { id } = req.params;
   const {
+    id,
     eligibleForAVPVictimServices,
     sentVCAPInfotoClient,
     avpAdvocateAssistingWithVCAP,
@@ -1189,8 +1244,8 @@ const updateCounsellingServicesOutcome = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const { id } = req.params;
   const {
+    id,
     eligibleForAVPCounsellingServices,
     receivingCrisisCounselling,
     scheduledIntakeApptForIndividualTherapy,
@@ -1316,8 +1371,8 @@ const updateYouthServicesOutcome = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const id = req.params.referral_id;
   const {
+    id,
     eligibleForYVOServices,
     assignedToYVOTherapist,
     yvoStaffName,

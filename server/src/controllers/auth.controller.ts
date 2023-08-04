@@ -37,7 +37,7 @@ const login = async (
   next: express.NextFunction,
 ) => {
   if (req.isAuthenticated()) {
-    next(ApiError.badRequest('Already logged in'));
+    // next(ApiError.badRequest('Already logged in'));
     return;
   }
   // TODO: look more into when each of these errors are thrown

@@ -14,14 +14,64 @@ interface ICommunicationItem {
   dateOfNextCommunication: Date;
 }
 
-export default interface IReferral extends mongoose.Document {
-  staffName: string;
+interface IVictimServicesOutcomeItem {
+  eligibleForAVPVictimServices: boolean;
+  sentVCAPInfotoClient: boolean;
+  avpAdvocateAssistingWithVCAP: boolean;
+  referredToOtherVSAgencyForVCAP: boolean;
+  vsAgencyName: string;
+  avpAdvocateProvidingCourtSupport: boolean;
+  clientWorkingWithFMV: boolean;
+  fmvNumber: boolean;
+  referredToOtherAgencyForCourt: boolean;
+  courtSupportAgencyName: string;
+  avpAdvocateContactedADA: boolean;
+  avpAdvocateContactedDetective: boolean;
+  needsRelocationAssistance: boolean;
+  relocationReferralWasSubmitted: boolean;
+  referredToAgencyForOtherServices: boolean;
+  otherAgencyNames: string;
+  otherServices: string;
+  additionalNotes: string;
+}
+
+interface ICounsellingServicesOutcomeItem {
+  eligibleForAVPCounsellingServices: boolean;
+  receivingCrisisCounselling: boolean;
+  scheduledIntakeApptForIndividualTherapy: boolean;
+  intakeAppointmentOutcome: boolean;
+  receivingIndividualTherapy: boolean;
+  therapistName: string;
+  addedToIndividualTherapyWaitlist: boolean;
+  referredForCounsellingServices: boolean;
+  counsellingAgency: boolean;
+  sentAVPSupportGroupInfo: boolean;
+  attendingSupportGroup: boolean;
+  supportGroupName: string;
+  addedToSupportGroupWaitlist: boolean;
+  additionalNotes: string;
+}
+
+interface IYouthServicesOutcomeItem {
+  eligibleForYVOServices: boolean;
+  assignedToYVOTherapist: boolean;
+  yvoStaffName: string;
+  addedToYVOIndividualTherapyWaitlist: boolean;
+  assignedToYVOGroup: boolean;
+  addedToYVOGroupWaitlist: boolean;
+  additionalNotes: string;
+}
+
+export default interface IReferral {
+  id: string;
   _id: string;
+  staffName: string;
+  status: string;
   departmentInCharge: string;
   program: string;
-  staffAssigned: IUser;
+  staffAssigned: IUser | null;
   therapistAssigned: string;
-  isReferral: boolean;
+  isReferral: boolean | null;
   survivorName: string;
   serviceRequested: string;
   agencyThatReferred: string;
@@ -30,34 +80,36 @@ export default interface IReferral extends mongoose.Document {
   agencyRepPhone: string;
   survivorGender: string;
   survivorRace: string;
-  survivorDOB: Date;
-  survivorAge: number;
+  survivorDOB: Date | null;
+  survivorAge: number | null;
   survivorSchoolOrCommunitySite: string;
-  survivorGrade: number;
-  isGuardianResponsible: boolean;
+  survivorGrade: string;
+  isGuardianResponsible: boolean | null;
   guardianName: string;
   guardianRelationship: string;
   guardianAddress: string;
   guardianPhone: string;
   guardianEmail: string;
   guardianPreferredContactMethod: string;
+  survivorEmailAddress: string;
   survivorAddress: string;
   survivorPhoneNumber: string;
   survivorPreferredContactMethod: string;
   notesFromOrg: string;
+  primaryLanguage: string;
   relationshipToVictim: string;
   crimeDCNum: string;
   crimeDistrict: string;
-  crimeDate: Date;
+  crimeDate: Date | null;
   crimeType: string;
-  isGunViolence: boolean;
+  isGunViolence: boolean | null;
   homDecedent: string;
-  homDateOfDeath: Date;
+  homDateOfDeath: Date | null;
   homType: string;
   homLocation: string;
   homAddress: string;
   homZipCode: string;
-  homDecedentAge: number;
+  homDecedentAge: number | null;
   homDecendentSex: string;
   homDecedentRace: string;
   homDecedentEthnicity: string;
@@ -65,11 +117,111 @@ export default interface IReferral extends mongoose.Document {
   homMEONum: string;
   homeMNum: string;
   homCaseInformation: string;
-  historyOfCommunication: Array<ICommunicationItem>;
-  outreachLetterSent: boolean;
-  transferredToCCWaitlist: boolean;
-  followUpLetterSent: boolean;
-  transferredToETO: boolean;
+  historyOfCommunication: Array<ICommunicationItem> | null;
+  victimServicesOutcome: IVictimServicesOutcomeItem | null;
+  counsellingServicesOutcome: ICounsellingServicesOutcomeItem | null;
+  youthServicesOutcome: IYouthServicesOutcomeItem | null;
+  outreachLetterSent: boolean | null;
+  transferredToCCWaitlist: boolean | null;
+  followUpLetterSent: boolean | null;
+  transferredToETO: boolean | null;
+  incidentAddress: string;
+  incidentAddressZip: string;
+  incidentAddressCity: string;
+  incidentAddressState: string;
+
+  // These fields are not in the database, but are used for the frontend
+  // Page One
+  serviceRequestedVictim: string;
+  otherServiceRequestedVictim: string;
+  // Page Three
+  survivorGenderOther: string;
+  survivorRaceOther: string;
+  relationshipToVictimOther: string;
+  guardianRelationshipOther: string;
+  victimGender: string;
 }
 
-export type { ICommunicationItem, IReferral };
+export const emptyReferral = {
+  id: '',
+  _id: '',
+  staffName: '',
+  status: '',
+  departmentInCharge: '',
+  program: '',
+  staffAssigned: null,
+  therapistAssigned: '',
+  isReferral: true,
+  survivorName: '',
+  serviceRequested: '',
+  agencyThatReferred: '',
+  agencyRepName: '',
+  agencyRepEmail: '',
+  agencyRepPhone: '',
+  survivorGender: '',
+  survivorRace: '',
+  survivorDOB: null,
+  survivorAge: null,
+  survivorSchoolOrCommunitySite: '',
+  survivorGrade: '',
+  isGuardianResponsible: null,
+  guardianName: '',
+  guardianRelationship: '',
+  guardianAddress: '',
+  guardianPhone: '',
+  guardianEmail: '',
+  guardianPreferredContactMethod: '',
+  survivorEmailAddress: '',
+  survivorAddress: '',
+  survivorPhoneNumber: '',
+  survivorPreferredContactMethod: '',
+  notesFromOrg: '',
+  primaryLanguage: '',
+  relationshipToVictim: '',
+  crimeDCNum: '',
+  crimeDistrict: '',
+  crimeDate: null,
+  crimeType: '',
+  isGunViolence: null,
+  homDecedent: '',
+  homDateOfDeath: null,
+  homType: '',
+  homLocation: '',
+  homAddress: '',
+  homZipCode: '',
+  homDecedentAge: null,
+  homDecendentSex: '',
+  homDecedentRace: '',
+  homDecedentEthnicity: '',
+  homFMVNum: '',
+  homMEONum: '',
+  homeMNum: '',
+  homCaseInformation: '',
+  historyOfCommunication: null,
+  victimServicesOutcome: null,
+  counsellingServicesOutcome: null,
+  youthServicesOutcome: null,
+  outreachLetterSent: null,
+  transferredToCCWaitlist: null,
+  followUpLetterSent: null,
+  transferredToETO: null,
+  incidentAddress: '',
+  incidentAddressZip: '',
+  incidentAddressCity: '',
+  incidentAddressState: '',
+  serviceRequestedVictim: '',
+  otherServiceRequestedVictim: '',
+  survivorGenderOther: '',
+  survivorRaceOther: '',
+  relationshipToVictimOther: '',
+  guardianRelationshipOther: '',
+  victimGender: '',
+};
+
+export type {
+  ICommunicationItem,
+  IVictimServicesOutcomeItem,
+  ICounsellingServicesOutcomeItem,
+  IYouthServicesOutcomeItem,
+  IReferral,
+};
