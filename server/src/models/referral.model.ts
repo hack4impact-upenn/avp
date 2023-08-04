@@ -62,6 +62,12 @@ interface youthServicesOutcomeItem {
   additionalNotes: string;
 }
 
+interface fileObject {
+  name: string;
+  key: string;
+  type: string;
+}
+
 const communicationItemSchema = new mongoose.Schema({
   dateOfCommunication: {
     type: Date,
@@ -249,6 +255,21 @@ const YouthServicesOutcomeItemSchema = new mongoose.Schema({
     required: true,
   },
   additionalNotes: {
+    type: String,
+    required: false,
+  },
+});
+
+const FileObject = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  key: {
+    type: String,
+    required: true,
+  },
+  type: {
     type: String,
     required: false,
   },
@@ -498,6 +519,16 @@ const ReferralSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
+  followUpLetterFile: {
+    type: FileObject,
+    required: false,
+  },
+  outReachLetterFile: {
+    type: FileObject,
+    required: false,
+  },
+  referralFile: {
+    type: FileObject,
   incidentAddress: {
     type: String,
     required: false,
@@ -577,6 +608,9 @@ interface IReferral extends mongoose.Document {
   transferredToCCWaitlist: boolean;
   followUpLetterSent: boolean;
   transferredToETO: boolean;
+  followUpLetterFile: fileObject;
+  outReachLetterFile: fileObject;
+  referralFile: fileObject;
   incidentAddress: string;
   incidentAddressZip: string;
   incidentAddressCity: string;
@@ -592,4 +626,5 @@ export {
   victimServicesOutcomeItem,
   counsellingServicesOutcomeItem,
   youthServicesOutcomeItem,
+  fileObject,
 };

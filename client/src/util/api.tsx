@@ -77,6 +77,22 @@ const useData = (url: string) => {
   return data;
 };
 
+const useDataFlexible = (url: string) => {
+  const [data, setData] = useState<ResolvedReq | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getData(url);
+      setData(res);
+    };
+
+    fetchData();
+    // getData(url).then((res) => setData(res.data));
+  }, [url]);
+
+  return { data, setData };
+};
+
 // https://stackoverflow.com/questions/53059059/react-hooks-making-an-ajax-request
 
 /**
@@ -111,4 +127,12 @@ async function deleteData(url: string, data = {}) {
   return response;
 }
 
-export { getData, putData, deleteData, postData, useData };
+export {
+  getData,
+  putData,
+  deleteData,
+  postData,
+  useData,
+  URLPREFIX,
+  useDataFlexible,
+};

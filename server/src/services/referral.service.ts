@@ -5,6 +5,7 @@ import {
   victimServicesOutcomeItem,
   counsellingServicesOutcomeItem,
   youthServicesOutcomeItem,
+  fileObject,
 } from '../models/referral.model';
 import { IUser } from '../models/user.model';
 
@@ -624,6 +625,102 @@ const putYouthServicesOutcome = async (
   ).exec();
 };
 
+const putReferralFileName = async (
+  id: string,
+  name: string,
+  key: string,
+  type: string,
+) => {
+  const updateItem: any = {};
+  const newReferralFileName: fileObject = {
+    name,
+    key,
+    type,
+  };
+  Object.entries(newReferralFileName).forEach(([k, value]) => {
+    if (value !== undefined) {
+      updateItem[`referralFile.${k}`] = value;
+    }
+  });
+
+  await Referral.findByIdAndUpdate(id, {
+    $set: {
+      'referralFile.name': name,
+      'referralFile.key': key,
+      'referralFile.type': type,
+    },
+    new: true,
+  });
+};
+
+const deleteReferralFileById = async (id: string) => {
+  await Referral.findByIdAndUpdate(id, { $unset: { referralFile: 1 } });
+};
+
+const deleteFollowUpFileById = async (id: string) => {
+  await Referral.findByIdAndUpdate(id, { $unset: { followUpLetterFile: 1 } });
+};
+
+const deleteOutreachFileById = async (id: string) => {
+  await Referral.findByIdAndUpdate(id, { $unset: { outReachLetterFile: 1 } });
+};
+
+const putFollowUpFileName = async (
+  id: string,
+  name: string,
+  key: string,
+  type: string,
+) => {
+  const updateItem: any = {};
+  const newFollowUpFileName: fileObject = {
+    name,
+    key,
+    type,
+  };
+  Object.entries(newFollowUpFileName).forEach(([k, value]) => {
+    if (value !== undefined) {
+      updateItem[`followUpLetterFile.${k}`] = value;
+    }
+  });
+
+  await Referral.findByIdAndUpdate(id, {
+    $set: {
+      'followUpLetterFile.name': name,
+      'followUpLetterFile.key': key,
+      'followUpLetterFile.type': type,
+    },
+    new: true,
+  });
+};
+
+const putOutreachFileName = async (
+  id: string,
+  name: string,
+  key: string,
+  type: string,
+) => {
+  const updateItem: any = {};
+  const newOutreachFileName: fileObject = {
+    name,
+    key,
+    type,
+  };
+  Object.entries(newOutreachFileName).forEach(([k, value]) => {
+    if (value !== undefined) {
+      updateItem[`outReachLetterFile.${k}`] = value;
+    }
+  });
+
+  await Referral.findByIdAndUpdate(id, {
+    $set: {
+      'outReachLetterFile.name': name,
+      'outReachLetterFile.key': key,
+      'outReachLetterFile.type': type,
+    },
+    new: true,
+  });
+};
+
 export {
   createNewReferral,
   getAllReferrals,
@@ -640,4 +737,10 @@ export {
   putVictimServicesOutcome,
   putCounsellingServicesOutcome,
   putYouthServicesOutcome,
+  putReferralFileName,
+  putFollowUpFileName,
+  putOutreachFileName,
+  deleteReferralFileById,
+  deleteFollowUpFileById,
+  deleteOutreachFileById,
 };
