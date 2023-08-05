@@ -529,6 +529,7 @@ const ReferralSchema = new mongoose.Schema({
   },
   referralFile: {
     type: FileObject,
+  },
   incidentAddress: {
     type: String,
     required: false,

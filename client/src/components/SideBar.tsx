@@ -145,16 +145,34 @@ export default function SideBar({ isLoggedIn }: Props) {
             </ListItemText>
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding>
+        <ListItem component="a" href="/users" disablePadding>
           <ListItemButton>
             <ListItemIcon
               sx={{
                 minWidth: '40px',
               }}
             >
-              <GroupIcon fontSize="medium" />
+              <GroupIcon
+                sx={{
+                  fill: currentURL.includes('users')
+                    ? '#4EA0B3 !important'
+                    : 'black !important',
+                }}
+                fontSize="medium"
+              />
             </ListItemIcon>
-            <ListItemText>Users</ListItemText>
+            <ListItemText
+              sx={{
+                color: currentURL.includes('users')
+                  ? '#4EA0B3 !important'
+                  : 'black !important',
+                textDecoration: currentURL.includes('users') ? 'underline' : '',
+                fontWeight: currentURL.includes('users') ? '500' : '',
+                textUnderlineOffset: '5px',
+              }}
+            >
+              Users
+            </ListItemText>
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>

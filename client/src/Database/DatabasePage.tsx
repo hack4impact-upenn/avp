@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React from 'react';
+import React, { useState } from 'react';
 import DataGrid from '../components/DataGrid';
 import SideBar from '../components/SideBar';
 import Box from '@mui/material/Box';
@@ -20,11 +20,16 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import { GlobalProps } from '../util/types/generic';
+import UploadModal from './UploadModal';
 
 const styles = {
   main: {
     width: '90%',
     margin: 'auto',
+  },
+  button: {
+    marginTop: '1rem',
+    marginBottom: '1rem',
   },
 };
 
@@ -33,6 +38,15 @@ export default function DatabasePage({
   setGlobalProps,
 }: GlobalProps) {
   const drawerWidth = 230;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleButtonClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <Box sx={{ display: 'flex' }}>
       <Box
@@ -54,7 +68,19 @@ export default function DatabasePage({
         </Card>
         <Box sx={{ height: '50px' }} />
         <DataGrid globalProps={globalProps} setGlobalProps={setGlobalProps} />
+        <Button
+         variant="contained"
+         color="primary"
+         style={styles.button}
+         onClick={handleButtonClick}
+       >
+         Import CSV to Database
+       </Button>
       </Box>
+      <UploadModal
+        isModalOpen={isModalOpen}
+        handleModalClose={handleModalClose}
+      />
     </Box>
   );
 }

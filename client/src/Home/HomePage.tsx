@@ -81,13 +81,13 @@ function HomePage() {
         >
           View Referrals
         </PrimaryButton>
-        {/* <PrimaryButton
+        <PrimaryButton
           style={{ margin: '1rem' }}
           onClick={() => navigator('/users', { replace: true })}
           variant="contained"
         >
           View all users
-        </PrimaryButton> */}
+        </PrimaryButton>
       </Grid>
       <Grid item container justifyContent="center">
         <Button onClick={handleLogout}>Logout</Button>

@@ -29,6 +29,7 @@ import {
   deleteFollowUpFile,
   deleteReferralFile,
   deleteOutreachFile,
+  uploadReferral,
 } from '../controllers/referral.controller';
 
 // const createFollowUpPDF = () => {};
@@ -111,6 +112,8 @@ router.post(
   upload.single('file'),
   createOutreachPDF,
 );
+
+router.post('/upload', upload.single('file'), uploadReferral);
 
 router.get('/outreachPDF/:file_key', getOutreachFile);
 
