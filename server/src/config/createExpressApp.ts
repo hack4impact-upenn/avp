@@ -24,7 +24,6 @@ const createExpressApp = (sessionStore: MongoStore): express.Express => {
   initializePassport(passport);
 
   // Sets the port for the app
-  app.set('port', process.env.PORT || 4000);
   // Gives express the ability to parse requests with JSON and turn the JSON into objects
   app.use(express.json());
   // Gives express the ability to parse urlencoded payloads
@@ -34,7 +33,15 @@ const createExpressApp = (sessionStore: MongoStore): express.Express => {
     }),
   );
   // Gives express the ability accept origins outside its own to accept requests from
-  app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+  app.use(
+    cors({
+      credentials: true,
+      origin: [
+        'http://localhost:3000',
+        'https://anti-violence-philadelphia.netlify.app',
+      ],
+    }),
+  );
   // Gives express the ability to parse client cookies and add them to req.cookies
   app.use(cookieParser(process.env.COOKIE_SECRET));
 

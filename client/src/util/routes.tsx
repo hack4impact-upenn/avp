@@ -1,6 +1,7 @@
 import React from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
 import { useData } from './api';
+import { store } from './redux/store';
 
 interface IDynamicElementProps {
   unAuthPath: string;
@@ -11,18 +12,16 @@ interface IDynamicElementProps {
  * A wrapper component whose children routes which can only be navigated to if the user is not authenticated.
  */
 function UnauthenticatedRoutesWrapper() {
-  const data = useData('auth/authstatus');
-  if (data === null) return null;
-  return !data.error ? <Navigate to="/" /> : <Outlet />;
+  const data = store.getState().user.email;
+  return data ? <Navigate to="/" /> : <Outlet />;
 }
 
 /**
  * A wrapper component whose children routes which can only be navigated to if the user is  authenticated.
  */
 function ProtectedRoutesWrapper() {
-  const data = useData('auth/authstatus');
-  if (data === null) return null;
-  return !data.error ? <Outlet /> : <Navigate to="/" />;
+  const data = store.getState().user?.email;
+  return data ? <Outlet /> : <Navigate to="/" />;
 }
 /**
  * A wrapper component whose children routes which can only be navigated to if the user is an admin.
@@ -39,13 +38,8 @@ function AdminRoutesWrapper() {
  * @param authPath - The path to navigate to if the user is  authenticated. It should be of the form "/path".
  */
 function DynamicRedirect({ unAuthPath, authPath }: IDynamicElementProps) {
-  const data = useData('auth/authstatus');
-  if (data === null) return null;
-  return !data.error ? (
-    <Navigate to={authPath} />
-  ) : (
-    <Navigate to={unAuthPath} />
-  );
+  const data = store.getState().user.email;
+  return data ? <Navigate to={authPath} /> : <Navigate to={unAuthPath} />;
 }
 
 export {

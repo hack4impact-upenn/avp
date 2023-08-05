@@ -41,10 +41,7 @@ async function resolve(promise: Promise<any>) {
 /**
  * To UPDATE DURING DEPLOYMENT USING ENVIRONMENT VARIABLES
  */
-const BACKENDURL = process.env.PUBLIC_URL
-  ? process.env.PUBLIC_URL
-  : 'http://localhost:4000';
-
+const BACKENDURL = 'https://avp.fly.dev';
 const URLPREFIX = `${BACKENDURL}/api`;
 
 /**
@@ -67,6 +64,7 @@ const useData = (url: string) => {
   useEffect(() => {
     const fetchData = async () => {
       const res = await getData(url);
+      console.log(res);
       setData(res);
     };
 

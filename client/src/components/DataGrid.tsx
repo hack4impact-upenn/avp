@@ -10,6 +10,9 @@ import {
   useGridApiContext,
   GridRowId,
   GridFilterOperator,
+  GridCellEditStopParams,
+  GridCellEditStopReasons,
+  MuiEvent,
 } from '@mui/x-data-grid-premium';
 import { Button, Chip, MenuItem, Select, TextField } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
@@ -21,7 +24,7 @@ import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import { GridColumns, GridRenderCellParams } from '@mui/x-data-grid-pro';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import NoAccountsOutlinedIcon from '@mui/icons-material/NoAccountsOutlined';
-import { URLPREFIX, useDataFlexible, getData } from '../util/api';
+import { URLPREFIX, useDataFlexible, getData, putData } from '../util/api';
 import IReferral from '../util/types/referral';
 import CircularProgress from '@mui/material/CircularProgress';
 import { GlobalProps } from '../util/types/generic';
@@ -91,7 +94,7 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
       apiRef.current.setEditCellValue({
         id,
         field,
-        value: newValue.filter((x: any) => x !== ''),
+        value: String(newValue.filter((x: any) => x !== '')),
       });
     };
 
@@ -644,12 +647,12 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
       editable: true,
       type: 'singleSelect',
       valueOptions: [
-        'Female (woman/girl)',
-        'Male (man/boy)',
-        'Non-binary/non-conforming',
+        'Female',
+        'Male',
+        'Non-binary',
         'Transgender',
         'Other',
-        'Unknown',
+        'NA',
       ],
     },
     //Todo: Make multiselect
@@ -992,6 +995,13 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
         }}
         experimentalFeatures={{ newEditingApi: true }}
         components={{ Toolbar: GridToolbar }}
+        processRowUpdate={async (updatedRow, originalRow) => {
+          console.log(updatedRow);
+          const response = await putData(`referral/${updatedRow.id}`, updatedRow);
+          const res = await getData('referral/all');
+          setReferrals(res);
+          return updatedRow;
+        }}
       />
     </Box>
   );

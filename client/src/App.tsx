@@ -31,18 +31,19 @@ import SideBar from './components/SideBar';
 import { useData } from './util/api';
 
 function App() {
-  const authData = useData('auth/authstatus');
-  const [globalProps, setGlobalProps] = useState<any>();
+  const authData = store.getState().user;
+  const [globalProps, setGlobalProps] = useState<any>({});
   const [loggedIn, setLoggedIn] = useState<boolean>(
     // eslint-disable-next-line  no-unneeded-ternary
-    authData && !authData?.error ? true : false,
+    authData ? true : false,
   );
 
   useEffect(() => {
     console.log('authData');
     console.log(authData);
+    console.log(process.env.PUBLIC_API_URL);
     // eslint-disable-next-line  no-unneeded-ternary
-    setLoggedIn(authData && !authData?.error ? true : false);
+    setLoggedIn(authData ? true : false);
   }, [authData]);
 
   return (
