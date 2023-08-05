@@ -20,10 +20,15 @@ interface Props {
 
 export default function SideBar({ isLoggedIn }: Props) {
   // const data = useData('auth/authstatus');
-  if (!isLoggedIn) return <div />;
   const drawerWidth = 230;
   const currentURL = window.location.href;
-  return (
+  const [show, setShow] = React.useState(false);
+
+  React.useEffect(() => {
+    setShow(isLoggedIn);
+  }, [isLoggedIn]);
+
+  return show ? (
     <Drawer
       sx={{
         width: drawerWidth,
@@ -208,5 +213,7 @@ export default function SideBar({ isLoggedIn }: Props) {
       </List>
       <Divider />
     </Drawer>
+  ) : (
+    <div />
   );
 }

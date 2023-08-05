@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import { Box, CssBaseline } from '@mui/material';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import theme from './assets/theme';
@@ -35,16 +35,13 @@ function App() {
   const [globalProps, setGlobalProps] = useState<any>({});
   const [loggedIn, setLoggedIn] = useState<boolean>(
     // eslint-disable-next-line  no-unneeded-ternary
-    authData ? true : false,
+    authData.email !== null ? true : false,
   );
 
   useEffect(() => {
-    console.log('authData');
-    console.log(authData);
-    console.log(process.env.PUBLIC_API_URL);
     // eslint-disable-next-line  no-unneeded-ternary
-    setLoggedIn(authData ? true : false);
-  }, [authData]);
+    setLoggedIn(authData.email !== null ? true : false);
+  }, [authData, loggedIn]);
 
   return (
     <div className="App">

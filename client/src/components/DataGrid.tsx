@@ -995,11 +995,11 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
         }}
         experimentalFeatures={{ newEditingApi: true }}
         components={{ Toolbar: GridToolbar }}
-        processRowUpdate={async (updatedRow, originalRow) => {
+        processRowUpdate={(updatedRow, originalRow) => {
           console.log(updatedRow);
-          const response = await putData(`referral/${updatedRow.id}`, updatedRow);
-          const res = await getData('referral/all');
-          setReferrals(res);
+          const response = putData(`referral/${updatedRow.id}`, updatedRow).then(() => {
+            const res = getData('referral/all').then((res) => setReferrals(res));
+          });
           return updatedRow;
         }}
       />

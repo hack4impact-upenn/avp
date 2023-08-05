@@ -127,6 +127,7 @@ function LoginPage() {
             user.admin!,
           );
           navigate('/home');
+          window.location.reload();
         })
         .catch((e) => {
           if (e.message.includes('Already logged in')) {

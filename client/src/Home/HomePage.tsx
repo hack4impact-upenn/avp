@@ -55,10 +55,9 @@ function HomePage() {
   const [admin, setAdmin] = useState(user.admin);
   const logoutDispatch = () => dispatch(logoutAction());
   const handleLogout = async () => {
-    if (await logoutApi()) {
-      logoutDispatch();
-      navigator('/login', { replace: true });
-    }
+    logoutDispatch();
+    navigator('/login', { replace: true });
+    window.location.reload();
   };
 
   const handleSelfPromote = async () => {

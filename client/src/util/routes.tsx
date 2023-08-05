@@ -12,7 +12,7 @@ interface IDynamicElementProps {
  * A wrapper component whose children routes which can only be navigated to if the user is not authenticated.
  */
 function UnauthenticatedRoutesWrapper() {
-  const data = store.getState().user.email;
+  const data = store.getState().user.email !== null;
   return data ? <Navigate to="/" /> : <Outlet />;
 }
 
@@ -20,7 +20,7 @@ function UnauthenticatedRoutesWrapper() {
  * A wrapper component whose children routes which can only be navigated to if the user is  authenticated.
  */
 function ProtectedRoutesWrapper() {
-  const data = store.getState().user?.email;
+  const data = store.getState().user?.email !== null;
   return data ? <Outlet /> : <Navigate to="/" />;
 }
 /**
@@ -38,7 +38,7 @@ function AdminRoutesWrapper() {
  * @param authPath - The path to navigate to if the user is  authenticated. It should be of the form "/path".
  */
 function DynamicRedirect({ unAuthPath, authPath }: IDynamicElementProps) {
-  const data = store.getState().user.email;
+  const data = store.getState().user.email !== null;
   return data ? <Navigate to={authPath} /> : <Navigate to={unAuthPath} />;
 }
 
