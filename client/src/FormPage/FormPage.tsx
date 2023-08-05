@@ -34,7 +34,7 @@ export default function FormPage() {
 
   // const [data, setData] = useState(temp);
   const [data, setData] = useState<IReferral>(emptyReferral);
-  const [missingFields, setMissingFields] = useState(temp);
+  const [missingFields, setMissingFields] = useState<any>(temp);
 
   // Todo: Should check if the contents of this page are valid before moving onto the next one
   const validateSubmit = () => {
@@ -134,6 +134,7 @@ export default function FormPage() {
           } else {
             const referral = res.data;
             setDidSubmit(true);
+            setMissingFields(null);
             console.log('Successfully pushed!');
           }
         });
