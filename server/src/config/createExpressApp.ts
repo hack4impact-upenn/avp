@@ -23,6 +23,9 @@ const createExpressApp = (sessionStore: MongoStore): express.Express => {
   // Set up passport and strategies
   initializePassport(passport);
 
+  // UNCOMMENT FOR PROD
+  app.set('port', process.env.PORT || 4000);
+
   // Sets the port for the app
   // Gives express the ability to parse requests with JSON and turn the JSON into objects
   app.use(express.json());
