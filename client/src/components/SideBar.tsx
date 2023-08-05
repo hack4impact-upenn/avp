@@ -180,7 +180,7 @@ export default function SideBar({ isLoggedIn }: Props) {
             </ListItemText>
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding>
+        {/* <ListItem disablePadding>
           <ListItemButton>
             <ListItemIcon
               sx={{
@@ -209,7 +209,7 @@ export default function SideBar({ isLoggedIn }: Props) {
               Account
             </ListItemText>
           </ListItemButton>
-        </ListItem>
+        </ListItem> */}
       </List>
       <Divider />
     </Drawer>
