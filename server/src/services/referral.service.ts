@@ -26,7 +26,7 @@ const createNewReferral = async (
   survivorGender: string,
   survivorRace: string,
   survivorDOB: Date | null,
-  survivorAge: number | null,
+  survivorAge: number | undefined,
   survivorSchoolOrCommunitySite: string | undefined,
   survivorGrade: number | null | undefined,
   isGuardianResponsible: boolean | null | undefined,

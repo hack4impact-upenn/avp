@@ -126,6 +126,7 @@ const uploadReferral = async (
   if (file.mimetype === 'text/csv') {
     // Handle CSV file
     const promises: any[] = [];
+    console.log(file);
     fs.createReadStream(file.path)
       .pipe(csv())
       .on('data', (row) => {

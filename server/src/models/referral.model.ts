@@ -311,7 +311,7 @@ const ReferralSchema = new mongoose.Schema({
   },
   agencyThatReferred: {
     type: String,
-    required: true,
+    required: false,
   },
   agencyRepName: {
     type: String,
@@ -338,7 +338,7 @@ const ReferralSchema = new mongoose.Schema({
     required: false,
   },
   survivorAge: {
-    type: Number,
+    type: String,
     required: false,
   },
   survivorSchoolOrCommunitySite: {
@@ -415,7 +415,7 @@ const ReferralSchema = new mongoose.Schema({
     required: false,
   },
   crimeDate: {
-    type: Date,
+    type: String,
     required: false,
   },
   crimeType: {
@@ -431,7 +431,7 @@ const ReferralSchema = new mongoose.Schema({
     required: false,
   },
   homDateOfDeath: {
-    type: Date,
+    type: String,
     required: false,
   },
   homCauseOfDeath: {
@@ -584,11 +584,11 @@ interface IReferral extends mongoose.Document {
   relationshipToVictim: string;
   crimeDCNum: string;
   crimeDistrict: string;
-  crimeDate: Date;
+  crimeDate: Date | string;
   crimeType: string;
   isGunViolence: boolean;
   homDecedent: string;
-  homDateOfDeath: Date;
+  homDateOfDeath: Date | string;
   homType: string;
   homLocation: string;
   homAddress: string;

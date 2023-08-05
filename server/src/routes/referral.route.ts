@@ -37,6 +37,7 @@ import {
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
+const csvUpload = multer({ dest: 'uploads/' });
 
 const router = express.Router();
 
@@ -113,7 +114,7 @@ router.post(
   createOutreachPDF,
 );
 
-router.post('/upload', upload.single('file'), uploadReferral);
+router.post('/upload', csvUpload.single('file'), uploadReferral);
 
 router.get('/outreachPDF/:file_key', getOutreachFile);
 
