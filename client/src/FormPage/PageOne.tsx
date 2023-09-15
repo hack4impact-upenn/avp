@@ -38,11 +38,11 @@ interface Props {
 }
 
 const counselingServices = [
-  'Individual Counseling/Therapy In-Person',
-  'Individual Counseling/Therapy Virtual',
-  'Adult Group Counseling/Therapy In-Person',
-  'Adult Group Counseling/Therapy Virtual',
-  'Youth Group Counseling/Therapy In-Person',
+  'Individual Counseling/Therapy (In-Person)',
+  'Individual Counseling/Therapy (Virtual)',
+  'Adult Group Counseling/Therapy (In-Person)',
+  'Adult Group Counseling/Therapy (Virtual)',
+  'Youth Group Counseling/Therapy (In-Person)',
 ];
 
 const victimServices = [
@@ -102,7 +102,7 @@ export default function PageOne({ data, setData }: Props) {
 
   return (
     <div>
-      <FormControl style={{ marginBottom: '30px' }} sx={{ m: 1, width: 600 }}>
+      {/* <FormControl style={{ marginBottom: '30px' }} sx={{ m: 1, width: 600 }}>
         <InputLabel id="demo-multiple-name-label">
           Outreach Letter File Upload
         </InputLabel>
@@ -119,8 +119,8 @@ export default function PageOne({ data, setData }: Props) {
           Upload
           <input type="file" hidden />
         </Button>
-      </FormControl>
-      <br />
+      </FormControl> */}
+      {/* <br />
       <FormControl style={{ marginBottom: '30px' }} sx={{ m: 1, width: 600 }}>
         <InputLabel id="demo-multiple-name-label">
           Follow-Up Letter Sent
@@ -135,20 +135,7 @@ export default function PageOne({ data, setData }: Props) {
           <input type="file" hidden />
         </Button>
       </FormControl>
-      <br />
-      <FormControl style={{ marginBottom: '30px' }} sx={{ m: 1, width: 600 }}>
-        <InputLabel id="demo-multiple-name-label">Referral PDF</InputLabel>
-        <Button
-          variant="contained"
-          component="label"
-          size="small"
-          style={{ margin: 'auto', background: '#4EA0B3', height: '26px' }}
-        >
-          Upload
-          <input type="file" hidden />
-        </Button>
-      </FormControl>
-      <br />
+      <br /> */}
       <FormControl sx={{ m: 1, width: 600 }}>
         <InputLabel id="demo-multiple-name-label">
           Counseling & Therapy
@@ -189,7 +176,6 @@ export default function PageOne({ data, setData }: Props) {
           onChange={handleChangeVictim}
           input={<OutlinedInput label="Victim Services" />}
           MenuProps={MenuProps}
-          required
         >
           {victimServices.map((val) => (
             <MenuItem
@@ -201,6 +187,19 @@ export default function PageOne({ data, setData }: Props) {
             </MenuItem>
           ))}
         </Select>
+      </FormControl>
+      <br />
+      <FormControl style={{ marginBottom: '30px' }} sx={{ m: 1, width: 600 }}>
+        <InputLabel id="demo-multiple-name-label">Referral PDF</InputLabel>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          style={{ margin: 'auto', background: '#4EA0B3', height: '26px' }}
+        >
+          Upload
+          <input type="file" hidden />
+        </Button>
       </FormControl>
 
       {/* otherVictimServices */}
