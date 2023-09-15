@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteOutreachFileById = exports.deleteFollowUpFileById = exports.deleteReferralFileById = exports.putOutreachFileName = exports.putFollowUpFileName = exports.putReferralFileName = exports.putYouthServicesOutcome = exports.putCounsellingServicesOutcome = exports.putVictimServicesOutcome = exports.postYouthServicesOutcome = exports.postCounsellingServicesOutcome = exports.postVictimServicesOutcome = exports.getDuplicateReferrals = exports.deleteCommunicationHistory = exports.updateCommunicationHistory = exports.addToCommunicationHistory = exports.updateReferralById = exports.getReferralById = exports.getAllDepartmentReferrals = exports.getAllReferrals = exports.createNewReferral = void 0;
 const referral_model_1 = require("../models/referral.model");
-const createNewReferral = (staffName, status, departmentInCharge, program, staffAssigned, therapistAssigned, isReferral, survivorName, serviceRequested, agencyThatReferred, agencyRepName, agencyRepEmail, agencyRepPhone, survivorGender, survivorRace, survivorDOB, survivorAge, survivorSchoolOrCommunitySite, survivorGrade, isGuardianResponsible, guardianName, guardianRelationship, guardianAddress, guardianPhone, guardianEmail, guardianPreferredContactMethod, survivorEmailAddress, survivorAddress, survivorPhoneNumber, survivorPreferredContactMethod, notesFromOrg, primaryLanguage, relationshipToVictim, crimeDCNum, crimeDistrict, crimeDate, crimeType, isGunViolence, homDecedent, homDateOfDeath, homType, homLocation, homAddress, homZipCode, homDecedentAge, homDecendentSex, homDecedentRace, homDecedentEthnicity, homFMVNum, homMEONum, homeMNum, homCaseInformation, historyOfCommunication, victimServicesOutcome, counsellingServicesOutcome, youthServicesOutcome, outreachLetterSent, transferredToCCWaitlist, followUpLetterSent, transferredToETO, incidentAddress, incidentAddressZip, incidentAddressCity, incidentAddressState) => __awaiter(void 0, void 0, void 0, function* () {
+const createNewReferral = (staffName, status, departmentInCharge, program, staffAssigned, therapistAssigned, isReferral, survivorName, serviceRequested, agencyThatReferred, agencyRepName, agencyRepEmail, agencyRepPhone, survivorGender, survivorRace, survivorDOB, survivorAge, survivorSchoolOrCommunitySite, survivorGrade, isGuardianResponsible, guardianName, guardianRelationship, guardianAddress, guardianPhone, guardianEmail, guardianPreferredContactMethod, survivorEmailAddress, survivorAddress, survivorPhoneNumber, survivorPreferredContactMethod, notesFromOrg, primaryLanguage, relationshipToVictim, crimeDCNum, crimeDistrict, crimeDate, crimeType, isGunViolence, homDecedent, homDateOfDeath, homType, homLocation, homAddress, homZipCode, homDecedentAge, homDecendentSex, homDecedentRace, homDecedentEthnicity, homFMVNum, homMEONum, homeMNum, homCaseInformation, historyOfCommunication, victimServicesOutcome, counsellingServicesOutcome, youthServicesOutcome, outreachLetterSent, transferredToCCWaitlist, followUpLetterSent, transferredToETO, incidentAddress, incidentAddressZip, incidentAddressCity, incidentAddressState, reportedToPolice) => __awaiter(void 0, void 0, void 0, function* () {
     const newReferral = new referral_model_1.Referral({
         staffName,
         status,
@@ -77,6 +77,7 @@ const createNewReferral = (staffName, status, departmentInCharge, program, staff
         incidentAddressZip,
         incidentAddressCity,
         incidentAddressState,
+        reportedToPolice,
     });
     const referral = yield newReferral.save();
     return referral;
@@ -94,7 +95,7 @@ const getReferralById = (id) => __awaiter(void 0, void 0, void 0, function* () {
     return referral_model_1.Referral.findOne({ _id: id }).exec();
 });
 exports.getReferralById = getReferralById;
-const updateReferralById = (id, status, departmentInCharge, program, staffAssigned, therapistAssigned, isReferral, survivorName, serviceRequested, agencyThatReferred, agencyRepName, agencyRepEmail, agencyRepPhone, survivorGender, survivorRace, survivorDOB, survivorAge, survivorSchoolOrCommunitySite, survivorGrade, survivorPreferredContactMethod, isGuardianResponsible, guardianName, guardianRelationship, guardianAddress, guardianPhone, guardianEmail, guardianPreferredContactMethod, survivorAddress, survivorEmailAddress, survivorPhoneNumber, notesFromOrg, primaryLanguage, relationshipToVictim, crimeDCNum, crimeDistrict, crimeDate, crimeType, isGunViolence, homDecedent, homDateOfDeath, homType, homLocation, homAddress, homZipCode, homDecedentAge, homDecendentSex, homDecedentRace, homDecedentEthnicity, homFMVNum, homMEONum, homeMNum, homCaseInformation, historyOfCommunication, outreachLetterSent, transferredToCCWaitlist, followUpLetterSent, transferredToETO, victimServicesOutcome, counsellingServicesOutcome, youthServicesOutcome) => __awaiter(void 0, void 0, void 0, function* () {
+const updateReferralById = (id, status, departmentInCharge, program, staffAssigned, therapistAssigned, isReferral, survivorName, serviceRequested, agencyThatReferred, agencyRepName, agencyRepEmail, agencyRepPhone, survivorGender, survivorRace, survivorDOB, survivorAge, survivorSchoolOrCommunitySite, survivorGrade, survivorPreferredContactMethod, isGuardianResponsible, guardianName, guardianRelationship, guardianAddress, guardianPhone, guardianEmail, guardianPreferredContactMethod, survivorAddress, survivorEmailAddress, survivorPhoneNumber, notesFromOrg, primaryLanguage, relationshipToVictim, crimeDCNum, crimeDistrict, crimeDate, crimeType, isGunViolence, homDecedent, homDateOfDeath, homType, homLocation, homAddress, homZipCode, homDecedentAge, homDecendentSex, homDecedentRace, homDecedentEthnicity, homFMVNum, homMEONum, homeMNum, homCaseInformation, historyOfCommunication, outreachLetterSent, transferredToCCWaitlist, followUpLetterSent, transferredToETO, victimServicesOutcome, counsellingServicesOutcome, youthServicesOutcome, reportedToPolice) => __awaiter(void 0, void 0, void 0, function* () {
     const updateQuery = {
         status,
         departmentInCharge,
@@ -155,6 +156,7 @@ const updateReferralById = (id, status, departmentInCharge, program, staffAssign
         victimServicesOutcome,
         counsellingServicesOutcome,
         youthServicesOutcome,
+        reportedToPolice,
     };
     return referral_model_1.Referral.findByIdAndUpdate(id, updateQuery, { new: true }).exec();
 });

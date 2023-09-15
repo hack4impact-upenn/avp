@@ -74,6 +74,7 @@ const createNewReferral = async (
   incidentAddressZip: string | undefined,
   incidentAddressCity: string | undefined,
   incidentAddressState: string | undefined,
+  reportedToPolice: boolean | null,
 ) => {
   const newReferral = new Referral({
     staffName,
@@ -140,6 +141,7 @@ const createNewReferral = async (
     incidentAddressZip,
     incidentAddressCity,
     incidentAddressState,
+    reportedToPolice,
   });
   const referral: IReferral = await newReferral.save();
   return referral;
@@ -218,6 +220,7 @@ const updateReferralById = async (
   victimServicesOutcome: victimServicesOutcomeItem,
   counsellingServicesOutcome: counsellingServicesOutcomeItem,
   youthServicesOutcome: youthServicesOutcomeItem,
+  reportedToPolice: boolean,
 ) => {
   const updateQuery = {
     status,
@@ -279,6 +282,7 @@ const updateReferralById = async (
     victimServicesOutcome,
     counsellingServicesOutcome,
     youthServicesOutcome,
+    reportedToPolice,
   };
   return Referral.findByIdAndUpdate(id, updateQuery, { new: true }).exec();
 };

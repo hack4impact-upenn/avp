@@ -130,6 +130,7 @@ interface IReferral extends mongoose.Document {
     incidentAddressZip: string;
     incidentAddressCity: string;
     incidentAddressState: string;
+    reportedToPolice: boolean;
 }
 declare const Referral: mongoose.Model<IReferral, {}, {}, {}, any>;
 export { IReferral, Referral, communicationItem, victimServicesOutcomeItem, counsellingServicesOutcomeItem, youthServicesOutcomeItem, fileObject, };

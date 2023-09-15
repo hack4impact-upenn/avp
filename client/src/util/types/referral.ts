@@ -129,6 +129,7 @@ export default interface IReferral {
   incidentAddressZip: string;
   incidentAddressCity: string;
   incidentAddressState: string;
+  reportedToPolice: boolean | null;
 
   // These fields are not in the database, but are used for the frontend
   // Page One
@@ -216,6 +217,7 @@ export const emptyReferral = {
   relationshipToVictimOther: '',
   guardianRelationshipOther: '',
   victimGender: '',
+  reportedToPolice: null,
 };
 
 export type {

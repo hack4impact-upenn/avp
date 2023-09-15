@@ -45,6 +45,7 @@ const crimeType = [
   'Stalking',
   'Theft',
   'Witnessing Violence (Youth Only)',
+  'Mass Violence'
 ];
 
 const policeDistrictOfCrime = [
@@ -74,12 +75,8 @@ const policeDistrictOfCrime = [
 
 export default function PageTwo({ data, setData }: Props) {
   const theme = useTheme();
-  const [crimeDate, setCrimeDate] = React.useState<Dayjs | null>(
-    dayjs('2000-01-01T00:00:00'),
-  );
-  const [homicideDate, sethomicideDate] = React.useState<Dayjs | null>(
-    dayjs('2000-01-01T00:00:00'),
-  );
+  const [crimeDate, setCrimeDate] = React.useState<Dayjs | null>();
+  const [homicideDate, sethomicideDate] = React.useState<Dayjs | null>();
 
   let homicideFields;
   if (data.crimeType == 'Homicide') {
@@ -90,29 +87,30 @@ export default function PageTwo({ data, setData }: Props) {
             value={data.homeMNum}
             id="outlined-number"
             label="M#/S#/AID#"
-            type="number"
             onChange={(event) =>
               setData({ ...data, homeMNum: event.target.value })
             }
           />
         </FormControl>
 
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DesktopDatePicker
-            label="Date of Death"
-            value={homicideDate}
-            onChange={(newValue: Dayjs | null) => {
-              sethomicideDate(newValue);
-            }}
-          />
-        </LocalizationProvider>
+        <FormControl sx={{ m: 1 }}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DesktopDatePicker
+              label="Date of Death"
+              value={homicideDate}
+              onChange={(newValue: Dayjs | null) => {
+                sethomicideDate(newValue);
+              }}
+            />
+          </LocalizationProvider>
+        </FormControl>
       </div>
     );
   }
 
   return (
     <div>
-      <FormControl sx={{ m: 1, minWidth: 600 }}>
+      <FormControl required sx={{ m: 1, minWidth: 600 }}>
         <InputLabel id="demo-simple-select-label">
           Type Of Crime / Victimization
         </InputLabel>
@@ -124,6 +122,7 @@ export default function PageTwo({ data, setData }: Props) {
           onChange={(event) =>
             setData({ ...data, crimeType: event.target.value as string })
           }
+          required
         >
           {crimeType.map((val) => (
             <MenuItem
@@ -151,7 +150,7 @@ export default function PageTwo({ data, setData }: Props) {
         </LocalizationProvider>
       </FormControl>
 
-      <FormControl sx={{ m: 1, minWidth: 240 }}>
+      <FormControl required sx={{ m: 1, minWidth: 240 }}>
         <InputLabel id="demo-simple-select-label">Gun Violence?</InputLabel>
         <Select
           value={
@@ -159,7 +158,7 @@ export default function PageTwo({ data, setData }: Props) {
               ? 'Yes'
               : data.isGunViolence === false
               ? 'No'
-              : 'Unknown'
+              : ''
           }
           labelId="demo-simple-select-label"
           id="demo-simple-select-label"
@@ -209,6 +208,39 @@ export default function PageTwo({ data, setData }: Props) {
       </FormControl>
 
       <br />
+
+      <FormControl required sx={{ m: 1, minWidth: 500 }}>
+        <InputLabel id="demo-simple-select-label">Incident Reported to the Police?</InputLabel>
+        <Select
+          value={
+            data.reportedToPolice
+              ? 'Yes'
+              : data.reportedToPolice === false
+              ? 'No'
+              : ''
+          }
+          labelId="demo-simple-select-label"
+          id="demo-simple-select-label"
+          label="Reported to Police?"
+          onChange={(event) => {
+            const val: string = event.target.value as string;
+            setData({
+              ...data,
+              reportedToPolice: val.includes('Yes')
+                ? true
+                : val.includes('No')
+                ? false
+                : null,
+            });
+          }}
+        >
+          <MenuItem value="Yes">Yes</MenuItem>
+          <MenuItem value="No">No</MenuItem>
+          <MenuItem value="Unknown">Unknown</MenuItem>
+        </Select>
+      </FormControl>
+
+      < br />
 
       <FormControl required sx={{ m: 1, minWidth: 360 }}>
         <TextField

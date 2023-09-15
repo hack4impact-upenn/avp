@@ -162,7 +162,7 @@ export default function PageOne({ data, setData }: Props) {
         </Select>
       </FormControl>
       <br />
-      <FormControl required sx={{ m: 1, width: 600 }}>
+      <FormControl sx={{ m: 1, width: 600 }}>
         <InputLabel id="demo-multiple-name-label">Victim Services</InputLabel>
         <Select
           labelId="demo-multiple-name-label"
