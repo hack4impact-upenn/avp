@@ -139,9 +139,7 @@ const guardianMainContact = ['Yes', 'No'];
 
 export default function PageThree({ data, setData }: Props) {
   const theme = useTheme();
-  const [survivorDOB, setsurvivorDOB] = React.useState<Dayjs | null>(
-    dayjs('2000-01-01T00:00:00'),
-  );
+  const [survivorDOB, setsurvivorDOB] = React.useState<Dayjs | null>();
 
   let otherGenderInput;
   if (data.survivorGender && data.survivorGender.indexOf('Other') >= 0) {
@@ -315,7 +313,7 @@ export default function PageThree({ data, setData }: Props) {
   if (data.crimeType.includes('Homicide')) {
     homicideQuestions = (
       <div>
-        <FormControl sx={{ m: 1, minWidth: 420 }}>
+        <FormControl required sx={{ m: 1, minWidth: 420 }}>
           <TextField
             value={data.survivorAddress}
             id="outlined-basic"
@@ -326,7 +324,7 @@ export default function PageThree({ data, setData }: Props) {
             }
           />
         </FormControl>
-        <FormControl sx={{ m: 1, minWidth: 240 }}>
+        <FormControl required sx={{ m: 1, minWidth: 240 }}>
           <InputLabel id="demo-simple-select-label">Gender</InputLabel>
           <Select
             value={data.victimGender}
@@ -360,7 +358,7 @@ export default function PageThree({ data, setData }: Props) {
     contactQuestions = (
       <div>
         <div>
-          <FormControl sx={{ m: 1, minWidth: 420 }}>
+          <FormControl required sx={{ m: 1, minWidth: 420 }}>
             <TextField
               value={data.guardianName}
               id="outlined-basic"
@@ -372,7 +370,7 @@ export default function PageThree({ data, setData }: Props) {
             />
           </FormControl>
 
-          <FormControl sx={{ m: 1, minWidth: 420 }}>
+          <FormControl required sx={{ m: 1, minWidth: 420 }}>
             <InputLabel id="demo-simple-select-label">
               Relationship of Adult to Youth Being Referred
             </InputLabel>
@@ -482,7 +480,7 @@ export default function PageThree({ data, setData }: Props) {
             </FormControl>
 
             {/* guardianPreferredContactMethod */}
-            <FormControl sx={{ m: 1, width: 240 }}>
+            <FormControl required sx={{ m: 1, width: 240 }}>
               <InputLabel id="demo-multiple-name-label">
                 Preferred Contact Method
               </InputLabel>
@@ -599,7 +597,7 @@ export default function PageThree({ data, setData }: Props) {
   return (
     <div>
       {/* survivorName */}
-      <FormControl sx={{ m: 1, minWidth: 420 }}>
+      <FormControl required sx={{ m: 1, minWidth: 420 }}>
         <TextField
           value={data.survivorName}
           id="outlined-basic"
@@ -612,7 +610,7 @@ export default function PageThree({ data, setData }: Props) {
       </FormControl>
 
       {/* relationship to victim of crime/violence */}
-      <FormControl sx={{ m: 1, minWidth: 420 }}>
+      <FormControl required sx={{ m: 1, minWidth: 420 }}>
         <InputLabel id="demo-simple-select-label">
           Relationship To Victim
         </InputLabel>
@@ -692,7 +690,7 @@ export default function PageThree({ data, setData }: Props) {
 
       <div>
         {/* survivorGender */}
-        <FormControl sx={{ m: 1, minWidth: 180 }}>
+        <FormControl required sx={{ m: 1, minWidth: 180 }}>
           <InputLabel id="demo-simple-select-label">Gender</InputLabel>
           <Select
             value={data.survivorGender}
@@ -722,7 +720,7 @@ export default function PageThree({ data, setData }: Props) {
         {otherGenderInput}
 
         {/* survivorRace */}
-        <FormControl sx={{ m: 1, minWidth: 180 }}>
+        <FormControl required sx={{ m: 1, minWidth: 180 }}>
           <InputLabel id="demo-simple-select-label">Race/Ethnicity</InputLabel>
           <Select
             value={data.survivorRace}
@@ -800,7 +798,7 @@ export default function PageThree({ data, setData }: Props) {
 
       {/* is parent/responsible adult the main contact */}
       <div>
-        <FormControl sx={{ m: 1, minWidth: 600 }}>
+        <FormControl required sx={{ m: 1, minWidth: 600 }}>
           <InputLabel id="demo-simple-select-label">
             Is a parent/responsible adult the main contact for the
             survivor/victim?

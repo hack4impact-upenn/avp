@@ -94,6 +94,7 @@ export default function FormPage() {
       otherServiceRequestedVictim: '',
       survivorGenderOther: '',
       survivorRaceOther: '',
+      relationshipToVictim: '',
       relationshipToVictimOther: '',
       guardianRelationshipOther: '',
     });

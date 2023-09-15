@@ -218,6 +218,7 @@ export const emptyReferral = {
   guardianRelationshipOther: '',
   victimGender: '',
   reportedToPolice: null,
+  preferredLanguage: '',
 };
 
 export type {
