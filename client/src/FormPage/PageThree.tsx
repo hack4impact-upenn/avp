@@ -93,6 +93,7 @@ const survivorGender = [
   'Male (man/boy)',
   'Non-binary/non-conforming',
   'Transgender',
+  'Gender Fluid',
   'Other',
   'Unknown',
 ];
@@ -325,7 +326,9 @@ export default function PageThree({ data, setData }: Props) {
           />
         </FormControl>
         <FormControl required sx={{ m: 1, minWidth: 240 }}>
-          <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+          <InputLabel id="demo-simple-select-label">
+            Gender of Victim
+          </InputLabel>
           <Select
             value={data.victimGender}
             labelId="demo-simple-select-label"
