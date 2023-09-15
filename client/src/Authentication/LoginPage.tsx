@@ -286,11 +286,11 @@ function LoginPage() {
                 Forgot password?
               </Link>
             </Grid>
-            <Grid item>
+            {/* <Grid item>
               <Link component={RouterLink} to="/register">
                 Sign up
               </Link>
-            </Grid>
+            </Grid> */}
           </FormRow>
         </FormCol>
       </FormGrid>
