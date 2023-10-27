@@ -18,9 +18,9 @@ exports.emailInviteLink = exports.emailResetPasswordLink = exports.emailVerifica
  */
 require("dotenv/config");
 const mail_1 = __importDefault(require("@sendgrid/mail"));
-const appName = 'Boilerplate'; // Replace with a relevant project name
-const senderName = 'Hack4Impact UPenn'; // Replace with a relevant project sender
-const baseUrl = 'http://localhost:3000'; // TODO: figure out better place to put this
+const appName = 'AVP Referrals Database'; // Replace with a relevant project name
+const senderName = 'AVP'; // Replace with a relevant project sender
+const baseUrl = 'https://avp-prod.vercel.app'; // TODO: figure out better place to put this
 // eslint-disable-next-line no-useless-concat
 mail_1.default.setApiKey(`${process.env.SENDGRID_API_KEY}`);
 /**

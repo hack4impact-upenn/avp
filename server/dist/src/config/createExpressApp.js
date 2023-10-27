@@ -24,6 +24,8 @@ const createExpressApp = (sessionStore) => {
     const app = (0, express_1.default)();
     // Set up passport and strategies
     (0, configPassport_1.default)(passport_1.default);
+    // UNCOMMENT FOR PROD
+    app.set('port', process.env.PORT || 4000);
     // Sets the port for the app
     // Gives express the ability to parse requests with JSON and turn the JSON into objects
     app.use(express_1.default.json());
@@ -32,7 +34,14 @@ const createExpressApp = (sessionStore) => {
         extended: true,
     }));
     // Gives express the ability accept origins outside its own to accept requests from
-    app.use((0, cors_1.default)({ credentials: true, origin: '*' }));
+    app.use((0, cors_1.default)({
+        credentials: true,
+        origin: [
+            'http://localhost:3000',
+            'https://anti-violence-philadelphia.netlify.app',
+            'https://avp-prod.vercel.app',
+        ],
+    }));
     // Gives express the ability to parse client cookies and add them to req.cookies
     app.use((0, cookie_parser_1.default)(process.env.COOKIE_SECRET));
     // Use express-session to maintain sessions

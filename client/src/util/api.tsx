@@ -41,9 +41,9 @@ async function resolve(promise: Promise<any>) {
 /**
  * To UPDATE DURING DEPLOYMENT USING ENVIRONMENT VARIABLES
  */
-const BACKENDURL = 'http://localhost:4000';
+// const BACKENDURL = 'http://localhost:4000';
 // UNCOMMENT FOR PROD
-// const BACKENDURL = 'https://avp.fly.dev';
+const BACKENDURL = 'https://avp.fly.dev';
 const URLPREFIX = `${BACKENDURL}/api`;
 
 /**

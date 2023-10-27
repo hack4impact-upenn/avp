@@ -21,7 +21,7 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import PersonAddAlt1OutlinedIcon from '@mui/icons-material/PersonAddAlt1Outlined';
 import HourglassTopOutlinedIcon from '@mui/icons-material/HourglassTopOutlined';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
-import { GridColumns, GridRenderCellParams } from '@mui/x-data-grid-pro';
+import { GridRenderCellParams } from '@mui/x-data-grid-pro';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import NoAccountsOutlinedIcon from '@mui/icons-material/NoAccountsOutlined';
 import { URLPREFIX, useDataFlexible, getData, putData } from '../util/api';
@@ -252,7 +252,7 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
   }, [referrals]);
 
   const apiRef = useGridApiRef();
-  const columns: GridColumns = [
+  const columns = [
     { field: 'id', headerName: 'ID', width: 30 },
     //Todo: make department multiselect
     {

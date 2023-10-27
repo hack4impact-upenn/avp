@@ -7,42 +7,42 @@ declare const getAllReferrals: () => Promise<(IReferral & Required<{
 declare const getAllDepartmentReferrals: (department: string) => Promise<(IReferral & Required<{
     _id: string;
 }>)[]>;
-declare const getReferralById: (id: string) => Promise<(IReferral & Required<{
+declare const getReferralById: (id: string) => Promise<IReferral & Required<{
     _id: string;
-}>) | null>;
-declare const updateReferralById: (id: string, status: string, departmentInCharge: string, program: string, staffAssigned: IUser, therapistAssigned: string, isReferral: boolean, survivorName: string, serviceRequested: string, agencyThatReferred: string, agencyRepName: string, agencyRepEmail: string, agencyRepPhone: string, survivorGender: string, survivorRace: string, survivorDOB: Date, survivorAge: number, survivorSchoolOrCommunitySite: string, survivorGrade: number, survivorPreferredContactMethod: string, isGuardianResponsible: boolean, guardianName: string, guardianRelationship: string, guardianAddress: string, guardianPhone: string, guardianEmail: string, guardianPreferredContactMethod: string, survivorAddress: string, survivorEmailAddress: string, survivorPhoneNumber: string, notesFromOrg: string, primaryLanguage: string, relationshipToVictim: string, crimeDCNum: string, crimeDistrict: string, crimeDate: Date, crimeType: string, isGunViolence: boolean, homDecedent: string, homDateOfDeath: Date, homType: string, homLocation: string, homAddress: string, homZipCode: string, homDecedentAge: number, homDecendentSex: string, homDecedentRace: string, homDecedentEthnicity: string, homFMVNum: string, homMEONum: string, homeMNum: string, homCaseInformation: string, historyOfCommunication: Array<communicationItem>, outreachLetterSent: boolean, transferredToCCWaitlist: boolean, followUpLetterSent: boolean, transferredToETO: boolean, victimServicesOutcome: victimServicesOutcomeItem, counsellingServicesOutcome: counsellingServicesOutcomeItem, youthServicesOutcome: youthServicesOutcomeItem, reportedToPolice: boolean) => Promise<(IReferral & Required<{
+}>>;
+declare const updateReferralById: (id: string, status: string, departmentInCharge: string, program: string, staffAssigned: IUser, therapistAssigned: string, isReferral: boolean, survivorName: string, serviceRequested: string, agencyThatReferred: string, agencyRepName: string, agencyRepEmail: string, agencyRepPhone: string, survivorGender: string, survivorRace: string, survivorDOB: Date, survivorAge: number, survivorSchoolOrCommunitySite: string, survivorGrade: number, survivorPreferredContactMethod: string, isGuardianResponsible: boolean, guardianName: string, guardianRelationship: string, guardianAddress: string, guardianPhone: string, guardianEmail: string, guardianPreferredContactMethod: string, survivorAddress: string, survivorEmailAddress: string, survivorPhoneNumber: string, notesFromOrg: string, primaryLanguage: string, relationshipToVictim: string, crimeDCNum: string, crimeDistrict: string, crimeDate: Date, crimeType: string, isGunViolence: boolean, homDecedent: string, homDateOfDeath: Date, homType: string, homLocation: string, homAddress: string, homZipCode: string, homDecedentAge: number, homDecendentSex: string, homDecedentRace: string, homDecedentEthnicity: string, homFMVNum: string, homMEONum: string, homeMNum: string, homCaseInformation: string, historyOfCommunication: Array<communicationItem>, outreachLetterSent: boolean, transferredToCCWaitlist: boolean, followUpLetterSent: boolean, transferredToETO: boolean, victimServicesOutcome: victimServicesOutcomeItem, counsellingServicesOutcome: counsellingServicesOutcomeItem, youthServicesOutcome: youthServicesOutcomeItem, reportedToPolice: boolean) => Promise<IReferral & Required<{
     _id: string;
-}>) | null>;
-declare const addToCommunicationHistory: (id: string, dateOfCommunication: Date, method: string, user: IUser, notes: string, didEstablishedContact: boolean, dateOfNextCommunication: Date) => Promise<(IReferral & Required<{
+}>>;
+declare const addToCommunicationHistory: (id: string, dateOfCommunication: Date, method: string, user: IUser, notes: string, didEstablishedContact: boolean, dateOfNextCommunication: Date) => Promise<IReferral & Required<{
     _id: string;
-}>) | null>;
-declare const updateCommunicationHistory: (id: string, index: string, dateOfCommunication: Date, method: string, user: IUser, notes: string, didEstablishedContact: boolean, dateOfNextCommunication: Date) => Promise<(IReferral & Required<{
+}>>;
+declare const updateCommunicationHistory: (id: string, index: string, dateOfCommunication: Date, method: string, user: IUser, notes: string, didEstablishedContact: boolean, dateOfNextCommunication: Date) => Promise<IReferral & Required<{
     _id: string;
-}>) | null>;
-declare const deleteCommunicationHistory: (id: string, index: number) => Promise<(IReferral & Required<{
+}>>;
+declare const deleteCommunicationHistory: (id: string, index: number) => Promise<IReferral & Required<{
     _id: string;
-}>) | null>;
+}>>;
 declare const getDuplicateReferrals: (phoneNumber: string, email: string) => Promise<(IReferral & Required<{
     _id: string;
 }>)[]>;
-declare const postVictimServicesOutcome: (id: string, eligibleForAVPVictimServices: boolean, sentVCAPInfotoClient: boolean, avpAdvocateAssistingWithVCAP: boolean, referredToOtherVSAgencyForVCAP: boolean, vsAgencyName: string, avpAdvocateProvidingCourtSupport: boolean, clientWorkingWithFMV: boolean, fmvNumber: boolean, referredToOtherAgencyForCourt: boolean, courtSupportAgencyName: string, avpAdvocateContactedADA: boolean, avpAdvocateContactedDetective: boolean, needsRelocationAssistance: boolean, relocationReferralWasSubmitted: boolean, referredToAgencyForOtherServices: boolean, otherAgencyNames: string, otherServices: string, additionalNotes: string) => Promise<(IReferral & Required<{
+declare const postVictimServicesOutcome: (id: string, eligibleForAVPVictimServices: boolean, sentVCAPInfotoClient: boolean, avpAdvocateAssistingWithVCAP: boolean, referredToOtherVSAgencyForVCAP: boolean, vsAgencyName: string, avpAdvocateProvidingCourtSupport: boolean, clientWorkingWithFMV: boolean, fmvNumber: boolean, referredToOtherAgencyForCourt: boolean, courtSupportAgencyName: string, avpAdvocateContactedADA: boolean, avpAdvocateContactedDetective: boolean, needsRelocationAssistance: boolean, relocationReferralWasSubmitted: boolean, referredToAgencyForOtherServices: boolean, otherAgencyNames: string, otherServices: string, additionalNotes: string) => Promise<IReferral & Required<{
     _id: string;
-}>) | null>;
-declare const postCounsellingServicesOutcome: (id: string, eligibleForAVPCounsellingServices: boolean, receivingCrisisCounselling: boolean, scheduledIntakeApptForIndividualTherapy: boolean, intakeAppointmentOutcome: boolean, receivingIndividualTherapy: boolean, therapistName: string, addedToIndividualTherapyWaitlist: boolean, referredForCounsellingServices: boolean, counsellingAgency: boolean, sentAVPSupportGroupInfo: boolean, attendingSupportGroup: boolean, supportGroupName: string, addedToSupportGroupWaitlist: boolean, additionalNotes: string) => Promise<(IReferral & Required<{
+}>>;
+declare const postCounsellingServicesOutcome: (id: string, eligibleForAVPCounsellingServices: boolean, receivingCrisisCounselling: boolean, scheduledIntakeApptForIndividualTherapy: boolean, intakeAppointmentOutcome: boolean, receivingIndividualTherapy: boolean, therapistName: string, addedToIndividualTherapyWaitlist: boolean, referredForCounsellingServices: boolean, counsellingAgency: boolean, sentAVPSupportGroupInfo: boolean, attendingSupportGroup: boolean, supportGroupName: string, addedToSupportGroupWaitlist: boolean, additionalNotes: string) => Promise<IReferral & Required<{
     _id: string;
-}>) | null>;
-declare const postYouthServicesOutcome: (id: string, eligibleForYVOServices: boolean, assignedToYVOTherapist: boolean, yvoStaffName: string, addedToYVOIndividualTherapyWaitlist: boolean, assignedToYVOGroup: boolean, addedToYVOGroupWaitlist: boolean, additionalNotes: string) => Promise<(IReferral & Required<{
+}>>;
+declare const postYouthServicesOutcome: (id: string, eligibleForYVOServices: boolean, assignedToYVOTherapist: boolean, yvoStaffName: string, addedToYVOIndividualTherapyWaitlist: boolean, assignedToYVOGroup: boolean, addedToYVOGroupWaitlist: boolean, additionalNotes: string) => Promise<IReferral & Required<{
     _id: string;
-}>) | null>;
-declare const putVictimServicesOutcome: (id: string, eligibleForAVPVictimServices: boolean, sentVCAPInfotoClient: boolean, avpAdvocateAssistingWithVCAP: boolean, referredToOtherVSAgencyForVCAP: boolean, vsAgencyName: string, avpAdvocateProvidingCourtSupport: boolean, clientWorkingWithFMV: boolean, fmvNumber: boolean, referredToOtherAgencyForCourt: boolean, courtSupportAgencyName: string, avpAdvocateContactedADA: boolean, avpAdvocateContactedDetective: boolean, needsRelocationAssistance: boolean, relocationReferralWasSubmitted: boolean, referredToAgencyForOtherServices: boolean, otherAgencyNames: string, otherServices: string, additionalNotes: string) => Promise<(IReferral & Required<{
+}>>;
+declare const putVictimServicesOutcome: (id: string, eligibleForAVPVictimServices: boolean, sentVCAPInfotoClient: boolean, avpAdvocateAssistingWithVCAP: boolean, referredToOtherVSAgencyForVCAP: boolean, vsAgencyName: string, avpAdvocateProvidingCourtSupport: boolean, clientWorkingWithFMV: boolean, fmvNumber: boolean, referredToOtherAgencyForCourt: boolean, courtSupportAgencyName: string, avpAdvocateContactedADA: boolean, avpAdvocateContactedDetective: boolean, needsRelocationAssistance: boolean, relocationReferralWasSubmitted: boolean, referredToAgencyForOtherServices: boolean, otherAgencyNames: string, otherServices: string, additionalNotes: string) => Promise<IReferral & Required<{
     _id: string;
-}>) | null>;
-declare const putCounsellingServicesOutcome: (id: string, eligibleForAVPCounsellingServices: boolean, receivingCrisisCounselling: boolean, scheduledIntakeApptForIndividualTherapy: boolean, intakeAppointmentOutcome: boolean, receivingIndividualTherapy: boolean, therapistName: string, addedToIndividualTherapyWaitlist: boolean, referredForCounsellingServices: boolean, counsellingAgency: boolean, sentAVPSupportGroupInfo: boolean, attendingSupportGroup: boolean, supportGroupName: string, addedToSupportGroupWaitlist: boolean, additionalNotes: string) => Promise<(IReferral & Required<{
+}>>;
+declare const putCounsellingServicesOutcome: (id: string, eligibleForAVPCounsellingServices: boolean, receivingCrisisCounselling: boolean, scheduledIntakeApptForIndividualTherapy: boolean, intakeAppointmentOutcome: boolean, receivingIndividualTherapy: boolean, therapistName: string, addedToIndividualTherapyWaitlist: boolean, referredForCounsellingServices: boolean, counsellingAgency: boolean, sentAVPSupportGroupInfo: boolean, attendingSupportGroup: boolean, supportGroupName: string, addedToSupportGroupWaitlist: boolean, additionalNotes: string) => Promise<IReferral & Required<{
     _id: string;
-}>) | null>;
-declare const putYouthServicesOutcome: (id: string, eligibleForYVOServices: boolean, assignedToYVOTherapist: boolean, yvoStaffName: string, addedToYVOIndividualTherapyWaitlist: boolean, assignedToYVOGroup: boolean, addedToYVOGroupWaitlist: boolean, additionalNotes: string) => Promise<(IReferral & Required<{
+}>>;
+declare const putYouthServicesOutcome: (id: string, eligibleForYVOServices: boolean, assignedToYVOTherapist: boolean, yvoStaffName: string, addedToYVOIndividualTherapyWaitlist: boolean, assignedToYVOGroup: boolean, addedToYVOGroupWaitlist: boolean, additionalNotes: string) => Promise<IReferral & Required<{
     _id: string;
-}>) | null>;
+}>>;
 declare const putReferralFileName: (id: string, name: string, key: string, type: string) => Promise<void>;
 declare const deleteReferralFileById: (id: string) => Promise<void>;
 declare const deleteFollowUpFileById: (id: string) => Promise<void>;

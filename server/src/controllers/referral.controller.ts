@@ -219,6 +219,7 @@ const uploadReferral = async (
           incidentAddressCity: row['Incident Address City'] || undefined,
           incidentAddressState: row['Incident Address State'] || undefined,
           primaryLanguage: row['Primary Language'] || undefined,
+          reportedToPolice: row['Reported To Police'] || undefined,
         };
         // if (
         //   !newReferral.status ||
@@ -332,9 +333,9 @@ const uploadReferral = async (
             newReferral.incidentAddressZip,
             newReferral.incidentAddressCity,
             newReferral.incidentAddressState,
+            newReferral.reportedToPolice
           ),
         );
-        console.log('here');
       })
       .on('end', async () => {
         try {
@@ -427,6 +428,7 @@ const createReferral = async (
     incidentAddressState,
     serviceRequestedVictim,
     otherServiceRequestedVictim,
+    reportedToPolice
   } = req.body;
   if (serviceRequestedVictim) {
     serviceRequested = `${serviceRequested}, ${serviceRequestedVictim}`;
@@ -578,6 +580,7 @@ const createReferral = async (
       incidentAddressZip,
       incidentAddressCity,
       incidentAddressState,
+      reportedToPolice,
     );
 
     const nameArr = survivorName.split(' ');
@@ -783,6 +786,7 @@ const updateReferral = async (
     victimServicesOutcome,
     counsellingServicesOutcome,
     youthServicesOutcome,
+    reportedToPolice
   } = req.body;
 
   if (
@@ -898,6 +902,7 @@ const updateReferral = async (
       victimServicesOutcome,
       counsellingServicesOutcome,
       youthServicesOutcome,
+      reportedToPolice,
     );
 
     const staffEmail = staffAssigned?.email;

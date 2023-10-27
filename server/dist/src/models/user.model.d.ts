@@ -9,12 +9,12 @@ declare const UserSchema: mongoose.Schema<any, mongoose.Model<any, any, any, any
     password: string;
     verified: boolean;
     admin: boolean;
-    email?: string | undefined;
-    phone?: string | undefined;
-    verificationToken?: string | undefined;
-    resetPasswordToken?: string | undefined;
-    resetPasswordTokenExpiryDate?: Date | undefined;
-    department?: string | undefined;
+    email?: string;
+    phone?: string;
+    verificationToken?: string;
+    resetPasswordToken?: string;
+    resetPasswordTokenExpiryDate?: Date;
+    department?: string;
 }>;
 interface IUser extends mongoose.Document {
     _id: string;

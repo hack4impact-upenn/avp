@@ -1,6 +1,6 @@
 import express from 'express';
 declare const uploadReferral: (req: express.Request, res: express.Response, next: express.NextFunction) => Promise<void>;
-declare const createReferral: (req: express.Request, res: express.Response, next: express.NextFunction) => Promise<express.Response<any, Record<string, any>> | undefined>;
+declare const createReferral: (req: express.Request, res: express.Response, next: express.NextFunction) => Promise<express.Response<any, Record<string, any>>>;
 declare const getReferrals: (req: express.Request, res: express.Response, next: express.NextFunction) => Promise<void>;
 declare const getDepartmentReferrals: (req: express.Request, res: express.Response, next: express.NextFunction) => Promise<void>;
 declare const getReferral: (req: express.Request, res: express.Response, next: express.NextFunction) => Promise<void>;

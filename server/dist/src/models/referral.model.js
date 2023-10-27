@@ -483,10 +483,6 @@ const ReferralSchema = new mongoose_1.default.Schema({
         type: String,
         required: false,
     },
-    reportedToPolice: {
-        type: Boolean,
-        required: true,
-    },
 });
 const Referral = mongoose_1.default.model('Referral', ReferralSchema);
 exports.Referral = Referral;
