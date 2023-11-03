@@ -189,13 +189,13 @@ export default function PageOne({ data, setData }: Props) {
         </Select>
       </FormControl>
       <br />
-      <FormControl style={{ marginBottom: '30px' }} sx={{ m: 1, width: 600 }}>
-        <InputLabel id="demo-multiple-name-label">Referral PDF</InputLabel>
+      <FormControl style={{ marginBottom: '30px' }} sx={{ m: 1, width: 400 }}>
+        <InputLabel style={{ marginBottom: '30px' }} id="demo-multiple-name-label">Referral PDF</InputLabel>
         <Button
           variant="contained"
           component="label"
           size="small"
-          style={{ margin: 'auto', background: '#4EA0B3', height: '26px' }}
+          style={{ margin: 'auto', background: '#4EA0B3', height: '26px', marginTop: '10px', padding: '15px 10px'}}
         >
           Upload
           <input type="file" hidden />
