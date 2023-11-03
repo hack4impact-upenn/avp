@@ -693,7 +693,7 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
       editable: true,
     },
     {
-      field: 'isParentContact',
+      field: 'isGuardianResponsible',
       headerName: 'Is Adult Responsible',
       width: 150,
       editable: true,
