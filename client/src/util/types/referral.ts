@@ -4,6 +4,7 @@
 
 import mongoose from 'mongoose';
 import IUser from './user';
+import dayjs, { Dayjs } from 'dayjs'; 
 
 interface ICommunicationItem {
   dateOfCommunication: Date;
@@ -132,6 +133,7 @@ export default interface IReferral {
   reportedToPolice: boolean | null;
   victimName: string;
   victimGender: string;
+  date: Dayjs | null;
 
   // These fields are not in the database, but are used for the frontend
   // Page One
@@ -221,6 +223,7 @@ export const emptyReferral = {
   reportedToPolice: null,
   preferredLanguage: '',
   victimName: '',
+  date: dayjs(),
 };
 
 export type {

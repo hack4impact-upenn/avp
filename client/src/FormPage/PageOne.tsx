@@ -11,6 +11,9 @@ import React from 'react';
 import { Theme, useTheme } from '@mui/material/styles';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { IReferral } from '../util/types/referral';
+import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Dayjs } from 'dayjs';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -135,6 +138,21 @@ export default function PageOne({ data, setData }: Props) {
         </Button>
       </FormControl>
       <br /> */}
+      <FormControl required sx={{ m: 1 }}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DesktopDatePicker
+            label="Date"
+            value={data.date}
+            onChange={(newValue: Dayjs | null) => {
+              setData({
+                ...data,
+                date: newValue,
+              });
+            }}
+          />
+        </LocalizationProvider>
+      </FormControl>
+      <br />
       <FormControl sx={{ m: 1, width: 600 }} required={(data.serviceRequestedVictim.length < 1 || data.serviceRequested.length > 0)}>
         <InputLabel id="demo-multiple-name-label">
           Counseling & Therapy

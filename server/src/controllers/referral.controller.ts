@@ -222,6 +222,7 @@ const uploadReferral = async (
           reportedToPolice: row['Reported To Police'] || undefined,
           victimName: row['Victim Name'] || undefined,
           victimGender: row['Victim Gender'] || undefined,
+          date: row['Date'] || undefined,
         };
         // if (
         //   !newReferral.status ||
@@ -338,6 +339,7 @@ const uploadReferral = async (
             newReferral.reportedToPolice,
             newReferral.victimName,
             newReferral.victimGender,
+            newReferral.date,
           ),
         );
       })
@@ -435,6 +437,7 @@ const createReferral = async (
     reportedToPolice,
     victimName,
     victimGender,
+    date,
   } = req.body;
   if (serviceRequestedVictim) {
     serviceRequested = `${serviceRequested}, ${serviceRequestedVictim}`;
@@ -511,6 +514,7 @@ const createReferral = async (
   if (!victimGender) missingFields.push('victimGender');
   if (!survivorGender) missingFields.push('survivorGender');
   if (!survivorRace) missingFields.push('survivorRace');
+  if (!date) missingFields.push('date');
 
   if (missingFields.length > 0) {
     return res.status(400).json({
@@ -595,6 +599,7 @@ const createReferral = async (
       reportedToPolice,
       victimName,
       victimGender,
+      date
     );
 
     const nameArr = survivorName.split(' ');
