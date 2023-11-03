@@ -28,11 +28,13 @@ import { URLPREFIX, useDataFlexible, getData, putData } from '../util/api';
 import IReferral from '../util/types/referral';
 import CircularProgress from '@mui/material/CircularProgress';
 import { GlobalProps } from '../util/types/generic';
+import dayjs from 'dayjs';
 
 /* Wrapper Around DataGridPremium */
 export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
   const [referralList, setReferralList] = useState<IReferral[]>([]);
-  const {data: referrals, setData: setReferrals} = useDataFlexible('referral/all');
+  const { data: referrals, setData: setReferrals } =
+    useDataFlexible('referral/all');
   const emptyStringArray: string[] = [''];
 
   /* For saving datagrid state */
@@ -153,27 +155,27 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
     }
   };
 
-  const handleFileDelete = async (id:string, urlSuffix:string) => {
+  const handleFileDelete = async (id: string, urlSuffix: string) => {
     const url = `${URLPREFIX}/referral/${id}/${urlSuffix}`;
     try {
-      const response = await axios.delete(
-        url,
-        {
-          responseType: 'blob',
-        },
-      );
+      const response = await axios.delete(url, {
+        responseType: 'blob',
+      });
       const res = await getData('referral/all');
       setReferrals(res);
     } catch (error) {
       console.error('Error downloading file:', error);
     }
-  }
+  };
 
-  const handleFileGet = async (key:string, name:string, type:string) => {
+  const handleFileGet = async (key: string, name: string, type: string) => {
     try {
-      const response = await axios.get(`${URLPREFIX}/referral/referralPDF/${key}`, {
-        responseType: 'blob',
-      });
+      const response = await axios.get(
+        `${URLPREFIX}/referral/referralPDF/${key}`,
+        {
+          responseType: 'blob',
+        },
+      );
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
@@ -183,7 +185,7 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
     } catch (error) {
       console.error('Error downloading file:', error);
     }
-  }
+  };
 
   function CustomFilterInputSingleSelect(props: any) {
     const {
@@ -417,6 +419,7 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
       width: 170,
       editable: true,
       type: 'date',
+      valueFormatter: (params) => dayjs(params.value).format('DD/MM/YYYY'),
     },
     {
       field: 'method',
@@ -450,6 +453,7 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
       width: 150,
       editable: true,
       type: 'date',
+      valueFormatter: (params) => dayjs(params.value).format('DD/MM/YYYY'),
     },
     {
       field: 'outreachLetter',
@@ -668,6 +672,7 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
       width: 150,
       editable: true,
       type: 'date',
+      valueFormatter: (params) => dayjs(params.value).format('DD/MM/YYYY'),
     },
     {
       field: 'survivorAge',
@@ -849,6 +854,7 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
       width: 150,
       editable: true,
       type: 'date',
+      valueFormatter: (params) => dayjs(params.value).format('DD/MM/YYYY'),
     },
     {
       field: 'crimeType',
@@ -874,6 +880,7 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
       width: 150,
       editable: true,
       type: 'date',
+      valueFormatter: (params) => dayjs(params.value).format('DD/MM/YYYY'),
     },
     {
       field: 'homCauseOfDeath',
@@ -997,8 +1004,13 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
         components={{ Toolbar: GridToolbar }}
         processRowUpdate={(updatedRow, originalRow) => {
           console.log(updatedRow);
-          const response = putData(`referral/${updatedRow.id}`, updatedRow).then(() => {
-            const res = getData('referral/all').then((res) => setReferrals(res));
+          const response = putData(
+            `referral/${updatedRow.id}`,
+            updatedRow,
+          ).then(() => {
+            const res = getData('referral/all').then((res) =>
+              setReferrals(res),
+            );
           });
           return updatedRow;
         }}

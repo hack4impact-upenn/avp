@@ -428,7 +428,7 @@ const createReferral = async (
     incidentAddressState,
     serviceRequestedVictim,
     otherServiceRequestedVictim,
-    reportedToPolice
+    reportedToPolice,
   } = req.body;
   if (serviceRequestedVictim) {
     serviceRequested = `${serviceRequested}, ${serviceRequestedVictim}`;
@@ -1389,7 +1389,7 @@ const updateVictimServicesOutcome = async (
       referredToAgencyForOtherServices,
       otherAgencyNames,
       otherServices,
-      additionalNotes,
+      additionalNotes
     );
     res.status(StatusCode.OK).json(outcome);
   } catch (err) {

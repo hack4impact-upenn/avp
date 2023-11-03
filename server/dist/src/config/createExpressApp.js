@@ -40,6 +40,7 @@ const createExpressApp = (sessionStore) => {
             'http://localhost:3000',
             'https://anti-violence-philadelphia.netlify.app',
             'https://avp-prod.vercel.app',
+            'https://avpphila.vercel.app',
         ],
     }));
     // Gives express the ability to parse client cookies and add them to req.cookies

@@ -43,6 +43,7 @@ const createExpressApp = (sessionStore: MongoStore): express.Express => {
         'http://localhost:3000',
         'https://anti-violence-philadelphia.netlify.app',
         'https://avp-prod.vercel.app',
+        'https://avpphila.vercel.app',
       ],
     }),
   );

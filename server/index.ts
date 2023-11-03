@@ -1,6 +1,7 @@
 import MongoConnection from './src/config/mongoConnection';
 import createExpressApp from './src/config/createExpressApp';
 import 'dotenv/config';
+import cors from 'cors';
 
 const main = async () => {
   // Listen for termination
