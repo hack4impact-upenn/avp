@@ -51,7 +51,6 @@ const victimServices = [
   'Victims Compensation Assistance Program (VCAP)',
   'Other: Specify Below',
 ];
-
 export default function PageOne({ data, setData }: Props) {
   const theme = useTheme();
   const handleChange = (event: any) => {
@@ -136,7 +135,7 @@ export default function PageOne({ data, setData }: Props) {
         </Button>
       </FormControl>
       <br /> */}
-      <FormControl sx={{ m: 1, width: 600 }}>
+      <FormControl sx={{ m: 1, width: 600 }} required={(data.serviceRequestedVictim.length < 1 || data.serviceRequested.length > 0)}>
         <InputLabel id="demo-multiple-name-label">
           Counseling & Therapy
         </InputLabel>
@@ -162,7 +161,7 @@ export default function PageOne({ data, setData }: Props) {
         </Select>
       </FormControl>
       <br />
-      <FormControl sx={{ m: 1, width: 600 }}>
+      <FormControl sx={{ m: 1, width: 600 }} required={(data.serviceRequested.length < 1 || data.serviceRequestedVictim.length > 0)}>
         <InputLabel id="demo-multiple-name-label">Victim Services</InputLabel>
         <Select
           labelId="demo-multiple-name-label"
@@ -176,6 +175,7 @@ export default function PageOne({ data, setData }: Props) {
           onChange={handleChangeVictim}
           input={<OutlinedInput label="Victim Services" />}
           MenuProps={MenuProps}
+          required
         >
           {victimServices.map((val) => (
             <MenuItem

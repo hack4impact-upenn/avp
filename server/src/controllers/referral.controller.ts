@@ -220,6 +220,8 @@ const uploadReferral = async (
           incidentAddressState: row['Incident Address State'] || undefined,
           primaryLanguage: row['Primary Language'] || undefined,
           reportedToPolice: row['Reported To Police'] || undefined,
+          victimName: row['Victim Name'] || undefined,
+          victimGender: row['Victim Gender'] || undefined,
         };
         // if (
         //   !newReferral.status ||
@@ -333,7 +335,9 @@ const uploadReferral = async (
             newReferral.incidentAddressZip,
             newReferral.incidentAddressCity,
             newReferral.incidentAddressState,
-            newReferral.reportedToPolice
+            newReferral.reportedToPolice,
+            newReferral.victimName,
+            newReferral.victimGender,
           ),
         );
       })
@@ -429,6 +433,8 @@ const createReferral = async (
     serviceRequestedVictim,
     otherServiceRequestedVictim,
     reportedToPolice,
+    victimName,
+    victimGender,
   } = req.body;
   if (serviceRequestedVictim) {
     serviceRequested = `${serviceRequested}, ${serviceRequestedVictim}`;
@@ -447,7 +453,7 @@ const createReferral = async (
   }
 
   const missingFields = [];
-  if (isGunViolence === null) isGunViolence = false;
+  // if (isGunViolence === null) isGunViolence = false;
   // if (isGuardianResponsible == undefined) missingFields.push('isGuardianResponsible');
   if (isGuardianResponsible) {
     if (!guardianName) missingFields.push('guardianName');
@@ -491,7 +497,8 @@ const createReferral = async (
   if (!crimeType) missingFields.push('crimeType');
   if (!survivorPreferredContactMethod)
     missingFields.push('survivorPreferredContactMethod');
-  if (isGunViolence === undefined) missingFields.push('isGunViolence');
+  if (isGunViolence === undefined || isGunViolence === null) missingFields.push('isGunViolence');
+  if (reportedToPolice === undefined || reportedToPolice === null) missingFields.push('reportedToPolice');
   if (outreachLetterSent === undefined)
     missingFields.push('outreachLetterSent');
   if (transferredToCCWaitlist === undefined)
@@ -499,6 +506,11 @@ const createReferral = async (
   if (followUpLetterSent === undefined)
     missingFields.push('followUpLetterSent');
   if (transferredToETO === undefined) missingFields.push('transferredToETO');
+  if (!survivorAddress) missingFields.push('survivorAddress');
+  if (!victimName) missingFields.push('victimName');
+  if (!victimGender) missingFields.push('victimGender');
+  if (!survivorGender) missingFields.push('survivorGender');
+  if (!survivorRace) missingFields.push('survivorRace');
 
   if (missingFields.length > 0) {
     return res.status(400).json({
@@ -581,6 +593,8 @@ const createReferral = async (
       incidentAddressCity,
       incidentAddressState,
       reportedToPolice,
+      victimName,
+      victimGender,
     );
 
     const nameArr = survivorName.split(' ');

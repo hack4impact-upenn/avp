@@ -546,6 +546,14 @@ const ReferralSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  victimName: {
+    type: String,
+    required: true,
+  },
+  victimGender: {
+    type: String,
+    required: true,
+  },
 });
 
 interface IReferral extends mongoose.Document {
@@ -617,6 +625,8 @@ interface IReferral extends mongoose.Document {
   incidentAddressCity?: string;
   incidentAddressState?: string;
   reportedToPolice?: boolean;
+  victimName: string;
+  victimGender: string;
 }
 
 const Referral = mongoose.model<IReferral>('Referral', ReferralSchema);

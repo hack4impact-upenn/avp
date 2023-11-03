@@ -75,6 +75,8 @@ const createNewReferral = async (
   incidentAddressCity: string | undefined,
   incidentAddressState: string | undefined,
   reportedToPolice: boolean | null,
+  victimName: string | undefined,
+  victimGender: string | undefined,
 ): Promise<IReferral> => {
   const newReferral = new Referral({
     staffName,
@@ -142,6 +144,8 @@ const createNewReferral = async (
     incidentAddressCity,
     incidentAddressState,
     reportedToPolice,
+    victimName,
+    victimGender,
   });
   const referral: IReferral = await newReferral.save();
   return referral;

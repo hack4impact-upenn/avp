@@ -57,13 +57,12 @@ export default function PageFour({ data, setData }: Props) {
               }
             />
           </FormControl>
-          <FormControl required sx={{ m: 1, minWidth: 420 }}>
+          <FormControl sx={{ m: 1, minWidth: 420 }}>
             <TextField
               value={data.departmentInCharge}
               id="outlined-basic"
               variant="outlined"
               label="Department"
-              required
               onChange={(event) =>
                 setData({ ...data, departmentInCharge: event.target.value })
               }
