@@ -1,6 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import {
+  createBlankReferral,
   createReferral,
   getDepartmentReferrals,
   getReferral,
@@ -42,6 +43,8 @@ const csvUpload = multer({ dest: 'uploads/' });
 const router = express.Router();
 
 router.post('/create', createReferral);
+
+router.post('/create-blank', createBlankReferral);
 
 router.get('/all', getReferrals);
 

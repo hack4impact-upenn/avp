@@ -21,6 +21,9 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import { GlobalProps } from '../util/types/generic';
 import UploadModal from './UploadModal';
+import { postData } from '../util/api';
+import { useNavigate } from 'react-router-dom';
+import { IReferral, emptyReferral } from '../util/types/referral';
 
 const styles = {
   main: {
@@ -37,6 +40,7 @@ export default function DatabasePage({
   globalProps,
   setGlobalProps,
 }: GlobalProps) {
+  const navigate = useNavigate();
   const drawerWidth = 230;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleButtonClick = () => {
@@ -61,7 +65,23 @@ export default function DatabasePage({
             <Typography sx={{ mb: 2 }} color="text.secondary">
               See all referrals here
             </Typography>
-            <Button variant="contained" href="/form-add">
+            <Button variant="contained" onClick={()=> 
+            {
+              postData(`referral/create-blank`, emptyReferral).then((res) => {
+                if (res.error) {
+                  console.log(res.error.data.fields);
+                  // setMissingFields(
+                  //   res.error.data.fields
+                  //     ? res.error.data.fields
+                  //     : ['Error: failed to upload try again'],
+                  // );
+                } else {
+                  const referral = res.data;
+                  console.log('Successfully pushed!', referral, referral.id);
+                  navigate('form-add/:referral?.id');
+                }
+              });
+          }}>
               ADD NEW REFERRAL
             </Button>
           </CardContent>

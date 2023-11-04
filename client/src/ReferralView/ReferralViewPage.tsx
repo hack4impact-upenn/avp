@@ -132,7 +132,7 @@ export default function FormPage({ globalProps, setGlobalProps }: GlobalProps) {
           <div style={{ width: '0', margin: 'auto' }}>
             <CircularProgress size={80} />
           </div>
-        ) : referral?.error == null ? (
+        ) : referral?.error == null || !id ? (
           <div>
             <TabPanel value={value} index={0}>
               <ServiceReq referral={data} setReferral={setData} />

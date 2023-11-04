@@ -25,7 +25,7 @@ import { GridRenderCellParams } from '@mui/x-data-grid-pro';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import NoAccountsOutlinedIcon from '@mui/icons-material/NoAccountsOutlined';
 import { URLPREFIX, useDataFlexible, getData, putData } from '../util/api';
-import IReferral from '../util/types/referral';
+import {emptyReferral} from '../util/types/referral';
 import CircularProgress from '@mui/material/CircularProgress';
 import { GlobalProps } from '../util/types/generic';
 import dayjs from 'dayjs';
@@ -399,7 +399,7 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
       headerName: 'View Referral',
       width: 140,
       align: 'center',
-      renderCell: (params: GridRenderCellParams<Date>) => (
+      renderCell: (params: GridRenderCellParams<any>) => (
         <div style={{ width: '100%', display: 'flex', alignItems: 'center' }}>
           <Button
             variant="contained"

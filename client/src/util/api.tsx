@@ -43,7 +43,7 @@ async function resolve(promise: Promise<any>) {
  */
 // const BACKENDURL = 'http://localhost:4000';
 // UNCOMMENT FOR PROD
-const BACKENDURL = 'https://avp.fly.dev';
+const BACKENDURL = 'http://localhost:4000';//'https://avp.fly.dev';
 const URLPREFIX = `${BACKENDURL}/api`;
 
 /**

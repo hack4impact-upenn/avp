@@ -82,7 +82,12 @@ function App() {
                       />
                       {/* Routes accessed only if user is authenticated */}
                       <Route element={<ProtectedRoutesWrapper />}>
-                        <Route path="/form-add" element={<FormPage />} />
+                        <Route path="/form-add" element={
+                            <ReferralViewPage
+                              globalProps={globalProps}
+                              setGlobalProps={setGlobalProps}
+                            />
+                          } />
                         <Route
                           path="/referral/:id"
                           element={
