@@ -3,8 +3,8 @@
  */
 
 import mongoose from 'mongoose';
+import dayjs, { Dayjs } from 'dayjs';
 import IUser from './user';
-import dayjs, { Dayjs } from 'dayjs'; 
 
 interface ICommunicationItem {
   dateOfCommunication: Date;

@@ -4,16 +4,15 @@ import {
   MenuItem,
   Select,
   TextField,
-  Box,
   Button,
 } from '@mui/material';
 import React from 'react';
 import { Theme, useTheme } from '@mui/material/styles';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import { IReferral } from '../util/types/referral';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Dayjs } from 'dayjs';
+import { IReferral } from '../util/types/referral';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -153,7 +152,13 @@ export default function PageOne({ data, setData }: Props) {
         </LocalizationProvider>
       </FormControl>
       <br />
-      <FormControl sx={{ m: 1, width: 600 }} required={(data.serviceRequestedVictim.length < 1 || data.serviceRequested.length > 0)}>
+      <FormControl
+        sx={{ m: 1, width: 600 }}
+        required={
+          data.serviceRequestedVictim.length < 1 ||
+          data.serviceRequested.length > 0
+        }
+      >
         <InputLabel id="demo-multiple-name-label">
           Counseling & Therapy
         </InputLabel>
@@ -179,7 +184,13 @@ export default function PageOne({ data, setData }: Props) {
         </Select>
       </FormControl>
       <br />
-      <FormControl sx={{ m: 1, width: 600 }} required={(data.serviceRequested.length < 1 || data.serviceRequestedVictim.length > 0)}>
+      <FormControl
+        sx={{ m: 1, width: 600 }}
+        required={
+          data.serviceRequested.length < 1 ||
+          data.serviceRequestedVictim.length > 0
+        }
+      >
         <InputLabel id="demo-multiple-name-label">Victim Services</InputLabel>
         <Select
           labelId="demo-multiple-name-label"
@@ -208,12 +219,23 @@ export default function PageOne({ data, setData }: Props) {
       </FormControl>
       <br />
       <FormControl style={{ marginBottom: '30px' }} sx={{ m: 1, width: 400 }}>
-        <InputLabel style={{ marginBottom: '30px' }} id="demo-multiple-name-label">Referral PDF</InputLabel>
+        <InputLabel
+          style={{ marginBottom: '30px' }}
+          id="demo-multiple-name-label"
+        >
+          Referral PDF
+        </InputLabel>
         <Button
           variant="contained"
           component="label"
           size="small"
-          style={{ margin: 'auto', background: '#4EA0B3', height: '26px', marginTop: '10px', padding: '15px 10px'}}
+          style={{
+            margin: 'auto',
+            background: '#4EA0B3',
+            height: '26px',
+            marginTop: '10px',
+            padding: '15px 10px',
+          }}
         >
           Upload
           <input type="file" hidden />
