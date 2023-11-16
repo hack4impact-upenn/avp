@@ -238,8 +238,9 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
     InputComponentProps: { type: 'text' },
   };
   useEffect(() => {
+    console.log(referrals)
     setReferralList(
-      referrals?.data.map((referral: IReferral) => {
+      referrals?.data?.map((referral: IReferral) => {
         referral.id = referral._id;
         if (referral.staffAssigned != null) {
           referral.staffName =
@@ -643,6 +644,12 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
       width: 150,
       editable: true,
     },
+    {
+      field: 'departmentInCharge',
+      headerName: 'Department',
+      width: 150,
+      editable: true,
+    },
     //Todo: Make multiselect
     {
       field: 'survivorGender',
@@ -681,6 +688,18 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
       editable: true,
     },
     {
+      field: 'survivorEmail',
+      headerName: 'Survivor Email',
+      width: 150,
+      editable: true,
+    },
+    {
+      field: 'survivorPreferredContactMethod',
+      headerName: 'Preferred Contact Method',
+      width: 150,
+      editable: true,
+    },
+    {
       field: 'survivorSchoolOrCommunitySite',
       headerName: 'Survivor School/Community Site',
       width: 150,
@@ -690,6 +709,49 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
       field: 'survivorGrade',
       headerName: 'Survivor Grade',
       width: 150,
+      editable: true,
+    },
+    {
+      field: 'incidentAddressObj',
+      headerName: 'Incident Address',
+      width: 150,
+      editable: true,
+      valueGetter: (params) => {
+        let result: string[] = [];
+        if (params.row.incidentAddressObj) {
+          if (params.row.incidentAddressObj.street) {
+            result.push(params.row.incidentAddressOb.street as string);
+          }
+        } else if (params.row.incidentAddress)  {
+          result.push(params.row.incidentAddress as string)
+        } else {
+          result = ["Unknown"];
+        }
+        return result.join(", ");
+      },
+    },
+    {
+      field: 'incidentAddressObj',
+      headerName: 'Incident Zipcode',
+      width: 150,
+      editable: true,
+      valueGetter: (params) => {
+        let result: string[] = [];
+        if (params.row.incidentAddressObj) {
+          if (params.row.incidentAddressObj.zipcode) {
+            result.push(params.row.incidentAddressObj.zipcode as string);
+          }
+        } else {
+          result = ["Unknown"];
+        }
+        return result.join(", ");
+      },
+    },
+    {
+      field: 'reportedToPolice',
+      headerName: 'Reported To Police',
+      width: 120,
+      type: 'boolean',
       editable: true,
     },
     {
@@ -711,10 +773,40 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
       editable: true,
     },
     {
-      field: 'guardianAddress',
-      headerName: 'Address of Adult',
+      field: 'guardianAddressObj',
+      headerName: 'Guardian Address',
       width: 150,
       editable: true,
+      valueGetter: (params) => {
+        let result: string[] = [];
+        if (params.row.guardianAddressObj) {
+          if (params.row.guardianAddressObj.street) {
+            result.push(params.row.guardianAddressObj.street as string);
+          }
+        } else if (params.row.guardianAddress)  {
+          result.push(params.row.guardianAddress as string)
+        } else {
+          result = ["Unknown"];
+        }
+        return result.join(", ");
+      },
+    },
+    {
+      field: 'guardianAddressObj',
+      headerName: 'Guardian Zipcode',
+      width: 150,
+      editable: true,
+      valueGetter: (params) => {
+        let result: string[] = [];
+        if (params.row.guardianAddressObj) {
+          if (params.row.guardianAddressObj.zipcode) {
+            result.push(params.row.guardianAddressObj.zipcode as string);
+          }
+        } else {
+          result = ["Unknown"];
+        }
+        return result.join(", ");
+      },
     },
     {
       field: 'guardianPhone',
@@ -735,10 +827,42 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
       editable: true,
     },
     {
-      field: 'survivorAddress',
+      field: 'survivorAddressObj',
       headerName: 'Survivor Address',
       width: 150,
       editable: true,
+      valueGetter: (params) => {
+        console.log({ params });
+        let result: string[] = [];
+        if (params.row.survivorAddressObj) {
+          if (params.row.survivorAddressObj.street) {
+            result.push(params.row.survivorAddressObj.street as string);
+          }
+        } else if (params.row.survivorAddress) {
+          result.push(params.row.survivorAddress as string)
+        } else {
+          result = ["Unknown"];
+        }
+        return result.join(", ");
+      },
+    },
+    {
+      field: 'survivorAddressObj',
+      headerName: 'Survivor Zipcode',
+      width: 150,
+      editable: true,
+      valueGetter: (params) => {
+        console.log({ params });
+        let result: string[] = [];
+        if (params.row.survivorAddressObj) {
+          if (params.row.survivorAddressObj.zipcode) {
+            result.push(params.row.survivorAddressObj.zipcode as string);
+          }
+        } else {
+          result = ["Unknown"];
+        }
+        return result.join(", ");
+      },
     },
     {
       field: 'survivorPhoneNumber',
@@ -857,6 +981,18 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
       valueFormatter: (params) => dayjs(params.value).format('DD/MM/YYYY'),
     },
     {
+      field: 'victimName',
+      headerName: 'Name of Victim',
+      width: 150,
+      editable: true,
+    },
+    {
+      field: 'victimGender',
+      headerName: 'Gender of Victim',
+      width: 150,
+      editable: true,
+    },
+    {
       field: 'crimeType',
       headerName: 'Type of Crime/Victimization',
       width: 150,
@@ -905,6 +1041,19 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
       headerName: 'Homicide Address',
       width: 150,
       editable: true,
+      valueGetter: (params) => {
+        let result: string[] = [];
+        if (params.row.homAddressObj) {
+          if (params.row.homAddressObj.street) {
+            result.push(params.row.homAddressObj.street as string);
+          }
+        } else if (params.row.homAddress)  {
+          result.push(params.row.homAddress as string)
+        } else {
+          result = ["Unknown"];
+        }
+        return result.join(", ");
+      },
     },
     {
       field: 'homZipCode',
