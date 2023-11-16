@@ -5,6 +5,13 @@
 import mongoose from 'mongoose';
 import { IUser, UserSchema } from './user.model';
 
+interface addressItem {
+  street: string;
+  city: string;
+  state: string;
+  zipcode: string;
+}
+
 interface communicationItem {
   dateOfCommunication: Date;
   method: string;
@@ -67,6 +74,25 @@ interface fileObject {
   key: string;
   type: string;
 }
+
+const addressItemSchema = new mongoose.Schema({
+  street: {
+    type: String,
+    required: true,
+  },
+  city: {
+    type: String,
+    required: false,
+  },
+  state: {
+    type: String,
+    required: false,
+  },
+  zip: {
+    type: String,
+    required: false,
+  },
+});
 
 const communicationItemSchema = new mongoose.Schema({
   dateOfCommunication: {
@@ -361,8 +387,8 @@ const ReferralSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  guardianAddress: {
-    type: String,
+  guardianAddressObj: {
+    type: addressItemSchema,
     required: false,
   },
   guardianPhone: {
@@ -377,8 +403,8 @@ const ReferralSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  survivorAddress: {
-    type: String,
+  survivorAddressObj: {
+    type: addressItemSchema,
     required: false,
   },
   survivorEmailAddress: {
@@ -446,8 +472,8 @@ const ReferralSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  homAddress: {
-    type: String,
+  homAddressObj: {
+    type: addressItemSchema,
     required: false,
   },
   homZipCode: {
@@ -530,20 +556,8 @@ const ReferralSchema = new mongoose.Schema({
   referralFile: {
     type: FileObject,
   },
-  incidentAddress: {
-    type: String,
-    required: false,
-  },
-  incidentAddressZip: {
-    type: String,
-    required: false,
-  },
-  incidentAddressCity: {
-    type: String,
-    required: false,
-  },
-  incidentAddressState: {
-    type: String,
+  incidentAddressObj: {
+    type: addressItemSchema,
     required: false,
   },
   victimName: {
@@ -583,12 +597,12 @@ interface IReferral extends mongoose.Document {
   isGuardianResponsible?: boolean;
   guardianName?: string;
   guardianRelationship?: string;
-  guardianAddress: string;
+  guardianAddressObj: addressItem;
   guardianPhone?: string;
   guardianEmail?: string;
   guardianPreferredContactMethod?: string;
   survivorEmailAddress?: string;
-  survivorAddress?: string;
+  survivorAddressObj?: addressItem;
   survivorPhoneNumber?: string;
   survivorPreferredContactMethod?: string;
   notesFromOrg?: string;
@@ -603,7 +617,7 @@ interface IReferral extends mongoose.Document {
   homDateOfDeath?: Date | string;
   homType?: string;
   homLocation?: string;
-  homAddress?: string;
+  homAddressObj?: addressItem;
   homZipCode?: string;
   homDecedentAge?: number;
   homDecendentSex?: string;
@@ -624,10 +638,7 @@ interface IReferral extends mongoose.Document {
   followUpLetterFile?: fileObject;
   outReachLetterFile?: fileObject;
   referralFile?: fileObject;
-  incidentAddress?: string;
-  incidentAddressZzip?: string;
-  incidentAddressCity?: string;
-  incidentAddressState?: string;
+  incidentAddressObj?: addressItem;
   reportedToPolice?: boolean;
   victimName: string;
   victimGender: string;
@@ -639,6 +650,7 @@ const Referral = mongoose.model<IReferral>('Referral', ReferralSchema);
 export {
   IReferral,
   Referral,
+  addressItem,
   communicationItem,
   victimServicesOutcomeItem,
   counsellingServicesOutcomeItem,
