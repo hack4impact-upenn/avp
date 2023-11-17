@@ -18,6 +18,7 @@ import VictimServicesOutcome from './VictimServicesOutcome';
 import CounselingServicesOutcome from './CounselingServicesOutcome';
 import YouthServicesOutcome from './YouthServicesOutcome';
 import CommunicationHistory from './CommunicationHistory';
+import AdditionalHomInfo from './AdditionalHomInfo'
 import { IReferral, emptyReferral } from '../util/types/referral';
 import { GlobalProps } from '../util/types/generic';
 
@@ -43,6 +44,7 @@ export default function FormPage({ globalProps, setGlobalProps }: GlobalProps) {
   const temp = {};
   const [data, setData] = useState(temp);
   const referral = useData(`referral/${id}`);
+  // const referral = id && id > 0 ? useData(`referral/${id}`) : emptyReferral;
   console.log(referral);
 
   interface TabPanelProps {
@@ -126,6 +128,7 @@ export default function FormPage({ globalProps, setGlobalProps }: GlobalProps) {
             <Tab label="Victim Services Outcome" />
             <Tab label="Counselling Services Outcome" />
             <Tab label="Youth Services Outcome" />
+            <Tab label="Additional Homicide Info" />
           </Tabs>
         </div>
         {!referral ? (
@@ -157,6 +160,9 @@ export default function FormPage({ globalProps, setGlobalProps }: GlobalProps) {
             </TabPanel>
             <TabPanel value={value} index={7}>
               <YouthServicesOutcome data={data} setData={setData} />
+            </TabPanel>
+            <TabPanel value={value} index={8}>
+              <AdditionalHomInfo referral={data} setReferral={setData} />
             </TabPanel>
           </div>
         ) : (
