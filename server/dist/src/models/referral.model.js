@@ -363,7 +363,7 @@ const ReferralSchema = new mongoose_1.default.Schema({
         type: Boolean,
         required: true,
     },
-    homDecendent: {
+    homDecedent: {
         type: String,
         required: false,
     },
@@ -391,7 +391,7 @@ const ReferralSchema = new mongoose_1.default.Schema({
         type: String,
         required: false,
     },
-    homDecendentAge: {
+    homDecedentAge: {
         type: Number,
         required: false,
     },

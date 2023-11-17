@@ -276,8 +276,8 @@ export default function AdditionalHomInfo({ referral, setReferral }: Props) {
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
           multiple
-          value={data?.homDecendentSex ? data?.homDecendentSex.split(', ') : []}
-          onChange={(event) => {handleChange(event,'homDecendentSex')}}
+          value={data?.homDecedentSex ? data?.homDecedentSex.split(', ') : []}
+          onChange={(event) => {handleChange(event,'homDecedentSex')}}
           input={<OutlinedInput label="Homocide Decedent Gender" />}
           MenuProps={MenuProps}
           required

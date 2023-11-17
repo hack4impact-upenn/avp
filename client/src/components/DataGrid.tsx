@@ -1005,7 +1005,7 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
       editable: true,
     },
     {
-      field: 'homDecendent',
+      field: 'homDecedent',
       headerName: 'Homicide Decedent',
       width: 150,
       editable: true,
@@ -1062,7 +1062,7 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
       editable: true,
     },
     {
-      field: 'homDecendentAge',
+      field: 'homDecedentAge',
       headerName: 'Homicide Decedent Age',
       width: 150,
       editable: true,

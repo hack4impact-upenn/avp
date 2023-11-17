@@ -452,7 +452,7 @@ const ReferralSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
-  homDecendent: {
+  homDecedent: {
     type: String,
     required: false,
   },
@@ -480,7 +480,7 @@ const ReferralSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  homDecendentAge: {
+  homDecedentAge: {
     type: Number,
     required: false,
   },
@@ -620,7 +620,7 @@ interface IReferral extends mongoose.Document {
   homAddressObj?: addressItem;
   homZipCode?: string;
   homDecedentAge?: number;
-  homDecendentSex?: string;
+  homDecedentSex?: string;
   homDecedentRace?: string;
   homDecedentEthnicity: string;
   homFMVNum: string;

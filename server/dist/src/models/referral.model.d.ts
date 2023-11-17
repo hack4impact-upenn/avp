@@ -108,7 +108,7 @@ interface IReferral extends mongoose.Document {
     homAddress?: string;
     homZipCode?: string;
     homDecedentAge?: number;
-    homDecendentSex?: string;
+    homDecedentSex?: string;
     homDecedentRace?: string;
     homDecedentEthnicity: string;
     homFMVNum: string;
