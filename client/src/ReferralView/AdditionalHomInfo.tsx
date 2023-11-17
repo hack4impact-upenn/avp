@@ -22,6 +22,7 @@ import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Dayjs } from 'dayjs';
 import { genderDropdown, raceDropdown } from '../util/dropdown';
+import { trusted } from 'mongoose';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -90,17 +91,26 @@ export default function AdditionalHomInfo({ referral, setReferral }: Props) {
   const theme = useTheme();
   console.log(referral);
   const [data, setData] = useState(referral?.referral?.data);
-  console.log('additional hom info data');
-  console.log(data);
+  // console.log('additional hom info data');
+  // console.log(data);
 
-  const handleChange = (event: any) => {
+  const handleChange = (event: any, field: keyof IReferral, isString=false) => {
+    console.log(event, field, data);
     const {
       target: { value },
     } = event;
-    setData({
-      ...data,
-      serviceRequested: value.join(', '),
-    });
+    if (isString) {
+      setData({
+        ...data,
+        [field]: value
+      });
+    } else {
+      setData({
+        ...data,
+        [field]: value.join(', ') as string,
+      });
+    }
+    console.log(data);
   };
 
   const handleChangeVictim = (event: any) => {
@@ -211,7 +221,7 @@ export default function AdditionalHomInfo({ referral, setReferral }: Props) {
           id="demo-multiple-name"
           multiple
           value={data?.homType ? data?.homType.split(', ') : []}
-          onChange={handleChange}
+          onChange={(event) => {handleChange(event,'homType')}}
           input={<OutlinedInput label="Homicide Type" />}
           MenuProps={MenuProps}
           required
@@ -239,7 +249,7 @@ export default function AdditionalHomInfo({ referral, setReferral }: Props) {
           id="demo-multiple-name"
           multiple
           value={data?.homLocation ? data?.homLocation.split(', ') : []}
-          onChange={handleChange}
+          onChange={(event) => {handleChange(event,'homLocation')}}
           input={<OutlinedInput label="Homicide Location" />}
           MenuProps={MenuProps}
           required
@@ -256,7 +266,7 @@ export default function AdditionalHomInfo({ referral, setReferral }: Props) {
         </Select>
       </FormControl>
       <br />
-      <FormControl
+      {/* <FormControl
         sx={{ m: 1, width: 600 }}
       >
         <InputLabel id="demo-multiple-name-label">
@@ -266,8 +276,8 @@ export default function AdditionalHomInfo({ referral, setReferral }: Props) {
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
           multiple
-          value={data?.homDecedentSex ? data?.homDecedentSex.split(', ') : []}
-          onChange={handleChange}
+          value={data?.homDecendentSex ? data?.homDecendentSex.split(', ') : []}
+          onChange={(event) => {handleChange(event,'homDecendentSex')}}
           input={<OutlinedInput label="Homocide Decedent Gender" />}
           MenuProps={MenuProps}
           required
@@ -283,7 +293,7 @@ export default function AdditionalHomInfo({ referral, setReferral }: Props) {
           ))}
         </Select>
       </FormControl>
-      <br />
+      <br /> */}
       <FormControl
         sx={{ m: 1, width: 600 }}
       >
@@ -295,7 +305,7 @@ export default function AdditionalHomInfo({ referral, setReferral }: Props) {
           id="demo-multiple-name"
           multiple
           value={data?.homDecedentRace ? data?.homDecedentRace.split(', ') : []}
-          onChange={handleChange}
+          onChange={(event) => {handleChange(event,'homDecedentRace')}}
           input={<OutlinedInput label="Homocide Decedent Race / Ethnicity" />}
           MenuProps={MenuProps}
           required
@@ -320,19 +330,21 @@ export default function AdditionalHomInfo({ referral, setReferral }: Props) {
               name={fieldName}
               label={formattedLabel}
               value={
-                referral && fieldName in referral? 
-                referral[
+                data && fieldName in data? 
+                data[
                   fieldName as keyof IReferral
                 ] || '' : ''
               }
               onChange={(e) =>
-                setReferral((prevState) => ({
-                  ...prevState,
-                  [fieldName]: e.target.value,
-                }))
+                // setReferral((prevState) => ({
+                //   ...prevState,
+                //   [fieldName]: e.target.value,
+                // }))
+                handleChange(e, fieldName as keyof IReferral, true)
               }
               fullWidth
               margin="normal"
+              sx={{ m: 1, width: 600 }}
             />
           ),
         )}

@@ -78,6 +78,7 @@ export default function FormPage({ globalProps, setGlobalProps }: GlobalProps) {
     console.log('change referral');
     setData({ referral });
   }, [referral]);
+  
   return (
     <div style={styles.main}>
       <Button
