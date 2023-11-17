@@ -18,6 +18,9 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import { useParams } from 'react-router-dom';
 import { IReferral } from '../util/types/referral';
 import { putData } from '../util/api';
+import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Dayjs } from 'dayjs';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -142,7 +145,7 @@ export default function PageOne({ referral, setReferral }: Props) {
 
   return (
     <div>
-      <FormControl style={{ marginBottom: '30px' }} sx={{ m: 1, width: 600 }}>
+      {/* <FormControl style={{ marginBottom: '30px' }} sx={{ m: 1, width: 600 }}>
         <InputLabel id="demo-multiple-name-label">
           Outreach Letter File Upload
         </InputLabel>
@@ -159,8 +162,8 @@ export default function PageOne({ referral, setReferral }: Props) {
           Upload
           <input type="file" hidden />
         </Button>
-      </FormControl>
-      <br />
+      </FormControl> */}
+      {/* <br />
       <FormControl style={{ marginBottom: '30px' }} sx={{ m: 1, width: 600 }}>
         <InputLabel id="demo-multiple-name-label">
           Follow-Up Letter Sent
@@ -175,21 +178,29 @@ export default function PageOne({ referral, setReferral }: Props) {
           <input type="file" hidden />
         </Button>
       </FormControl>
-      <br />
-      <FormControl style={{ marginBottom: '30px' }} sx={{ m: 1, width: 600 }}>
-        <InputLabel id="demo-multiple-name-label">Referral PDF</InputLabel>
-        <Button
-          variant="contained"
-          component="label"
-          size="small"
-          style={{ margin: 'auto', background: '#4EA0B3', height: '26px' }}
-        >
-          Upload
-          <input type="file" hidden />
-        </Button>
+      <br /> */}
+      <FormControl required sx={{ m: 1 }}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DesktopDatePicker
+            label="Date"
+            value={data?.date}
+            onChange={(newValue: Dayjs | null) => {
+              setData({
+                ...data,
+                date: newValue,
+              });
+            }}
+          />
+        </LocalizationProvider>
       </FormControl>
       <br />
-      <FormControl sx={{ m: 1, width: 600 }}>
+      <FormControl
+        sx={{ m: 1, width: 600 }}
+        required={
+          data?.serviceRequestedVictim?.length < 1 ||
+          data?.serviceRequested?.length > 0
+        }
+      >
         <InputLabel id="demo-multiple-name-label">
           Counseling & Therapy
         </InputLabel>
@@ -197,9 +208,7 @@ export default function PageOne({ referral, setReferral }: Props) {
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
           multiple
-          value={
-            data?.serviceRequested ? data.serviceRequested.split(', ') : []
-          }
+          value={data?.serviceRequested ? data?.serviceRequested.split(', ') : []}
           onChange={handleChange}
           input={<OutlinedInput label="Counseling & Therapy" />}
           MenuProps={MenuProps}
@@ -217,7 +226,13 @@ export default function PageOne({ referral, setReferral }: Props) {
         </Select>
       </FormControl>
       <br />
-      <FormControl required sx={{ m: 1, width: 600 }}>
+      <FormControl
+        sx={{ m: 1, width: 600 }}
+        required={
+          data?.serviceRequested?.length < 1 ||
+          data?.serviceRequestedVictim?.length > 0
+        }
+      >
         <InputLabel id="demo-multiple-name-label">Victim Services</InputLabel>
         <Select
           labelId="demo-multiple-name-label"
@@ -244,6 +259,34 @@ export default function PageOne({ referral, setReferral }: Props) {
           ))}
         </Select>
       </FormControl>
+      <br />
+      <FormControl style={{ marginBottom: '30px' }} sx={{ m: 1, width: 400 }}>
+        <InputLabel
+          style={{ marginBottom: '30px' }}
+          id="demo-multiple-name-label"
+        >
+          Referral PDF
+        </InputLabel>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          style={{
+            margin: 'auto',
+            background: '#4EA0B3',
+            height: '26px',
+            marginTop: '10px',
+            padding: '15px 10px',
+          }}
+        >
+          Upload
+          <input type="file" hidden />
+        </Button>
+      </FormControl>
+
+      {/* otherVictimServices */}
+      {otherVictimServices}
+
       <Grid item xs={12} paddingTop={10}>
         <Grid container justifyContent="end">
           {
@@ -267,9 +310,7 @@ export default function PageOne({ referral, setReferral }: Props) {
           }
         </Grid>
       </Grid>
-
-      {/* otherVictimServices */}
-      {otherVictimServices}
     </div>
+    
   );
 }

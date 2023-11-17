@@ -69,7 +69,7 @@ export default function PageFour({ referral, setReferral }: Props) {
         <div>
           <FormControl required sx={{ m: 1, minWidth: 360 }}>
             <TextField
-              value={data.agencyRepName}
+              value={data?.agencyRepName}
               id="outlined-basic"
               variant="outlined"
               label="Name of Staff Making Referral"
@@ -83,7 +83,7 @@ export default function PageFour({ referral, setReferral }: Props) {
         <div>
           <FormControl required sx={{ m: 1, minWidth: 420 }}>
             <TextField
-              value={data.agencyThatReferred}
+              value={data?.agencyThatReferred}
               id="outlined-basic"
               variant="outlined"
               label="Agency/Organizaton"
@@ -93,13 +93,12 @@ export default function PageFour({ referral, setReferral }: Props) {
               }
             />
           </FormControl>
-          <FormControl required sx={{ m: 1, minWidth: 420 }}>
+          <FormControl sx={{ m: 1, minWidth: 420 }}>
             <TextField
-              value={data.departmentInCharge}
+              value={data?.departmentInCharge}
               id="outlined-basic"
               variant="outlined"
               label="Department"
-              required
               onChange={(event) =>
                 setData({ ...data, departmentInCharge: event.target.value })
               }
@@ -109,7 +108,7 @@ export default function PageFour({ referral, setReferral }: Props) {
         <div>
           <FormControl required sx={{ m: 1, minWidth: 240 }}>
             <TextField
-              value={data.agencyRepPhone}
+              value={data?.agencyRepPhone}
               id="outlined-number"
               label="Phone Number"
               type="number"
@@ -121,7 +120,7 @@ export default function PageFour({ referral, setReferral }: Props) {
           </FormControl>
           <FormControl required sx={{ m: 1, minWidth: 360 }}>
             <TextField
-              value={data.agencyRepEmail}
+              value={data?.agencyRepEmail}
               id="outlined-basic"
               variant="outlined"
               label="Email Address"

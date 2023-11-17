@@ -83,12 +83,8 @@ export default function PageTwo({ referral, setReferral }: Props) {
   const [updateStatus, setUpdateStatus] = React.useState('');
   const theme = useTheme();
   const [data, setData] = useState(referral?.referral?.data);
-  const [crimeDate, setCrimeDate] = React.useState<Dayjs | null>(
-    dayjs('2000-01-01T00:00:00'),
-  );
-  const [homicideDate, sethomicideDate] = React.useState<Dayjs | null>(
-    dayjs('2000-01-01T00:00:00'),
-  );
+  const [crimeDate, setCrimeDate] = React.useState<Dayjs | null>();
+  const [homicideDate, sethomicideDate] = React.useState<Dayjs | null>();
 
   const handleUpdate = async () => {
     // setLoading(true);
@@ -116,48 +112,50 @@ export default function PageTwo({ referral, setReferral }: Props) {
   };
 
   let homicideFields;
-  if (data.crimeType == 'Homicide') {
+  if (data?.crimeType == 'Homicide') {
     homicideFields = (
       <div>
         <FormControl required sx={{ m: 1, minWidth: 420 }}>
           <TextField
-            value={data.homeMNum}
+            value={data?.homeMNum}
             id="outlined-number"
             label="M#/S#/AID#"
-            type="number"
             onChange={(event) =>
               setData({ ...data, homeMNum: event.target.value })
             }
           />
         </FormControl>
 
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DesktopDatePicker
-            label="Date of Death"
-            value={homicideDate}
-            onChange={(newValue: Dayjs | null) => {
-              sethomicideDate(newValue);
-            }}
-          />
-        </LocalizationProvider>
+        <FormControl sx={{ m: 1 }}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DesktopDatePicker
+              label="Date of Death"
+              value={homicideDate}
+              onChange={(newValue: Dayjs | null) => {
+                sethomicideDate(newValue);
+              }}
+            />
+          </LocalizationProvider>
+        </FormControl>
       </div>
     );
   }
 
   return (
     <div>
-      <FormControl sx={{ m: 1, minWidth: 600 }}>
+      <FormControl required sx={{ m: 1, minWidth: 600 }}>
         <InputLabel id="demo-simple-select-label">
           Type Of Crime / Victimization
         </InputLabel>
         <Select
-          value={data.crimeType}
+          value={data?.crimeType}
           labelId="demo-simple-select-label"
           id="demo-simple-select-label"
           label="Type Of Crime / Victimization"
           onChange={(event) =>
             setData({ ...data, crimeType: event.target.value as string })
           }
+          required
         >
           {crimeType.map((val) => (
             <MenuItem
@@ -185,15 +183,15 @@ export default function PageTwo({ referral, setReferral }: Props) {
         </LocalizationProvider>
       </FormControl>
 
-      <FormControl sx={{ m: 1, minWidth: 240 }}>
+      <FormControl required sx={{ m: 1, minWidth: 240 }}>
         <InputLabel id="demo-simple-select-label">Gun Violence?</InputLabel>
         <Select
           value={
-            data.isGunViolence
+            data?.isGunViolence
               ? 'Yes'
-              : data.isGunViolence === false
+              : data?.isGunViolence === false
               ? 'No'
-              : 'Unknown'
+              : ''
           }
           labelId="demo-simple-select-label"
           id="demo-simple-select-label"
@@ -220,7 +218,7 @@ export default function PageTwo({ referral, setReferral }: Props) {
 
       <FormControl required sx={{ m: 1, minWidth: 420 }}>
         <TextField
-          value={data.incidentAddress}
+          value={data?.incidentAddress}
           id="outlined-basic"
           label="Street Address of Incident"
           variant="outlined"
@@ -232,7 +230,7 @@ export default function PageTwo({ referral, setReferral }: Props) {
 
       <FormControl required sx={{ m: 1, minWidth: 240 }}>
         <TextField
-          value={data.incidentAddressZip}
+          value={data?.incidentAddressZip}
           id="outlined-basic"
           label="Zip Code of Incident"
           variant="outlined"
@@ -244,9 +242,42 @@ export default function PageTwo({ referral, setReferral }: Props) {
 
       <br />
 
+      <FormControl required sx={{ m: 1, minWidth: 500 }}>
+        <InputLabel id="demo-simple-select-label">Incident Reported to the Police?</InputLabel>
+        <Select
+          value={
+            data?.reportedToPolice
+              ? 'Yes'
+              : data?.reportedToPolice === false
+              ? 'No'
+              : ''
+          }
+          labelId="demo-simple-select-label"
+          id="demo-simple-select-label"
+          label="Reported to Police?"
+          onChange={(event) => {
+            const val: string = event.target.value as string;
+            setData({
+              ...data,
+              reportedToPolice: val.includes('Yes')
+                ? true
+                : val.includes('No')
+                ? false
+                : null,
+            });
+          }}
+        >
+          <MenuItem value="Yes">Yes</MenuItem>
+          <MenuItem value="No">No</MenuItem>
+          <MenuItem value="Unknown">Unknown</MenuItem>
+        </Select>
+      </FormControl>
+
+      < br />
+
       <FormControl required sx={{ m: 1, minWidth: 360 }}>
         <TextField
-          value={data.crimeDCNum}
+          value={data?.crimeDCNum}
           id="outlined-number"
           label="Police Incident # (DC#)"
           type="number"
@@ -261,7 +292,7 @@ export default function PageTwo({ referral, setReferral }: Props) {
           Police District of Incident
         </InputLabel>
         <Select
-          value={data.crimeDistrict}
+          value={data?.crimeDistrict}
           labelId="demo-simple-select-label"
           id="demo-simple-select-label"
           label="Police District of Incident"

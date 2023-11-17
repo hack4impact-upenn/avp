@@ -36,6 +36,7 @@ interface Props {
   setReferral: React.Dispatch<React.SetStateAction<any>>;
 }
 
+
 const youthSchools = [
   'Achievement House Cyber Charter School',
   'Andrew Hamilton School',
@@ -99,6 +100,7 @@ const survivorGender = [
   'Male (man/boy)',
   'Non-binary/non-conforming',
   'Transgender',
+  'Gender Fluid',
   'Other',
   'Unknown',
 ];
@@ -149,9 +151,7 @@ export default function Contact({ referral, setReferral }: Props) {
   const [updateStatus, setUpdateStatus] = React.useState('');
   const theme = useTheme();
   const [data, setData] = useState(referral?.referral?.data);
-  const [survivorDOB, setsurvivorDOB] = React.useState<Dayjs | null>(
-    dayjs('2000-01-01T00:00:00'),
-  );
+  const [survivorDOB, setsurvivorDOB] = React.useState<Dayjs | null>();
 
   const handleUpdate = async () => {
     // setLoading(true);
@@ -179,12 +179,12 @@ export default function Contact({ referral, setReferral }: Props) {
   };
 
   let otherGenderInput;
-  if (data.survivorGender && data.survivorGender.indexOf('Other') >= 0) {
+  if (data?.survivorGender && data?.survivorGender.indexOf('Other') >= 0) {
     otherGenderInput = (
       <span>
         <FormControl required sx={{ m: 1, minWidth: 240 }}>
           <TextField
-            value={data.survivorGenderOther}
+            value={data?.survivorGenderOther}
             id="outlined-basic"
             variant="outlined"
             label="Please Specify Gender"
@@ -201,12 +201,12 @@ export default function Contact({ referral, setReferral }: Props) {
   }
 
   let otherRaceInput;
-  if (data.survivorRace && data.survivorRace.indexOf('Other') >= 0) {
+  if (data?.survivorRace && data?.survivorRace.indexOf('Other') >= 0) {
     otherRaceInput = (
       <span>
         <FormControl required sx={{ m: 1, minWidth: 240 }}>
           <TextField
-            value={data.survivorRaceOther}
+            value={data?.survivorRaceOther}
             id="outlined-basic"
             variant="outlined"
             label="Please Specify Race"
@@ -224,14 +224,14 @@ export default function Contact({ referral, setReferral }: Props) {
 
   let relationshipToVictimExplained;
   if (
-    data.relationshipToVictim &&
-    data.relationshipToVictim.indexOf('Other') >= 0
+    data?.relationshipToVictim &&
+    data?.relationshipToVictim.indexOf('Other') >= 0
   ) {
     relationshipToVictimExplained = (
       <div>
         <FormControl required sx={{ m: 1, minWidth: 860 }}>
           <TextField
-            value={data.relationshipToVictimOther}
+            value={data?.relationshipToVictimOther}
             id="outlined-basic"
             variant="outlined"
             label="Please Specify Relationship to Victim"
@@ -249,14 +249,14 @@ export default function Contact({ referral, setReferral }: Props) {
 
   let guardianRelationshipExplained;
   if (
-    data.guardianRelationship &&
-    data.guardianRelationship.indexOf('Other') >= 0
+    data?.guardianRelationship &&
+    data?.guardianRelationship.indexOf('Other') >= 0
   ) {
     guardianRelationshipExplained = (
       <div>
         <FormControl required sx={{ m: 1, minWidth: 860 }}>
           <TextField
-            value={data.guardianRelationshipOther}
+            value={data?.guardianRelationshipOther}
             id="outlined-basic"
             variant="outlined"
             label="Please Specify Relationship of Adult to Youth"
@@ -273,7 +273,7 @@ export default function Contact({ referral, setReferral }: Props) {
   }
 
   let youthGradeInput;
-  if (data.survivorSchoolOrCommunitySite) {
+  if (data?.survivorSchoolOrCommunitySite) {
     youthGradeInput = (
       <span>
         <FormControl sx={{ m: 1, minWidth: 240 }}>
@@ -281,7 +281,7 @@ export default function Contact({ referral, setReferral }: Props) {
             Grade Survivor/Victim Is In
           </InputLabel>
           <Select
-            value={data.survivorGrade}
+            value={data?.survivorGrade}
             labelId="demo-simple-select-label"
             id="demo-simple-select-label"
             label="Grade Youth Is In"
@@ -308,7 +308,7 @@ export default function Contact({ referral, setReferral }: Props) {
   }
 
   let youthQuestions;
-  if (data.survivorAge && data.survivorAge <= 22) {
+  if (data?.survivorAge && data?.survivorAge <= 22) {
     youthQuestions = (
       <div>
         {/* What School Or Community Based Site does Survivor Attend? */}
@@ -317,7 +317,7 @@ export default function Contact({ referral, setReferral }: Props) {
             School or Community-Based Site Survivor/Victim Attends
           </InputLabel>
           <Select
-            value={data.survivorSchoolOrCommunitySite}
+            value={data?.survivorSchoolOrCommunitySite}
             labelId="demo-simple-select-label"
             id="demo-simple-select-label"
             label="School/Community-Based Site Youth Attends"
@@ -346,25 +346,29 @@ export default function Contact({ referral, setReferral }: Props) {
   }
 
   let homicideQuestions;
-  console.log(data.crimeType);
-  if (data.crimeType.includes('Homicide')) {
+  console.log(data?.crimeType);
+  if (data?.crimeType.includes('Homicide')) {
     homicideQuestions = (
       <div>
-        <FormControl sx={{ m: 1, minWidth: 420 }}>
+        <FormControl required sx={{ m: 1, minWidth: 420 }}>
           <TextField
-            value={data.survivorAddress}
+            required
+            value={data?.victimName}
             id="outlined-basic"
             variant="outlined"
             label="Name of Victim"
             onChange={(event) =>
-              setData({ ...data, survivorAddress: event.target.value })
+              setData({ ...data, victimName: event.target.value })
             }
           />
         </FormControl>
-        <FormControl sx={{ m: 1, minWidth: 240 }}>
-          <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+        <FormControl required sx={{ m: 1, minWidth: 240 }}>
+          <InputLabel id="demo-simple-select-label">
+            Gender of Victim
+          </InputLabel>
           <Select
-            value={data.victimGender}
+            required
+            value={data?.victimGender}
             labelId="demo-simple-select-label"
             id="demo-simple-select-label"
             label="Gender of Victim"
@@ -391,13 +395,14 @@ export default function Contact({ referral, setReferral }: Props) {
   }
 
   let contactQuestions;
-  if (data.isGuardianResponsible) {
+  if (data?.isGuardianResponsible) {
     contactQuestions = (
       <div>
         <div>
-          <FormControl sx={{ m: 1, minWidth: 420 }}>
+          <FormControl required sx={{ m: 1, minWidth: 420 }}>
             <TextField
-              value={data.guardianName}
+              required
+              value={data?.guardianName}
               id="outlined-basic"
               variant="outlined"
               label="Name of Adult"
@@ -407,12 +412,12 @@ export default function Contact({ referral, setReferral }: Props) {
             />
           </FormControl>
 
-          <FormControl sx={{ m: 1, minWidth: 420 }}>
+          <FormControl required sx={{ m: 1, minWidth: 420 }}>
             <InputLabel id="demo-simple-select-label">
               Relationship of Adult to Youth Being Referred
             </InputLabel>
             <Select
-              value={data.guardianRelationship}
+              value={data?.guardianRelationship}
               labelId="demo-simple-select-label"
               id="demo-simple-select-label"
               label="Relationship of Adult to Youth Being Referred"
@@ -444,7 +449,8 @@ export default function Contact({ referral, setReferral }: Props) {
           {/* survivorAddress */}
           <FormControl required sx={{ m: 1, minWidth: 420 }}>
             <TextField
-              value={data.guardianAddress}
+              required
+              value={data?.guardianAddress}
               id="outlined-basic"
               variant="outlined"
               label="Address (Adult)"
@@ -456,7 +462,7 @@ export default function Contact({ referral, setReferral }: Props) {
 
           {/* <FormControl required sx={{ m: 1, minWidth: 240 }}>
             <TextField
-              value={data.guardianAddress}
+              value={data?.guardianAddress}
               id="outlined-basic"
               variant="outlined"
               label="City (Adult)"
@@ -468,7 +474,7 @@ export default function Contact({ referral, setReferral }: Props) {
 
           <FormControl required sx={{ m: 1, minWidth: 30 }}>
             <TextField
-              value={data.guardianAddress}
+              value={data?.guardianAddress}
               id="outlined-basic"
               variant="outlined"
               label="State (Adult)"
@@ -493,7 +499,8 @@ export default function Contact({ referral, setReferral }: Props) {
             {/* guardianPhone */}
             <FormControl required sx={{ m: 1, minWidth: 240 }}>
               <TextField
-                value={data.guardianPhone}
+                required
+                value={data?.guardianPhone}
                 id="outlined-number"
                 label="Phone Number (Adult)"
                 type="number"
@@ -506,7 +513,8 @@ export default function Contact({ referral, setReferral }: Props) {
             {/* guardianEmail */}
             <FormControl required sx={{ m: 1, minWidth: 360 }}>
               <TextField
-                value={data.guardianEmail}
+                required
+                value={data?.guardianEmail}
                 id="outlined-basic"
                 variant="outlined"
                 label="Email Address (Adult)"
@@ -517,17 +525,18 @@ export default function Contact({ referral, setReferral }: Props) {
             </FormControl>
 
             {/* guardianPreferredContactMethod */}
-            <FormControl sx={{ m: 1, width: 240 }}>
+            <FormControl required sx={{ m: 1, minWidth: 270 }}>
               <InputLabel id="demo-multiple-name-label">
                 Preferred Contact Method
               </InputLabel>
               <Select
+                required
                 labelId="demo-multiple-name-label"
                 id="demo-multiple-name"
                 multiple
                 value={
-                  data.guardianPreferredContactMethod
-                    ? data.guardianPreferredContactMethod.split(', ')
+                  data?.guardianPreferredContactMethod
+                    ? data?.guardianPreferredContactMethod.split(', ')
                     : []
                 }
                 onChange={(event) => {
@@ -566,7 +575,7 @@ export default function Contact({ referral, setReferral }: Props) {
         {/* survivorPhoneNumber */}
         <FormControl required sx={{ m: 1, minWidth: 240 }}>
           <TextField
-            value={data.survivorPhoneNumber}
+            value={data?.survivorPhoneNumber}
             id="outlined-number"
             label="Phone Number"
             type="number"
@@ -579,7 +588,7 @@ export default function Contact({ referral, setReferral }: Props) {
         {/* survivorEmail */}
         <FormControl required sx={{ m: 1, minWidth: 360 }}>
           <TextField
-            value={data.survivorEmailAddress}
+            value={data?.survivorEmailAddress}
             id="outlined-basic"
             variant="outlined"
             label="Email Address"
@@ -590,7 +599,7 @@ export default function Contact({ referral, setReferral }: Props) {
         </FormControl>
 
         {/* survivorPreferredContactMethod */}
-        <FormControl sx={{ m: 1, width: 240 }}>
+        <FormControl required sx={{ m: 1, minWidth: 300 }}>
           <InputLabel id="demo-multiple-name-label">
             Preferred Contact Method
           </InputLabel>
@@ -599,8 +608,8 @@ export default function Contact({ referral, setReferral }: Props) {
             id="demo-multiple-name"
             multiple
             value={
-              data.survivorPreferredContactMethod
-                ? data.survivorPreferredContactMethod.split(', ')
+              data?.survivorPreferredContactMethod
+                ? data?.survivorPreferredContactMethod.split(', ')
                 : []
             }
             onChange={(event) => {
@@ -634,9 +643,10 @@ export default function Contact({ referral, setReferral }: Props) {
   return (
     <div>
       {/* survivorName */}
-      <FormControl sx={{ m: 1, minWidth: 420 }}>
+      <FormControl required sx={{ m: 1, minWidth: 420 }}>
         <TextField
-          value={data.survivorName}
+          required
+          value={data?.survivorName}
           id="outlined-basic"
           variant="outlined"
           label="Name of Person Being Referred"
@@ -647,12 +657,12 @@ export default function Contact({ referral, setReferral }: Props) {
       </FormControl>
 
       {/* relationship to victim of crime/violence */}
-      <FormControl sx={{ m: 1, minWidth: 420 }}>
+      <FormControl required sx={{ m: 1, minWidth: 420 }}>
         <InputLabel id="demo-simple-select-label">
           Relationship To Victim
         </InputLabel>
         <Select
-          value={data.relationshipToVictim}
+          value={data?.relationshipToVictim}
           labelId="demo-simple-select-label"
           id="demo-simple-select-label"
           label="Relationship to Victim"
@@ -695,7 +705,7 @@ export default function Contact({ referral, setReferral }: Props) {
         {/* survivorAge */}
         <FormControl required sx={{ m: 1, minWidth: 60 }}>
           <TextField
-            value={data.survivorAge}
+            value={data?.survivorAge}
             id="outlined-number"
             label="Age"
             type="number"
@@ -715,7 +725,8 @@ export default function Contact({ referral, setReferral }: Props) {
       {/* preferredLanguage */}
       <FormControl required sx={{ m: 1, minWidth: 420 }}>
         <TextField
-          value={data.primaryLanguage}
+          required
+          value={data?.primaryLanguage}
           id="outlined-basic"
           variant="outlined"
           label="Preferred Language"
@@ -727,10 +738,11 @@ export default function Contact({ referral, setReferral }: Props) {
 
       <div>
         {/* survivorGender */}
-        <FormControl sx={{ m: 1, minWidth: 180 }}>
+        <FormControl required sx={{ m: 1, minWidth: 180 }}>
           <InputLabel id="demo-simple-select-label">Gender</InputLabel>
           <Select
-            value={data.survivorGender}
+            required
+            value={data?.survivorGender}
             labelId="demo-simple-select-label"
             id="demo-simple-select-label"
             label="Gender"
@@ -757,10 +769,11 @@ export default function Contact({ referral, setReferral }: Props) {
         {otherGenderInput}
 
         {/* survivorRace */}
-        <FormControl sx={{ m: 1, minWidth: 180 }}>
+        <FormControl required sx={{ m: 1, minWidth: 180 }}>
           <InputLabel id="demo-simple-select-label">Race/Ethnicity</InputLabel>
           <Select
-            value={data.survivorRace}
+            required
+            value={data?.survivorRace}
             labelId="demo-simple-select-label"
             id="demo-simple-select-label"
             label="Race/Ethnicity"
@@ -790,7 +803,8 @@ export default function Contact({ referral, setReferral }: Props) {
       {/* survivorAddress */}
       <FormControl required sx={{ m: 1, minWidth: 420 }}>
         <TextField
-          value={data.survivorAddress}
+          required
+          value={data?.survivorAddress}
           id="outlined-basic"
           variant="outlined"
           label="Survivor Address"
@@ -835,13 +849,13 @@ export default function Contact({ referral, setReferral }: Props) {
 
       {/* is parent/responsible adult the main contact */}
       <div>
-        <FormControl sx={{ m: 1, minWidth: 600 }}>
+        <FormControl required sx={{ m: 1, minWidth: 600 }}>
           <InputLabel id="demo-simple-select-label">
             Is a parent/responsible adult the main contact for the
             survivor/victim?
           </InputLabel>
           <Select
-            value={data.isGuardianResponsible ? 'Yes' : 'No'}
+            value={data?.isGuardianResponsible ? 'Yes' : 'No'}
             labelId="demo-simple-select-label"
             id="demo-simple-select-label"
             label="Is Adult The Main Contact For The Youth? "
@@ -873,7 +887,7 @@ export default function Contact({ referral, setReferral }: Props) {
       {/* additional info */}
       <FormControl required sx={{ m: 1, minWidth: 1000 }}>
         <TextField
-          value={data.notesFromOrg}
+          value={data?.notesFromOrg}
           id="outlined-basic"
           variant="outlined"
           label="Any additional information we should know about?"
