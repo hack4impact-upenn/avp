@@ -84,11 +84,11 @@ export default function PageTwo({ data, setData }: Props) {
       <div>
         <FormControl required sx={{ m: 1, minWidth: 420 }}>
           <TextField
-            value={data.homeMNum}
+            value={data.homMNum}
             id="outlined-number"
             label="M#/S#/AID#"
             onChange={(event) =>
-              setData({ ...data, homeMNum: event.target.value })
+              setData({ ...data, homMNum: event.target.value })
             }
           />
         </FormControl>
