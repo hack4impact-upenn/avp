@@ -21,7 +21,7 @@ import { putData } from '../util/api';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Dayjs } from 'dayjs';
-import { genderDropdown, raceDropdown } from '../util/dropdown';
+import { genderDropdown, raceDropdown, handleFormChange } from '../util/dropdown';
 import { trusted } from 'mongoose';
 
 const ITEM_HEIGHT = 48;
@@ -95,32 +95,7 @@ export default function AdditionalHomInfo({ referral, setReferral }: Props) {
   // console.log(data);
 
   const handleChange = (event: any, field: keyof IReferral, isString=false) => {
-    console.log(event, field, data);
-    const {
-      target: { value },
-    } = event;
-    if (isString) {
-      setData({
-        ...data,
-        [field]: value
-      });
-    } else {
-      setData({
-        ...data,
-        [field]: value.join(', ') as string,
-      });
-    }
-    console.log(data);
-  };
-
-  const handleChangeVictim = (event: any) => {
-    const {
-      target: { value },
-    } = event;
-    setData({
-      ...data,
-      serviceRequestedVictim: value.join(', '),
-    });
+    handleFormChange(data, setData, event, field, isString);
   };
 
   const handleUpdate = async () => {

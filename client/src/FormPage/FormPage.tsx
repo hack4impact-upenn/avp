@@ -10,7 +10,7 @@ import PageThree from './PageThree';
 import PageFour from './PageFour';
 import Header from '../components/Header';
 import { postData } from '../util/api';
-import { IReferral, emptyReferral } from '../util/types/referral';
+import { IReferral, emptyReferral, emptyAddress } from '../util/types/referral';
 import IUser from '../util/types/user';
 
 const steps = [
@@ -73,12 +73,12 @@ export default function FormPage() {
       isGuardianResponsible: null,
       guardianName: '',
       guardianRelationship: '',
-      guardianAddress: '',
+      guardianAddressObj: emptyAddress,
       guardianPhone: '',
       guardianEmail: '',
       guardianPreferredContactMethod: '',
       survivorEmailAddress: '',
-      survivorAddress: '',
+      survivorAddressObj: emptyAddress,
       survivorPhoneNumber: '',
       survivorPreferredContactMethod: '',
       notesFromOrg: '',

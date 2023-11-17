@@ -1,3 +1,5 @@
+import IReferral from "./types/referral";
+
 export const genderDropdown = [
   'Female (woman/girl)',
   'Male (man/boy)',
@@ -18,3 +20,22 @@ export const raceDropdown = [
   'Other',
   'Unknown',
 ];
+
+export const handleFormChange = (data: any, setData: any, event: any, field: keyof IReferral, isString=false) => {
+  // console.log(event, field, data);
+  const {
+    target: { value },
+  } = event;
+  if (isString) {
+    setData({
+      ...data,
+      [field]: value
+    });
+  } else {
+    setData({
+      ...data,
+      [field]: value.join(', ') as string,
+    });
+  }
+  // console.log(data);
+};

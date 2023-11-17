@@ -21,6 +21,7 @@ import { putData } from '../util/api';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Dayjs } from 'dayjs';
+import { genderDropdown, raceDropdown, handleFormChange } from '../util/dropdown';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -72,24 +73,8 @@ export default function PageOne({ referral, setReferral }: Props) {
   console.log('page one data');
   console.log(data);
 
-  const handleChange = (event: any) => {
-    const {
-      target: { value },
-    } = event;
-    setData({
-      ...data,
-      serviceRequested: value.join(', '),
-    });
-  };
-
-  const handleChangeVictim = (event: any) => {
-    const {
-      target: { value },
-    } = event;
-    setData({
-      ...data,
-      serviceRequestedVictim: value.join(', '),
-    });
+  const handleChange = (event: any, field: keyof IReferral, isString=false) => {
+    handleFormChange(data, setData, event, field, isString);
   };
 
   const handleUpdate = async () => {
@@ -131,12 +116,7 @@ export default function PageOne({ referral, setReferral }: Props) {
             variant="outlined"
             label="Please Specify Other Requested Victim Services"
             required
-            onChange={(event) =>
-              setData({
-                ...data,
-                otherServiceRequestedVictim: event.target.value,
-              })
-            }
+            onChange={(event) => {handleChange(event,'otherServiceRequestedVictim', true)}}
           />
         </FormControl>
       </div>
@@ -209,7 +189,7 @@ export default function PageOne({ referral, setReferral }: Props) {
           id="demo-multiple-name"
           multiple
           value={data?.serviceRequested ? data?.serviceRequested.split(', ') : []}
-          onChange={handleChange}
+          onChange={(event) => {handleChange(event,'serviceRequested')}}
           input={<OutlinedInput label="Counseling & Therapy" />}
           MenuProps={MenuProps}
           required
@@ -243,7 +223,7 @@ export default function PageOne({ referral, setReferral }: Props) {
               ? data?.serviceRequestedVictim.split(', ')
               : []
           }
-          onChange={handleChangeVictim}
+          onChange={(event) => {handleChange(event,'serviceRequestedVictim')}}
           input={<OutlinedInput label="Victim Services" />}
           MenuProps={MenuProps}
           required

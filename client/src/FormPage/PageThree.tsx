@@ -414,12 +414,18 @@ export default function PageThree({ data, setData }: Props) {
           <FormControl required sx={{ m: 1, minWidth: 420 }}>
             <TextField
               required
-              value={data.guardianAddress}
+              value={data.guardianAddressObj?.street}
               id="outlined-basic"
               variant="outlined"
               label="Address (Adult)"
               onChange={(event) =>
-                setData({ ...data, guardianAddress: event.target.value })
+                setData({
+                  ...data,
+                  guardianAddressObj: {
+                    ...(data.guardianAddressObj || {}),
+                    street: event.target.value,
+                  },
+                })
               }
             />
           </FormControl>
@@ -768,12 +774,18 @@ export default function PageThree({ data, setData }: Props) {
       <FormControl required sx={{ m: 1, minWidth: 420 }}>
         <TextField
           required
-          value={data.survivorAddress}
+          value={data.survivorAddressObj?.street}
           id="outlined-basic"
           variant="outlined"
           label="Survivor Address"
           onChange={(event) =>
-            setData({ ...data, survivorAddress: event.target.value })
+            setData({
+              ...data,
+              survivorAddressObj: {
+                ...(data.survivorAddressObj || {}),
+                street: event.target.value,
+              },
+            })
           }
         />
       </FormControl>

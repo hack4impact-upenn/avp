@@ -6,6 +6,12 @@ import mongoose from 'mongoose';
 import dayjs, { Dayjs } from 'dayjs';
 import IUser from './user';
 
+interface IAddressItem {
+  street: string;
+  city: string;
+  state: string;
+  zipcode: string;
+}
 interface ICommunicationItem {
   dateOfCommunication: Date;
   method: string;
@@ -88,12 +94,12 @@ export default interface IReferral {
   isGuardianResponsible: boolean | null;
   guardianName: string;
   guardianRelationship: string;
-  guardianAddress: string;
+  guardianAddressObj: IAddressItem;
   guardianPhone: string;
   guardianEmail: string;
   guardianPreferredContactMethod: string;
   survivorEmailAddress: string;
-  survivorAddress: string;
+  survivorAddressObj: IAddressItem;
   survivorPhoneNumber: string;
   survivorPreferredContactMethod: string;
   notesFromOrg: string;
@@ -108,7 +114,7 @@ export default interface IReferral {
   homDateOfDeath: Date | null;
   homType: string;
   homLocation: string;
-  homAddress: string;
+  homAddressObj: IAddressItem;
   homZipCode: string;
   homDecedentAge: number | null;
   homDecendentSex: string;
@@ -126,7 +132,7 @@ export default interface IReferral {
   transferredToCCWaitlist: boolean | null;
   followUpLetterSent: boolean | null;
   transferredToETO: boolean | null;
-  incidentAddress: string;
+  incidentAddressObj: IAddressItem;
   incidentAddressZip: string;
   incidentAddressCity: string;
   incidentAddressState: string;
@@ -145,6 +151,8 @@ export default interface IReferral {
   relationshipToVictimOther: string;
   guardianRelationshipOther: string;
 }
+
+export const emptyAddress = {street: '', city: '', state: '', zipcode: ''}
 
 export const emptyReferral = {
   id: '',
@@ -171,12 +179,12 @@ export const emptyReferral = {
   isGuardianResponsible: null,
   guardianName: '',
   guardianRelationship: '',
-  guardianAddress: '',
+  guardianAddressObj: emptyAddress,
   guardianPhone: '',
   guardianEmail: '',
   guardianPreferredContactMethod: '',
   survivorEmailAddress: '',
-  survivorAddress: '',
+  survivorAddressObj: emptyAddress,
   survivorPhoneNumber: '',
   survivorPreferredContactMethod: '',
   notesFromOrg: '',
@@ -191,7 +199,7 @@ export const emptyReferral = {
   homDateOfDeath: null,
   homType: '',
   homLocation: '',
-  homAddress: '',
+  homAddressObj: emptyAddress,
   homZipCode: '',
   homDecedentAge: null,
   homDecendentSex: '',
@@ -209,7 +217,7 @@ export const emptyReferral = {
   transferredToCCWaitlist: null,
   followUpLetterSent: null,
   transferredToETO: null,
-  incidentAddress: '',
+  incidentAddressObj: emptyAddress,
   incidentAddressZip: '',
   incidentAddressCity: '',
   incidentAddressState: '',

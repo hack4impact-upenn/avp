@@ -762,11 +762,11 @@ const updateReferral = async (
     isGuardianResponsible,
     guardianName,
     guardianRelationship,
-    guardianAddress,
+    guardianAddressObj,
     guardianPhone,
     guardianEmail,
     guardianPreferredContactMethod,
-    survivorAddress,
+    survivorAddressObj,
     survivorEmailAddress,
     survivorPhoneNumber,
     notesFromOrg,
@@ -781,7 +781,7 @@ const updateReferral = async (
     homDateOfDeath,
     homType,
     homLocation,
-    homAddress,
+    homAddressObj,
     homZipCode,
     homDecedentAge,
     homDecedentSex,
@@ -801,6 +801,8 @@ const updateReferral = async (
     youthServicesOutcome,
     reportedToPolice
   } = req.body;
+  // console.log("survivorAddressObj")
+  // console.log(survivorAddressObj)
 
   if (
     isReferral === undefined ||
@@ -878,11 +880,11 @@ const updateReferral = async (
       isGuardianResponsible,
       guardianName,
       guardianRelationship,
-      guardianAddress,
+      guardianAddressObj,
       guardianPhone,
       guardianEmail,
       guardianPreferredContactMethod,
-      survivorAddress,
+      survivorAddressObj,
       survivorEmailAddress,
       survivorPhoneNumber,
       notesFromOrg,
@@ -897,7 +899,7 @@ const updateReferral = async (
       homDateOfDeath,
       homType,
       homLocation,
-      homAddress,
+      homAddressObj,
       homZipCode,
       homDecedentAge,
       homDecedentSex,
