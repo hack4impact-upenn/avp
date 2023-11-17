@@ -116,7 +116,7 @@ export default interface IReferral {
   homDecedentEthnicity: string;
   homFMVNum: string;
   homMEONum: string;
-  homeMNum: string;
+  homMNum: string;
   homCaseInformation: string;
   historyOfCommunication: Array<ICommunicationItem> | null;
   victimServicesOutcome: IVictimServicesOutcomeItem | null;
@@ -199,7 +199,7 @@ export const emptyReferral = {
   homDecedentEthnicity: '',
   homFMVNum: '',
   homMEONum: '',
-  homeMNum: '',
+  homMNum: '',
   homCaseInformation: '',
   historyOfCommunication: null,
   victimServicesOutcome: null,
