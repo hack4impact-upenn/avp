@@ -16,6 +16,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { Theme, useTheme } from '@mui/material/styles';
 import IReferral from '../util/types/referral';
 import { ChangeEvent } from 'react';
+import { genderDropdown } from '../util/dropdown';
 
 function getStyles(val: string, valArr: string[], theme: Theme) {
   return {
@@ -284,6 +285,48 @@ export default function PageTwo({ data, setData }: Props) {
               key={val}
               value={val}
               style={getStyles(val, policeDistrictOfCrime, theme)}
+            >
+              {val}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      <FormControl required sx={{ m: 1, minWidth: 420 }}>
+        <TextField
+          required
+          value={data?.victimName}
+          id="outlined-basic"
+          label="Name of Victim"
+          variant="outlined"
+          onChange={(event) =>
+            setData({
+              ...data,
+              victimName: event.target.value,
+            })
+          }
+        />
+      </FormControl>
+
+      <FormControl sx={{ m: 1, minWidth: 420 }} required >
+        <InputLabel id="demo-simple-select-label" required>
+          Gender of Victim
+        </InputLabel>
+        <Select
+          required
+          value={data?.victimGender}
+          labelId="demo-simple-select-label"
+          id="demo-simple-select-label"
+          label="Gender of Victim"
+          onChange={(event) =>
+            setData({ ...data, victimGender: event.target.value as string })
+          }
+        >
+          {genderDropdown.map((val) => (
+            <MenuItem
+              key={val}
+              value={val}
+              style={getStyles(val, genderDropdown, theme)}
             >
               {val}
             </MenuItem>

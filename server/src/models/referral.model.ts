@@ -78,7 +78,7 @@ interface fileObject {
 const addressItemSchema = new mongoose.Schema({
   street: {
     type: String,
-    required: true,
+    required: false,
   },
   city: {
     type: String,
