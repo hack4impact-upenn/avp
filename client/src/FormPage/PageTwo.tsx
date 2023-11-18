@@ -79,12 +79,12 @@ export default function PageTwo({ data, setData }: Props) {
   const [homicideDate, sethomicideDate] = React.useState<Dayjs | null>();
 
   let homicideFields;
-  if (data.crimeType == 'Homicide') {
+  if (data?.crimeType == 'Homicide') {
     homicideFields = (
       <div>
         <FormControl required sx={{ m: 1, minWidth: 420 }}>
           <TextField
-            value={data.homMNum}
+            value={data?.homMNum}
             id="outlined-number"
             label="M#/S#/AID#"
             onChange={(event) =>
@@ -115,7 +115,7 @@ export default function PageTwo({ data, setData }: Props) {
           Type Of Crime / Victimization
         </InputLabel>
         <Select
-          value={data.crimeType}
+          value={data?.crimeType}
           labelId="demo-simple-select-label"
           id="demo-simple-select-label"
           label="Type Of Crime / Victimization"
@@ -154,9 +154,9 @@ export default function PageTwo({ data, setData }: Props) {
         <InputLabel id="demo-simple-select-label">Gun Violence?</InputLabel>
         <Select
           value={
-            data.isGunViolence
+            data?.isGunViolence
               ? 'Yes'
-              : data.isGunViolence === false
+              : data?.isGunViolence === false
               ? 'No'
               : ''
           }
@@ -185,24 +185,36 @@ export default function PageTwo({ data, setData }: Props) {
 
       <FormControl required sx={{ m: 1, minWidth: 420 }}>
         <TextField
-          value={data.incidentAddress}
+          value={data?.incidentAddressObj?.street}
           id="outlined-basic"
           label="Street Address of Incident"
           variant="outlined"
           onChange={(event) =>
-            setData({ ...data, incidentAddress: event.target.value })
+            setData({
+              ...data,
+              incidentAddressObj: {
+                ...(data?.incidentAddressObj || {}),
+                street: event.target.value,
+              },
+            })
           }
         />
       </FormControl>
 
       <FormControl required sx={{ m: 1, minWidth: 240 }}>
         <TextField
-          value={data.incidentAddressZip}
+          value={data?.incidentAddressObj?.zipcode}
           id="outlined-basic"
           label="Zip Code of Incident"
           variant="outlined"
           onChange={(event) =>
-            setData({ ...data, incidentAddressZip: event.target.value })
+            setData({
+              ...data,
+              incidentAddressObj: {
+                ...(data?.incidentAddressObj || {}),
+                zipcode: event.target.value,
+              },
+            })
           }
         />
       </FormControl>
@@ -213,9 +225,9 @@ export default function PageTwo({ data, setData }: Props) {
         <InputLabel id="demo-simple-select-label">Incident Reported to the Police?</InputLabel>
         <Select
           value={
-            data.reportedToPolice
+            data?.reportedToPolice
               ? 'Yes'
-              : data.reportedToPolice === false
+              : data?.reportedToPolice === false
               ? 'No'
               : ''
           }
@@ -244,7 +256,7 @@ export default function PageTwo({ data, setData }: Props) {
 
       <FormControl required sx={{ m: 1, minWidth: 360 }}>
         <TextField
-          value={data.crimeDCNum}
+          value={data?.crimeDCNum}
           id="outlined-number"
           label="Police Incident # (DC#)"
           type="number"
@@ -259,7 +271,7 @@ export default function PageTwo({ data, setData }: Props) {
           Police District of Incident
         </InputLabel>
         <Select
-          value={data.crimeDistrict}
+          value={data?.crimeDistrict}
           labelId="demo-simple-select-label"
           id="demo-simple-select-label"
           label="Police District of Incident"

@@ -125,11 +125,11 @@ export default function FormPage({ globalProps, setGlobalProps }: GlobalProps) {
             <Tab sx={{ fontSize: '13px' }} label="Victimization / Crime Info" />
             <Tab label="Contact Info" />
             <Tab label="Referral Source Info" />
+            <Tab label="Additional Homicide Info" />
             <Tab sx={{ fontSize: '13px' }} label="Communication History" />
             <Tab label="Victim Services Outcome" />
             <Tab label="Counselling Services Outcome" />
             <Tab label="Youth Services Outcome" />
-            <Tab label="Additional Homicide Info" />
           </Tabs>
         </div>
         {!referral ? (
@@ -151,19 +151,19 @@ export default function FormPage({ globalProps, setGlobalProps }: GlobalProps) {
               <ReferralSource referral={data} setReferral={setData} />
             </TabPanel>
             <TabPanel value={value} index={4}>
-              <CommunicationHistory referral={data} setReferral={setData} />
+              <AdditionalHomInfo referral={data} setReferral={setData} />
             </TabPanel>
             <TabPanel value={value} index={5}>
-              <VictimServicesOutcome data={data} setData={setData} />
+              <CommunicationHistory referral={data} setReferral={setData} />
             </TabPanel>
             <TabPanel value={value} index={6}>
-              <CounselingServicesOutcome data={data} setData={setData} />
+              <VictimServicesOutcome data={data} setData={setData} />
             </TabPanel>
             <TabPanel value={value} index={7}>
-              <YouthServicesOutcome data={data} setData={setData} />
+              <CounselingServicesOutcome data={data} setData={setData} />
             </TabPanel>
             <TabPanel value={value} index={8}>
-              <AdditionalHomInfo referral={data} setReferral={setData} />
+              <YouthServicesOutcome data={data} setData={setData} />
             </TabPanel>
           </div>
         ) : (

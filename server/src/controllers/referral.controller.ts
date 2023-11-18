@@ -741,6 +741,8 @@ const updateReferral = async (
   const { id } = req.params;
 
   const {
+    staffName,
+    status,
     departmentInCharge,
     program,
     staffAssigned,
@@ -758,7 +760,6 @@ const updateReferral = async (
     survivorAge,
     survivorSchoolOrCommunitySite,
     survivorGrade,
-    survivorPreferredContactMethod,
     isGuardianResponsible,
     guardianName,
     guardianRelationship,
@@ -766,9 +767,10 @@ const updateReferral = async (
     guardianPhone,
     guardianEmail,
     guardianPreferredContactMethod,
-    survivorAddressObj,
     survivorEmailAddress,
+    survivorAddressObj,
     survivorPhoneNumber,
+    survivorPreferredContactMethod,
     notesFromOrg,
     primaryLanguage,
     relationshipToVictim,
@@ -792,17 +794,24 @@ const updateReferral = async (
     homMNum,
     homCaseInformation,
     historyOfCommunication,
+    victimServicesOutcome,
+    counsellingServicesOutcome,
+    youthServicesOutcome,
     outreachLetterSent,
     transferredToCCWaitlist,
     followUpLetterSent,
     transferredToETO,
-    victimServicesOutcome,
-    counsellingServicesOutcome,
-    youthServicesOutcome,
-    reportedToPolice
+    incidentAddressObj,
+    incidentAddressZip,
+    incidentAddressCity,
+    incidentAddressState,
+    serviceRequestedVictim,
+    otherServiceRequestedVictim,
+    reportedToPolice,
+    victimName,
+    victimGender,
+    date,
   } = req.body;
-  // console.log("survivorAddressObj")
-  // console.log(survivorAddressObj)
 
   if (
     isReferral === undefined ||
@@ -858,6 +867,7 @@ const updateReferral = async (
     const prevReferral = await getReferralById(id);
     const referral = await updateReferralById(
       id,
+      staffName,
       status,
       departmentInCharge,
       program,
@@ -876,7 +886,6 @@ const updateReferral = async (
       survivorAge,
       survivorSchoolOrCommunitySite,
       survivorGrade,
-      survivorPreferredContactMethod,
       isGuardianResponsible,
       guardianName,
       guardianRelationship,
@@ -884,9 +893,10 @@ const updateReferral = async (
       guardianPhone,
       guardianEmail,
       guardianPreferredContactMethod,
-      survivorAddressObj,
       survivorEmailAddress,
+      survivorAddressObj,
       survivorPhoneNumber,
+      survivorPreferredContactMethod,
       notesFromOrg,
       primaryLanguage,
       relationshipToVictim,
@@ -910,14 +920,18 @@ const updateReferral = async (
       homMNum,
       homCaseInformation,
       historyOfCommunication,
+      victimServicesOutcome,
+      counsellingServicesOutcome,
+      youthServicesOutcome,
       outreachLetterSent,
       transferredToCCWaitlist,
       followUpLetterSent,
       transferredToETO,
-      victimServicesOutcome,
-      counsellingServicesOutcome,
-      youthServicesOutcome,
+      incidentAddressObj,
       reportedToPolice,
+      victimName,
+      victimGender,
+      date
     );
 
     const staffEmail = staffAssigned?.email;

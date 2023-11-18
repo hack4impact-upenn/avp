@@ -218,24 +218,36 @@ export default function PageTwo({ referral, setReferral }: Props) {
 
       <FormControl required sx={{ m: 1, minWidth: 420 }}>
         <TextField
-          value={data?.incidentAddress}
+          value={data?.incidentAddressObj?.street}
           id="outlined-basic"
           label="Street Address of Incident"
           variant="outlined"
           onChange={(event) =>
-            setData({ ...data, incidentAddress: event.target.value })
+            setData({
+              ...data,
+              incidentAddressObj: {
+                ...(data?.incidentAddressObj || {}),
+                street: event.target.value,
+              },
+            })
           }
         />
       </FormControl>
 
       <FormControl required sx={{ m: 1, minWidth: 240 }}>
         <TextField
-          value={data?.incidentAddressZip}
+          value={data?.incidentAddressObj?.zipcode}
           id="outlined-basic"
           label="Zip Code of Incident"
           variant="outlined"
           onChange={(event) =>
-            setData({ ...data, incidentAddressZip: event.target.value })
+            setData({
+              ...data,
+              incidentAddressObj: {
+                ...(data?.incidentAddressObj || {}),
+                zipcode: event.target.value,
+              },
+            })
           }
         />
       </FormControl>

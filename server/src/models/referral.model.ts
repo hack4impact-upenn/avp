@@ -88,7 +88,7 @@ const addressItemSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  zip: {
+  zipcode: {
     type: String,
     required: false,
   },
@@ -558,6 +558,10 @@ const ReferralSchema = new mongoose.Schema({
   },
   incidentAddressObj: {
     type: addressItemSchema,
+    required: false,
+  },
+  reportedToPolice: {
+    type: Boolean,
     required: false,
   },
   victimName: {
