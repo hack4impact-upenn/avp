@@ -11,7 +11,7 @@ import { Theme, useTheme } from '@mui/material/styles';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { IReferral } from '../util/types/referral';
 
 const ITEM_HEIGHT = 48;
@@ -141,7 +141,7 @@ export default function PageOne({ data, setData }: Props) {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DesktopDatePicker
             label="Date"
-            value={data.date}
+            value={data.date || dayjs()}
             onChange={(newValue: Dayjs | null) => {
               setData({
                 ...data,

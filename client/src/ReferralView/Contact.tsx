@@ -36,7 +36,6 @@ interface Props {
   setReferral: React.Dispatch<React.SetStateAction<any>>;
 }
 
-
 const youthSchools = [
   'Achievement House Cyber Charter School',
   'Andrew Hamilton School',

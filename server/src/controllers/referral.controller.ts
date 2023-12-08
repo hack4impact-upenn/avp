@@ -497,8 +497,10 @@ const createReferral = async (
   if (!crimeType) missingFields.push('crimeType');
   if (!survivorPreferredContactMethod)
     missingFields.push('survivorPreferredContactMethod');
-  if (isGunViolence === undefined || isGunViolence === null) missingFields.push('isGunViolence');
-  if (reportedToPolice === undefined || reportedToPolice === null) missingFields.push('reportedToPolice');
+  if (isGunViolence === undefined || isGunViolence === null)
+    missingFields.push('isGunViolence');
+  if (reportedToPolice === undefined || reportedToPolice === null)
+    missingFields.push('reportedToPolice');
   if (outreachLetterSent === undefined)
     missingFields.push('outreachLetterSent');
   if (transferredToCCWaitlist === undefined)
@@ -593,7 +595,7 @@ const createReferral = async (
       reportedToPolice,
       victimName,
       victimGender,
-      date
+      date,
     );
 
     const nameArr = survivorName.split(' ');
@@ -813,57 +815,14 @@ const updateReferral = async (
     date,
   } = req.body;
 
-  if (
-    isReferral === undefined ||
-    !survivorName ||
-    !serviceRequested ||
-    !agencyThatReferred ||
-    !agencyRepName ||
-    !agencyRepEmail ||
-    !agencyRepPhone ||
-    !survivorEmailAddress ||
-    !survivorPhoneNumber ||
-    !relationshipToVictim ||
-    !crimeType ||
-    !survivorPreferredContactMethod ||
-    isGunViolence === undefined ||
-    outreachLetterSent === undefined ||
-    transferredToCCWaitlist === undefined ||
-    followUpLetterSent === undefined ||
-    transferredToETO === undefined
-  ) {
-    next(
-      ApiError.missingFields([
-        'isReferral',
-        'survivorName',
-        'serviceRequested',
-        'agencyThatReferred',
-        'agencyRepName',
-        'agencyRepEmail',
-        'agencyRepPhone',
-        'survivorEmailAddress',
-        'survivorPhoneNumber',
-        'relationshipToVictim',
-        'crimeType',
-        'survivorPreferredContactMethod',
-        'isGunViolence',
-        'outreachLetterSent',
-        'transferredToCCWaitlist',
-        'followUpLetterSent',
-        'transferredToETO',
-      ]),
-    );
-    return;
-  }
-
   try {
-    const status = await setReferralStatus(
-      staffAssigned,
-      historyOfCommunication,
-      outreachLetterSent,
-      transferredToCCWaitlist,
-      followUpLetterSent,
-    );
+    // const status = await setReferralStatus(
+    //   staffAssigned,
+    //   historyOfCommunication,
+    //   outreachLetterSent,
+    //   transferredToCCWaitlist,
+    //   followUpLetterSent,
+    // );
     const prevReferral = await getReferralById(id);
     const referral = await updateReferralById(
       id,
@@ -931,7 +890,7 @@ const updateReferral = async (
       reportedToPolice,
       victimName,
       victimGender,
-      date
+      date,
     );
 
     const staffEmail = staffAssigned?.email;
@@ -1418,7 +1377,7 @@ const updateVictimServicesOutcome = async (
       referredToAgencyForOtherServices,
       otherAgencyNames,
       otherServices,
-      additionalNotes
+      additionalNotes,
     );
     res.status(StatusCode.OK).json(outcome);
   } catch (err) {

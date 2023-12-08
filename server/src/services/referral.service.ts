@@ -142,7 +142,7 @@ const createNewReferral = async (
     reportedToPolice,
     victimName,
     victimGender,
-    date
+    date,
   });
   const referral: IReferral = await newReferral.save();
   return referral;
@@ -293,9 +293,11 @@ const updateReferralById = async (
     reportedToPolice,
     victimName,
     victimGender,
-    date
+    date,
   };
-  const ret = await Referral.findByIdAndUpdate(id, updateQuery, { new: true }).exec();
+  const ret = await Referral.findByIdAndUpdate(id, updateQuery, {
+    new: true,
+  }).exec();
   // console.log(ret);
 
   return ret;

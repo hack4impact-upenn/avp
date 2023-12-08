@@ -4,9 +4,7 @@ import {
   MenuItem,
   Select,
   TextField,
-  Box,
   Button,
-  setRef,
   Grid,
   CircularProgress,
 } from '@mui/material';
@@ -18,11 +16,11 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import { useParams } from 'react-router-dom';
 import { IReferral } from '../util/types/referral';
 import { putData } from '../util/api';
-import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { Dayjs } from 'dayjs';
-import { genderDropdown, raceDropdown, handleFormChange } from '../util/dropdown';
-import { trusted } from 'mongoose';
+import {
+  genderDropdown,
+  raceDropdown,
+  handleFormChange,
+} from '../util/dropdown';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -58,21 +56,17 @@ const counselingServices = [
 ];
 
 const homType = [
-  'CA&N/IFH', 
-'IFH',
-'IFH/IPV',
-'IPV',
-'IPV-related',
-'Justified killing',
-'MVA',
-'Police Shooting'
-]
+  'CA&N/IFH',
+  'IFH',
+  'IFH/IPV',
+  'IPV',
+  'IPV-related',
+  'Justified killing',
+  'MVA',
+  'Police Shooting',
+];
 
-const homLocation = [
-  'Indoor',
-  'Outdoor',
-  'Inside Car'
-]
+const homLocation = ['Indoor', 'Outdoor', 'Inside Car'];
 
 const homDecedentRace = raceDropdown;
 const homDecedentSex = genderDropdown;
@@ -81,7 +75,7 @@ const stringFields = {
   homFMVNum: 'Homicide FMV#',
   homMEONum: 'Homicide MEO#',
   homMNum: 'Homicide M#',
-  homCaseInformation: 'Homicide Case Information'
+  homCaseInformation: 'Homicide Case Information',
 };
 
 export default function AdditionalHomInfo({ referral, setReferral }: Props) {
@@ -94,7 +88,11 @@ export default function AdditionalHomInfo({ referral, setReferral }: Props) {
   // console.log('additional hom info data');
   // console.log(data);
 
-  const handleChange = (event: any, field: keyof IReferral, isString=false) => {
+  const handleChange = (
+    event: any,
+    field: keyof IReferral,
+    isString = false,
+  ) => {
     handleFormChange(data, setData, event, field, isString);
   };
 
@@ -185,18 +183,16 @@ export default function AdditionalHomInfo({ referral, setReferral }: Props) {
         </Button>
       </FormControl>
       <br /> */}
-      <FormControl
-        sx={{ m: 1, width: 600 }}
-      >
-        <InputLabel id="demo-multiple-name-label">
-          Homocide Type
-        </InputLabel>
+      <FormControl sx={{ m: 1, width: 600 }}>
+        <InputLabel id="demo-multiple-name-label">Homocide Type</InputLabel>
         <Select
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
           multiple
           value={data?.homType ? data?.homType.split(', ') : []}
-          onChange={(event) => {handleChange(event,'homType')}}
+          onChange={(event) => {
+            handleChange(event, 'homType');
+          }}
           input={<OutlinedInput label="Homicide Type" />}
           MenuProps={MenuProps}
           required
@@ -213,18 +209,16 @@ export default function AdditionalHomInfo({ referral, setReferral }: Props) {
         </Select>
       </FormControl>
       <br />
-      <FormControl
-        sx={{ m: 1, width: 600 }}
-      >
-        <InputLabel id="demo-multiple-name-label">
-          Homocide Location
-        </InputLabel>
+      <FormControl sx={{ m: 1, width: 600 }}>
+        <InputLabel id="demo-multiple-name-label">Homocide Location</InputLabel>
         <Select
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
           multiple
           value={data?.homLocation ? data?.homLocation.split(', ') : []}
-          onChange={(event) => {handleChange(event,'homLocation')}}
+          onChange={(event) => {
+            handleChange(event, 'homLocation');
+          }}
           input={<OutlinedInput label="Homicide Location" />}
           MenuProps={MenuProps}
           required
@@ -269,9 +263,7 @@ export default function AdditionalHomInfo({ referral, setReferral }: Props) {
         </Select>
       </FormControl>
       <br /> */}
-      <FormControl
-        sx={{ m: 1, width: 600 }}
-      >
+      <FormControl sx={{ m: 1, width: 600 }}>
         <InputLabel id="demo-multiple-name-label">
           Homocide Decedent Race / Ethnicity
         </InputLabel>
@@ -280,7 +272,9 @@ export default function AdditionalHomInfo({ referral, setReferral }: Props) {
           id="demo-multiple-name"
           multiple
           value={data?.homDecedentRace ? data?.homDecedentRace.split(', ') : []}
-          onChange={(event) => {handleChange(event,'homDecedentRace')}}
+          onChange={(event) => {
+            handleChange(event, 'homDecedentRace');
+          }}
           input={<OutlinedInput label="Homocide Decedent Race / Ethnicity" />}
           MenuProps={MenuProps}
           required
@@ -298,31 +292,28 @@ export default function AdditionalHomInfo({ referral, setReferral }: Props) {
       </FormControl>
       <br />
       <Grid item xs={6}>
-        {Object.entries(stringFields).map(
-          ([fieldName, formattedLabel]) => (
-            <TextField
-              key={fieldName}
-              name={fieldName}
-              label={formattedLabel}
-              value={
-                data && fieldName in data? 
-                data[
-                  fieldName as keyof IReferral
-                ] || '' : ''
-              }
-              onChange={(e) =>
-                // setReferral((prevState) => ({
-                //   ...prevState,
-                //   [fieldName]: e.target.value,
-                // }))
-                handleChange(e, fieldName as keyof IReferral, true)
-              }
-              fullWidth
-              margin="normal"
-              sx={{ m: 1, width: 600 }}
-            />
-          ),
-        )}
+        {Object.entries(stringFields).map(([fieldName, formattedLabel]) => (
+          <TextField
+            key={fieldName}
+            name={fieldName}
+            label={formattedLabel}
+            value={
+              data && fieldName in data
+                ? data[fieldName as keyof IReferral] || ''
+                : ''
+            }
+            onChange={(e) =>
+              // setReferral((prevState) => ({
+              //   ...prevState,
+              //   [fieldName]: e.target.value,
+              // }))
+              handleChange(e, fieldName as keyof IReferral, true)
+            }
+            fullWidth
+            margin="normal"
+            sx={{ m: 1, width: 600 }}
+          />
+        ))}
       </Grid>
 
       {/* otherVictimServices */}
@@ -352,6 +343,5 @@ export default function AdditionalHomInfo({ referral, setReferral }: Props) {
         </Grid>
       </Grid>
     </div>
-    
   );
 }

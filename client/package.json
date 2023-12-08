@@ -58,6 +58,7 @@
     "redux": "^4.1.2",
     "redux-persist": "^6.0.0",
     "styled-components": "^5.3.5",
+    "ts-transformer-keys": "^0.4.4",
     "typeface-hk-grotesk": "^1.0.0",
     "web-vitals": "^3.0.3"
   },

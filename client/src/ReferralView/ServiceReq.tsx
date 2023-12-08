@@ -4,9 +4,7 @@ import {
   MenuItem,
   Select,
   TextField,
-  Box,
   Button,
-  setRef,
   Grid,
   CircularProgress,
 } from '@mui/material';
@@ -16,12 +14,12 @@ import React, { useState } from 'react';
 import { Theme, useTheme } from '@mui/material/styles';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { useParams } from 'react-router-dom';
-import { IReferral } from '../util/types/referral';
-import { putData } from '../util/api';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Dayjs } from 'dayjs';
-import { genderDropdown, raceDropdown, handleFormChange } from '../util/dropdown';
+import { IReferral } from '../util/types/referral';
+import { putData } from '../util/api';
+import { handleFormChange } from '../util/dropdown';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -73,7 +71,11 @@ export default function PageOne({ referral, setReferral }: Props) {
   console.log('page one data');
   console.log(data);
 
-  const handleChange = (event: any, field: keyof IReferral, isString=false) => {
+  const handleChange = (
+    event: any,
+    field: keyof IReferral,
+    isString = false,
+  ) => {
     handleFormChange(data, setData, event, field, isString);
   };
 
@@ -116,7 +118,9 @@ export default function PageOne({ referral, setReferral }: Props) {
             variant="outlined"
             label="Please Specify Other Requested Victim Services"
             required
-            onChange={(event) => {handleChange(event,'otherServiceRequestedVictim', true)}}
+            onChange={(event) => {
+              handleChange(event, 'otherServiceRequestedVictim', true);
+            }}
           />
         </FormControl>
       </div>
@@ -188,8 +192,12 @@ export default function PageOne({ referral, setReferral }: Props) {
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
           multiple
-          value={data?.serviceRequested ? data?.serviceRequested.split(', ') : []}
-          onChange={(event) => {handleChange(event,'serviceRequested')}}
+          value={
+            data?.serviceRequested ? data?.serviceRequested.split(', ') : []
+          }
+          onChange={(event) => {
+            handleChange(event, 'serviceRequested');
+          }}
           input={<OutlinedInput label="Counseling & Therapy" />}
           MenuProps={MenuProps}
           required
@@ -223,7 +231,9 @@ export default function PageOne({ referral, setReferral }: Props) {
               ? data?.serviceRequestedVictim.split(', ')
               : []
           }
-          onChange={(event) => {handleChange(event,'serviceRequestedVictim')}}
+          onChange={(event) => {
+            handleChange(event, 'serviceRequestedVictim');
+          }}
           input={<OutlinedInput label="Victim Services" />}
           MenuProps={MenuProps}
           required
@@ -291,6 +301,5 @@ export default function PageOne({ referral, setReferral }: Props) {
         </Grid>
       </Grid>
     </div>
-    
   );
 }

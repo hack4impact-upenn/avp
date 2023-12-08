@@ -21,6 +21,7 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import { GlobalProps } from '../util/types/generic';
 import UploadModal from './UploadModal';
+import DataGridNew from '../components/DataGridNew';
 
 const styles = {
   main: {
@@ -67,15 +68,16 @@ export default function DatabasePage({
           </CardContent>
         </Card>
         <Box sx={{ height: '50px' }} />
-        <DataGrid globalProps={globalProps} setGlobalProps={setGlobalProps} />
+        {/* <DataGrid globalProps={globalProps} setGlobalProps={setGlobalProps} /> */}
+        <DataGridNew />
         <Button
-         variant="contained"
-         color="primary"
-         style={styles.button}
-         onClick={handleButtonClick}
-       >
-         Import CSV to Database
-       </Button>
+          variant="contained"
+          color="primary"
+          style={styles.button}
+          onClick={handleButtonClick}
+        >
+          Import CSV to Database
+        </Button>
       </Box>
       <UploadModal
         isModalOpen={isModalOpen}

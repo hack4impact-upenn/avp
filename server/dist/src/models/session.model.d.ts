@@ -4,9 +4,9 @@
  */
 import mongoose from 'mongoose';
 interface ISession extends mongoose.Document {
-    _id: string;
-    expires: Date;
-    session: string;
+  _id: string;
+  expires: Date;
+  session: string;
 }
 declare const Session: mongoose.Model<ISession, {}, {}, {}, any>;
 export default Session;

@@ -1,16 +1,18 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';
+var __importDefault =
+  (this && this.__importDefault) ||
+  function (mod) {
+    return mod && mod.__esModule ? mod : { default: mod };
+  };
+Object.defineProperty(exports, '__esModule', { value: true });
 /**
  * Specifies the middleware and controller functions to call for each route
  * relating to authentication.
  */
-const express_1 = __importDefault(require("express"));
-const auth_controller_1 = require("../controllers/auth.controller");
-const auth_middleware_1 = require("../controllers/auth.middleware");
-require("dotenv/config");
+const express_1 = __importDefault(require('express'));
+const auth_controller_1 = require('../controllers/auth.controller');
+const auth_middleware_1 = require('../controllers/auth.middleware');
+require('dotenv/config');
 const router = express_1.default.Router();
 /**
  * A POST route to register a user. Expects a JSON body with the following fields:
@@ -34,13 +36,20 @@ router.post('/login', auth_controller_1.login);
 /**
  * A POST route to log out a user.
  */
-router.post('/logout', auth_middleware_1.isAuthenticated, auth_controller_1.logout);
+router.post(
+  '/logout',
+  auth_middleware_1.isAuthenticated,
+  auth_controller_1.logout,
+);
 /**
  * A POST route to send a password reset email to a user. Expects a JSON body
  * with the following fields:
  * - email (string) - The email of the user
  */
-router.post('/send-reset-password-email', auth_controller_1.sendResetPasswordEmail);
+router.post(
+  '/send-reset-password-email',
+  auth_controller_1.sendResetPasswordEmail,
+);
 /**
  * A POST route to reset a user's password. Expects a JSON body with the
  * following fields:
@@ -53,7 +62,11 @@ router.post('/reset-password', auth_controller_1.resetPassword);
  * check if a user if authenticated. Returns 200 OK if the user is authenticated
  * and 401 unauthorized if the user is not authenticated.
  */
-router.get('/authstatus', auth_middleware_1.isAuthenticated, auth_controller_1.approve);
+router.get(
+  '/authstatus',
+  auth_middleware_1.isAuthenticated,
+  auth_controller_1.approve,
+);
 /**
  * A POST register a user from an invite. If the information and invite are valid
  * a new account is created. Otherwise a 400 bad request error is returned

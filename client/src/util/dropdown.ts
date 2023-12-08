@@ -1,4 +1,5 @@
-import IReferral from "./types/referral";
+// eslint-disable-next-line import/no-named-as-default
+import IReferral from './types/referral';
 
 export const genderDropdown = [
   'Female (woman/girl)',
@@ -21,7 +22,13 @@ export const raceDropdown = [
   'Unknown',
 ];
 
-export const handleFormChange = (data: any, setData: any, event: any, field: keyof IReferral, isString=false) => {
+export const handleFormChange = (
+  data: any,
+  setData: any,
+  event: any,
+  field: keyof IReferral,
+  isString = false,
+) => {
   // console.log(event, field, data);
   const {
     target: { value },
@@ -29,7 +36,7 @@ export const handleFormChange = (data: any, setData: any, event: any, field: key
   if (isString) {
     setData({
       ...data,
-      [field]: value
+      [field]: value,
     });
   } else {
     setData({

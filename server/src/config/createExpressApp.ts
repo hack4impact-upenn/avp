@@ -44,6 +44,7 @@ const createExpressApp = (sessionStore: MongoStore): express.Express => {
         'https://anti-violence-philadelphia.netlify.app',
         'https://avp-prod.vercel.app',
         'https://avpphila.vercel.app',
+        'https://avp-h4i.vercel.app',
       ],
     }),
   );

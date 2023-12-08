@@ -152,7 +152,7 @@ export default interface IReferral {
   guardianRelationshipOther: string;
 }
 
-export const emptyAddress = {street: '', city: '', state: '', zipcode: ''}
+export const emptyAddress = { street: '', city: '', state: '', zipcode: '' };
 
 export const emptyReferral = {
   id: '',

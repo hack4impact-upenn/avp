@@ -18,7 +18,7 @@ import VictimServicesOutcome from './VictimServicesOutcome';
 import CounselingServicesOutcome from './CounselingServicesOutcome';
 import YouthServicesOutcome from './YouthServicesOutcome';
 import CommunicationHistory from './CommunicationHistory';
-import AdditionalHomInfo from './AdditionalHomInfo'
+import AdditionalHomInfo from './AdditionalHomInfo';
 import { IReferral, emptyReferral } from '../util/types/referral';
 import { GlobalProps } from '../util/types/generic';
 
@@ -78,7 +78,7 @@ export default function FormPage({ globalProps, setGlobalProps }: GlobalProps) {
     console.log('change referral');
     setData({ referral });
   }, [referral]);
-  
+
   return (
     <div style={styles.main}>
       <Button

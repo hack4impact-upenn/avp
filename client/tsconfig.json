@@ -17,6 +17,7 @@
     "jsx": "react-jsx",
     "suppressImplicitAnyIndexErrors": true,
     "noImplicitAny": false,
+    "plugins": [{ "transform": "ts-transformer-keys/transformer" }]
   },
   "include": ["src"]
 }

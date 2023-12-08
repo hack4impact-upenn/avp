@@ -46,7 +46,7 @@ const crimeType = [
   'Stalking',
   'Theft',
   'Witnessing Violence (Youth Only)',
-  'Mass Violence'
+  'Mass Violence',
 ];
 
 const policeDistrictOfCrime = [
@@ -223,7 +223,9 @@ export default function PageTwo({ data, setData }: Props) {
       <br />
 
       <FormControl required sx={{ m: 1, minWidth: 500 }}>
-        <InputLabel id="demo-simple-select-label">Incident Reported to the Police?</InputLabel>
+        <InputLabel id="demo-simple-select-label">
+          Incident Reported to the Police?
+        </InputLabel>
         <Select
           value={
             data?.reportedToPolice
@@ -253,7 +255,7 @@ export default function PageTwo({ data, setData }: Props) {
         </Select>
       </FormControl>
 
-      < br />
+      <br />
 
       <FormControl required sx={{ m: 1, minWidth: 360 }}>
         <TextField
@@ -308,7 +310,7 @@ export default function PageTwo({ data, setData }: Props) {
         />
       </FormControl>
 
-      <FormControl sx={{ m: 1, minWidth: 420 }} required >
+      <FormControl sx={{ m: 1, minWidth: 420 }} required>
         <InputLabel id="demo-simple-select-label" required>
           Gender of Victim
         </InputLabel>

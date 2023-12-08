@@ -9,6 +9,11 @@ import express from 'express';
  * @param res Response object provided by Express
  * @param next NextFunction provided by Express
  */
-declare const apiErrorResponder: (err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => void;
+declare const apiErrorResponder: (
+  err: Error,
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => void;
 export default apiErrorResponder;
 //# sourceMappingURL=apiErrorResponder.d.ts.map

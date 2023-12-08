@@ -7,13 +7,19 @@ import 'dotenv/config';
  * @param email The email of the user to send the link to
  * @param token The unique token identifying this reset attempt for the user
  */
-declare const emailResetPasswordLink: (email: string, token: string) => Promise<void>;
+declare const emailResetPasswordLink: (
+  email: string,
+  token: string,
+) => Promise<void>;
 /**
  * Sends an email to verify an email account
  * @param email The email of the user to send the link to
  * @param token The unique token identifying this verification attempt
  */
-declare const emailVerificationLink: (email: string, token: string) => Promise<void>;
+declare const emailVerificationLink: (
+  email: string,
+  token: string,
+) => Promise<void>;
 /**
  * Sends an email with an invite link to create an account
  * @param email The email of the user to send the link to

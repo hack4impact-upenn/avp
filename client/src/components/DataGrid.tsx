@@ -238,7 +238,7 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
     InputComponentProps: { type: 'text' },
   };
   useEffect(() => {
-    console.log(referrals)
+    console.log(referrals);
     setReferralList(
       referrals?.data?.map((referral: IReferral) => {
         referral.id = referral._id;
@@ -722,12 +722,12 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
           if (params.row.incidentAddressObj.street) {
             result.push(params.row.incidentAddressOb.street as string);
           }
-        } else if (params.row.incidentAddress)  {
-          result.push(params.row.incidentAddress as string)
+        } else if (params.row.incidentAddress) {
+          result.push(params.row.incidentAddress as string);
         } else {
-          result = ["Unknown"];
+          result = ['Unknown'];
         }
-        return result.join(", ");
+        return result.join(', ');
       },
     },
     {
@@ -742,9 +742,9 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
             result.push(params.row.incidentAddressObj.zipcode as string);
           }
         } else {
-          result = ["Unknown"];
+          result = ['Unknown'];
         }
-        return result.join(", ");
+        return result.join(', ');
       },
     },
     {
@@ -783,12 +783,12 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
           if (params.row.guardianAddressObj.street) {
             result.push(params.row.guardianAddressObj.street as string);
           }
-        } else if (params.row.guardianAddress)  {
-          result.push(params.row.guardianAddress as string)
+        } else if (params.row.guardianAddress) {
+          result.push(params.row.guardianAddress as string);
         } else {
-          result = ["Unknown"];
+          result = ['Unknown'];
         }
-        return result.join(", ");
+        return result.join(', ');
       },
     },
     {
@@ -803,9 +803,9 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
             result.push(params.row.guardianAddressObj.zipcode as string);
           }
         } else {
-          result = ["Unknown"];
+          result = ['Unknown'];
         }
-        return result.join(", ");
+        return result.join(', ');
       },
     },
     {
@@ -839,11 +839,11 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
             result.push(params.row.survivorAddressObj.street as string);
           }
         } else if (params.row.survivorAddress) {
-          result.push(params.row.survivorAddress as string)
+          result.push(params.row.survivorAddress as string);
         } else {
-          result = ["Unknown"];
+          result = ['Unknown'];
         }
-        return result.join(", ");
+        return result.join(', ');
       },
     },
     {
@@ -859,9 +859,9 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
             result.push(params.row.survivorAddressObj.zipcode as string);
           }
         } else {
-          result = ["Unknown"];
+          result = ['Unknown'];
         }
-        return result.join(", ");
+        return result.join(', ');
       },
     },
     {
@@ -1047,12 +1047,12 @@ export default function DataGrid({ globalProps, setGlobalProps }: GlobalProps) {
           if (params.row.homAddressObj.street) {
             result.push(params.row.homAddressObj.street as string);
           }
-        } else if (params.row.homAddress)  {
-          result.push(params.row.homAddress as string)
+        } else if (params.row.homAddress) {
+          result.push(params.row.homAddress as string);
         } else {
-          result = ["Unknown"];
+          result = ['Unknown'];
         }
-        return result.join(", ");
+        return result.join(', ');
       },
     },
     {
